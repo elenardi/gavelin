@@ -33,8 +33,9 @@ router.get('/:id', authMiddleware, async (req, res) => {
 // ── Buka pack ───────────────────────────────────────────────
 router.post('/:id/open', authMiddleware, async (req, res) => {
   try {
-    const result = await openPack(req.user.id, req.params.id);
-    if (result.error) return res.status(400).json({ error: result.error });
+    const { paymentMethod } = req.body; // null | 'gold' | 'gems'
+    const result = await openPack(req.user.id, req.params.id, paymentMethod || null);
+    if (result.error) return res.status(400).json(result);
     res.json(result);
   } catch (err) {
     console.error(err);

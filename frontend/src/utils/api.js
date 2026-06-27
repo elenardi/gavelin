@@ -34,10 +34,10 @@ export const authApi = {
 };
 
 export const packApi = {
-  getAll:     ()      => api.get('/packs'),
-  getById:    (id)    => api.get(`/packs/${id}`),
-  open:       (id)    => api.post(`/packs/${id}/open`),
-  getHistory: ()      => api.get('/packs/history/mine'),
+  getAll:     ()                    => api.get('/packs'),
+  getById:    (id)                  => api.get(`/packs/${id}`),
+  open:       (id, paymentMethod)   => api.post(`/packs/${id}/open`, { paymentMethod: paymentMethod || null }),
+  getHistory: ()                    => api.get('/packs/history/mine'),
 };
 
 export const collectionApi = {

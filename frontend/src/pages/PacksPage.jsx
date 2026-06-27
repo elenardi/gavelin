@@ -127,10 +127,7 @@ export default function PacksPage() {
                   key={pack.id}
                   pack={pack}
                   slotsLeft={packSlots}
-                  onOpen={() => {
-                    if (packSlots === 0) { showToast('Slot buka pack habis hari ini!'); return; }
-                    setSelectedPack(pack);
-                  }}
+                  onOpen={() => setSelectedPack(pack)}
                 />
               ))}
             </div>
@@ -147,10 +144,7 @@ export default function PacksPage() {
                   key={pack.id}
                   pack={pack}
                   slotsLeft={packSlots}
-                  onOpen={() => {
-                    if (packSlots === 0) { showToast('Slot buka pack habis hari ini!'); return; }
-                    setSelectedPack(pack);
-                  }}
+                  onOpen={() => setSelectedPack(pack)}
                 />
               ))}
             </div>
@@ -192,7 +186,7 @@ function SectionLabel({ children }) {
 
 function PackRow({ pack, slotsLeft, onOpen }) {
   const [hover, setHover] = useState(false);
-  const disabled = slotsLeft === 0;
+  const disabled = false;
 
   return (
     <div
@@ -257,19 +251,17 @@ function PackRow({ pack, slotsLeft, onOpen }) {
         onClick={onOpen}
         disabled={disabled}
         style={{
-          background: disabled
-            ? 'rgba(255,255,255,0.05)'
-            : 'linear-gradient(135deg, #7c3aed, #a855f7)',
-          color: disabled ? '#6b5a88' : 'white',
+          background: 'linear-gradient(135deg, #7c3aed, #a855f7)',
+          color: 'white',
           fontWeight: 800, fontSize: 12,
           padding: '10px 16px', borderRadius: 12, border: 'none',
-          cursor: disabled ? 'not-allowed' : 'pointer',
+          cursor: 'pointer',
           whiteSpace: 'nowrap', flexShrink: 0,
-          boxShadow: disabled ? 'none' : '0 2px 12px rgba(124,58,237,0.4)',
+          boxShadow: '0 2px 12px rgba(124,58,237,0.4)',
           transition: 'all 0.2s',
         }}
       >
-        {disabled ? 'Habis' : 'Buka 🎴'}
+        Buka 🎴
       </button>
     </div>
   );

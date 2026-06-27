@@ -60,8 +60,9 @@ async function drawCards(packId, rarityWeights) {
 
 /**
  * Buka pack: kurangi slot, tarik 5 kartu, tambah ke koleksi user
+ * paymentMethod: null (pakai slot) | 'gold' | 'gems'
  */
-async function openPack(userId, packId) {
+async function openPack(userId, packId, paymentMethod = null) {
   const conn = await db.getConnection();
   try {
     await conn.beginTransaction();
@@ -71,24 +72,51 @@ async function openPack(userId, packId) {
     const user = users[0];
 
     // Check & reset slots
-    const availableSlots = await resetSlotsIfNeeded(user);
+    await resetSlotsIfNeeded(user);
 
     // Re-fetch setelah reset
-    const [freshUsers] = await conn.query('SELECT pack_slots FROM users WHERE id = ?', [userId]);
-    const currentSlots = freshUsers[0].pack_slots;
+    const [freshUsers] = await conn.query('SELECT pack_slots, gold, gems FROM users WHERE id = ?', [userId]);
+    const { pack_slots: currentSlots, gold, gems } = freshUsers[0];
 
-    if (currentSlots <= 0) {
-      await conn.rollback();
-      return { error: 'Slot buka pack habis hari ini. Kembali besok!' };
-    }
-
-    // Ambil pack
+    // Ambil pack lebih awal agar bisa baca cost_gold / cost_gems
     const [packs] = await conn.query('SELECT * FROM packs WHERE id = ? AND is_active = 1', [packId]);
     if (!packs.length) {
       await conn.rollback();
       return { error: 'Pack tidak ditemukan.' };
     }
     const pack = packs[0];
+    const goldCost = pack.cost_gold ?? 0;
+    const gemsCost = pack.cost_gems ?? 0;
+
+    if (currentSlots <= 0 && !paymentMethod) {
+      await conn.rollback();
+      return {
+        error: 'Slot buka pack habis hari ini.',
+        slotsEmpty: true,
+        goldCost,
+        gemsCost,
+      };
+    }
+
+    // Validasi pembayaran alternatif
+    if (paymentMethod === 'free') {
+      // Hanya boleh jika memang pack gratis (keduanya 0)
+      if (goldCost !== 0 || gemsCost !== 0) {
+        await conn.rollback();
+        return { error: 'Pack ini tidak gratis.' };
+      }
+      // Tidak perlu kurangi slot atau currency — lanjut
+    } else if (paymentMethod === 'gold') {
+      if (gold < goldCost) {
+        await conn.rollback();
+        return { error: `Gold tidak cukup. Butuh ${goldCost.toLocaleString()} gold.` };
+      }
+    } else if (paymentMethod === 'gems') {
+      if (gems < gemsCost) {
+        await conn.rollback();
+        return { error: `Gems tidak cukup. Butuh ${gemsCost} gems.` };
+      }
+    }
 
     // Tarik 5 kartu
     const weights = typeof pack.rarity_weights === 'string'
@@ -100,8 +128,16 @@ async function openPack(userId, packId) {
       return { error: 'Pack belum memiliki cukup kartu. Hubungi admin.' };
     }
 
-    // Kurangi slot
-    await conn.query('UPDATE users SET pack_slots = pack_slots - 1 WHERE id = ?', [userId]);
+    // Kurangi slot atau potong currency
+    if (paymentMethod === 'gold') {
+      await conn.query('UPDATE users SET gold = gold - ? WHERE id = ?', [goldCost, userId]);
+    } else if (paymentMethod === 'gems') {
+      await conn.query('UPDATE users SET gems = gems - ? WHERE id = ?', [gemsCost, userId]);
+    } else if (paymentMethod === 'free') {
+      // Pack gratis saat slot habis — tidak ada yang dikurangi
+    } else {
+      await conn.query('UPDATE users SET pack_slots = pack_slots - 1 WHERE id = ?', [userId]);
+    }
 
     // Tambah kartu ke koleksi user
     for (const card of drawnCards) {
@@ -130,7 +166,8 @@ async function openPack(userId, packId) {
     return {
       success: true,
       cards: drawnCards,
-      remainingSlots: currentSlots - 1,
+      remainingSlots: paymentMethod ? currentSlots : currentSlots - 1,
+      paymentMethod,
     };
   } catch (err) {
     await conn.rollback();

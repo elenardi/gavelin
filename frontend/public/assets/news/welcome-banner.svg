@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a0d4a"/>
+      <stop offset="100%" stop-color="#2d1060"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="15%" cy="50%" r="40%">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="f"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+
+  <rect width="600" height="200" fill="url(#bg)"/>
+  <rect width="600" height="200" fill="url(#glow)"/>
+
+  <!-- Stars -->
+  <circle cx="500" cy="20" r="1.5" fill="white" opacity="0.7"/>
+  <circle cx="540" cy="45" r="1" fill="white" opacity="0.5"/>
+  <circle cx="570" cy="15" r="2" fill="white" opacity="0.8"/>
+  <circle cx="450" cy="35" r="1" fill="#c084fc" opacity="0.7"/>
+  <circle cx="580" cy="70" r="1.5" fill="white" opacity="0.6"/>
+
+  <!-- Decorative card shapes -->
+  <rect x="480" y="30" width="55" height="78" rx="6" fill="rgba(124,58,237,0.2)" stroke="#7c3aed" stroke-width="1" transform="rotate(-12 480 30)"/>
+  <rect x="520" y="20" width="55" height="78" rx="6" fill="rgba(168,85,247,0.15)" stroke="#a855f7" stroke-width="1" transform="rotate(5 520 20)"/>
+  <rect x="540" y="35" width="55" height="78" rx="6" fill="rgba(192,132,252,0.1)" stroke="#c084fc" stroke-width="1" transform="rotate(18 540 35)"/>
+
+  <!-- Chibi wizard welcome -->
+  <ellipse cx="95" cy="110" rx="48" ry="45" fill="#f5c9a0"/>
+  <path d="M 50 100 Q 52 65 70 50 Q 95 38 120 50 Q 138 65 140 100" fill="#d0d8f0"/>
+  <ellipse cx="62" cy="95" rx="13" ry="8" fill="#d0d8f0" opacity="0.5" transform="rotate(-15 62 95)"/>
+  <ellipse cx="128" cy="95" rx="13" ry="8" fill="#d0d8f0" opacity="0.5" transform="rotate(15 128 95)"/>
+  <ellipse cx="65" cy="88" rx="10" ry="14" fill="#d0d8f0" transform="rotate(-20 65 88)"/>
+  <ellipse cx="125" cy="88" rx="10" ry="14" fill="#d0d8f0" transform="rotate(20 125 88)"/>
+  <!-- Hat -->
+  <ellipse cx="95" cy="70" rx="52" ry="13" fill="#3b1f72"/>
+  <path d="M 47 72 Q 60 30 80 12 Q 95 0 110 12 Q 130 30 143 72 Z" fill="#4a2890"/>
+  <path d="M 60 55 Q 95 48 130 55" stroke="#f0d060" stroke-width="1.5" fill="none" opacity="0.7"/>
+  <text x="88" y="38" font-size="14" fill="#f0d060" filter="url(#f)">★</text>
+  <!-- Eyes -->
+  <ellipse cx="78" cy="108" rx="12" ry="13" fill="white"/>
+  <ellipse cx="78" cy="110" rx="8" ry="9" fill="#6d28d9"/>
+  <circle cx="76" cy="108" r="4" fill="#1a0030"/>
+  <circle cx="73" cy="105" r="2" fill="white"/>
+  <ellipse cx="112" cy="108" rx="12" ry="13" fill="white"/>
+  <ellipse cx="112" cy="110" rx="8" ry="9" fill="#6d28d9"/>
+  <circle cx="110" cy="108" r="4" fill="#1a0030"/>
+  <circle cx="107" cy="105" r="2" fill="white"/>
+  <ellipse cx="55" cy="105" rx="11" ry="6" fill="rgba(255,140,100,0.4)"/>
+  <ellipse cx="135" cy="105" rx="11" ry="6" fill="rgba(255,140,100,0.4)"/>
+  <path d="M 82 122 Q 95 132 108 122" stroke="#c87a60" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <!-- Body -->
+  <path d="M 55 150 Q 48 135 50 118 Q 95 108 140 118 Q 142 135 135 150 Z" fill="#3b1f72"/>
+  <path d="M 55 150 L 42 185 L 148 185 L 135 150 Z" fill="#2d1760"/>
+
+  <!-- Text area -->
+  <text x="185" y="68" font-family="Georgia,serif" font-size="32" font-weight="bold" fill="white">Selamat Datang!</text>
+  <text x="185" y="95" font-family="Georgia,serif" font-size="14" fill="#c084fc">Welcome to Gavelin Card Chronicles</text>
+  <line x1="185" y1="108" x2="560" y2="108" stroke="#7c3aed" stroke-width="1" opacity="0.5"/>
+  <text x="185" y="130" font-family="Arial,sans-serif" font-size="13" fill="#e2d9f3">Mulai petualangan kartu mu hari ini.</text>
+  <text x="185" y="150" font-family="Arial,sans-serif" font-size="13" fill="#e2d9f3">Buka pack, kumpulkan kartu, dan jadilah</text>
+  <text x="185" y="168" font-family="Arial,sans-serif" font-size="13" fill="#e2d9f3">sang master dungeon!</text>
+
+  <!-- NEW badge -->
+  <rect x="185" y="172" width="44" height="20" rx="10" fill="#7c3aed"/>
+  <text x="207" y="186" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="white" text-anchor="middle">BARU</text>
+</svg>

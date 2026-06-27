@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1a0d4a"/>
+      <stop offset="100%" stop-color="#05020f"/>
+    </radialGradient>
+    <filter id="f"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="200" height="200" fill="url(#bg)"/>
+  <!-- Stars -->
+  <circle cx="25" cy="25" r="1.5" fill="white" opacity="0.7"/>
+  <circle cx="175" cy="25" r="1.5" fill="white" opacity="0.7"/>
+  <circle cx="25" cy="175" r="1.5" fill="white" opacity="0.7"/>
+  <circle cx="175" cy="175" r="1.5" fill="white" opacity="0.7"/>
+  <circle cx="100" cy="12" r="1" fill="#c084fc" opacity="0.8"/>
+  <circle cx="100" cy="188" r="1" fill="#c084fc" opacity="0.8"/>
+  <circle cx="12" cy="100" r="1" fill="#c084fc" opacity="0.8"/>
+  <circle cx="188" cy="100" r="1" fill="#c084fc" opacity="0.8"/>
+  <!-- Frame border -->
+  <rect x="8" y="8" width="184" height="184" rx="16" fill="none" stroke="#a855f7" stroke-width="3.5"/>
+  <rect x="14" y="14" width="172" height="172" rx="12" fill="none" stroke="#c084fc" stroke-width="1" opacity="0.5"/>
+  <!-- Corner rune stars -->
+  <text x="10" y="32" font-size="20" fill="#f0d060" filter="url(#f)">★</text>
+  <text x="168" y="32" font-size="20" fill="#f0d060" filter="url(#f)">★</text>
+  <text x="10" y="190" font-size="20" fill="#f0d060" filter="url(#f)">★</text>
+  <text x="168" y="190" font-size="20" fill="#f0d060" filter="url(#f)">★</text>
+  <!-- Magic circle -->
+  <circle cx="100" cy="100" r="65" fill="none" stroke="#7c3aed" stroke-width="1" stroke-dasharray="6 3" opacity="0.5"/>
+  <circle cx="100" cy="100" r="55" fill="rgba(124,58,237,0.07)"/>
+  <!-- Center -->
+  <text x="100" y="108" font-size="36" text-anchor="middle">🔮</text>
+  <text x="100" y="160" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#a855f7" text-anchor="middle">ARCANE FRAME</text>
+</svg>

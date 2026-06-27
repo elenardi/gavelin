@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a0505"/>
+      <stop offset="100%" stop-color="#3d0a0a"/>
+    </linearGradient>
+    <filter id="f"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="200" height="120" fill="url(#bg)"/>
+  <rect x="4" y="4" width="192" height="112" rx="10" fill="none" stroke="#ef4444" stroke-width="2"/>
+  <!-- Decorative swords -->
+  <text x="18" y="68" font-size="28" transform="rotate(-45 18 68)" filter="url(#f)">⚔️</text>
+  <text x="160" y="68" font-size="28" transform="rotate(45 160 68)" filter="url(#f)">⚔️</text>
+  <!-- Title text -->
+  <text x="100" y="42" font-family="Georgia,serif" font-size="13" fill="#f97316" text-anchor="middle" letter-spacing="3" opacity="0.8">TITLE</text>
+  <text x="100" y="72" font-family="Georgia,serif" font-size="22" font-weight="bold" fill="white" text-anchor="middle" letter-spacing="1" filter="url(#f)">Dragon Slayer</text>
+  <line x1="30" y1="82" x2="170" y2="82" stroke="#ef4444" stroke-width="1" opacity="0.5"/>
+  <text x="100" y="100" font-family="Arial,sans-serif" font-size="10" fill="#fca5a5" text-anchor="middle" letter-spacing="2">GAVELIN</text>
+</svg>

@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 420">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#0d3d18"/>
+      <stop offset="100%" stop-color="#030d05"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#4ade80" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#4ade80" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="skin" cx="40%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#fde8c8"/>
+      <stop offset="100%" stop-color="#e8c49a"/>
+    </radialGradient>
+    <radialGradient id="eye" cx="30%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#4ade80"/>
+      <stop offset="100%" stop-color="#16a34a"/>
+    </radialGradient>
+    <filter id="gf"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="sh"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#16a34a" flood-opacity="0.4"/></filter>
+  </defs>
+
+  <rect width="300" height="420" fill="url(#bg)"/>
+
+  <!-- Background trees -->
+  <rect x="18" y="180" width="22" height="180" rx="8" fill="#0a2a10"/>
+  <ellipse cx="29" cy="170" rx="38" ry="55" fill="#0f3a18"/>
+  <ellipse cx="29" cy="148" rx="28" ry="40" fill="#134d20"/>
+  <rect x="258" y="185" width="22" height="175" rx="8" fill="#0a2a10"/>
+  <ellipse cx="269" cy="175" rx="38" ry="55" fill="#0f3a18"/>
+  <ellipse cx="269" cy="153" rx="28" ry="40" fill="#134d20"/>
+
+  <!-- Background trees smaller -->
+  <rect x="60" y="220" width="14" height="140" rx="5" fill="#0a2a10"/>
+  <ellipse cx="67" cy="210" rx="26" ry="38" fill="#124018"/>
+  <rect x="226" y="220" width="14" height="140" rx="5" fill="#0a2a10"/>
+  <ellipse cx="233" cy="210" rx="26" ry="38" fill="#124018"/>
+
+  <!-- Glowing ground flora -->
+  <ellipse cx="150" cy="365" rx="130" ry="25" fill="#16a34a" opacity="0.15"/>
+  <!-- Flowers -->
+  <circle cx="75" cy="355" r="6" fill="#fde047" filter="url(#gf)" opacity="0.8"/>
+  <circle cx="68" cy="355" r="4" fill="#fde047" opacity="0.5"/>
+  <circle cx="82" cy="358" r="4" fill="#fde047" opacity="0.5"/>
+  <circle cx="75" cy="349" r="4" fill="#fde047" opacity="0.5"/>
+  <circle cx="75" cy="361" r="4" fill="#fde047" opacity="0.5"/>
+  <circle cx="75" cy="355" r="4" fill="white" opacity="0.9"/>
+
+  <circle cx="225" cy="355" r="6" fill="#f9a8d4" filter="url(#gf)" opacity="0.8"/>
+  <circle cx="218" cy="355" r="4" fill="#f9a8d4" opacity="0.5"/>
+  <circle cx="232" cy="358" r="4" fill="#f9a8d4" opacity="0.5"/>
+  <circle cx="225" cy="349" r="4" fill="#f9a8d4" opacity="0.5"/>
+  <circle cx="225" cy="361" r="4" fill="#f9a8d4" opacity="0.5"/>
+  <circle cx="225" cy="355" r="4" fill="white" opacity="0.9"/>
+
+  <!-- Small mushrooms -->
+  <ellipse cx="105" cy="355" rx="9" ry="5" fill="#ef4444" opacity="0.8"/>
+  <circle cx="105" cy="350" r="9" fill="#ef4444" opacity="0.8"/>
+  <circle cx="102" cy="349" r="2" fill="white" opacity="0.7"/>
+  <circle cx="108" cy="347" r="1.5" fill="white" opacity="0.7"/>
+  <rect x="103" y="350" width="4" height="8" rx="2" fill="#fde8c8" opacity="0.9"/>
+
+  <!-- Glow center -->
+  <ellipse cx="150" cy="230" rx="100" ry="90" fill="url(#glow)"/>
+
+  <!-- Druid robe -->
+  <path d="M 108 305 Q 95 278 98 255 Q 150 242 202 255 Q 205 278 192 305 Z" fill="#1a4a20"/>
+  <path d="M 108 305 L 88 358 L 212 358 L 192 305 Z" fill="#134018"/>
+  <!-- Leaf pattern on robe -->
+  <text x="138" y="295" font-size="14" fill="#4ade80" opacity="0.35" transform="rotate(-15 138 295)">🍃</text>
+  <text x="155" y="315" font-size="12" fill="#4ade80" opacity="0.3" transform="rotate(10 155 315)">🍃</text>
+  <!-- Brown belt -->
+  <rect x="115" y="268" width="70" height="10" rx="5" fill="#7a4a20"/>
+  <circle cx="150" cy="273" r="6" fill="#5c3a18"/>
+  <circle cx="150" cy="273" r="3" fill="#d4a000" opacity="0.8"/>
+
+  <!-- Arms -->
+  <path d="M 100 262 Q 70 278 62 305" stroke="#e8c49a" stroke-width="15" fill="none" stroke-linecap="round"/>
+  <path d="M 200 262 Q 230 278 238 305" stroke="#e8c49a" stroke-width="15" fill="none" stroke-linecap="round"/>
+
+  <!-- Staff with nature orb -->
+  <rect x="55" y="145" width="9" height="170" rx="4" fill="#4a2800"/>
+  <!-- Vine wrapping -->
+  <path d="M 56 160 Q 65 172 56 184 Q 65 196 56 208 Q 65 220 56 232" stroke="#16a34a" stroke-width="2.5" fill="none" opacity="0.7"/>
+  <!-- Orb on top -->
+  <circle cx="60" cy="138" r="20" fill="#0f3a18" stroke="#4ade80" stroke-width="2"/>
+  <circle cx="60" cy="138" r="13" fill="#16a34a"/>
+  <circle cx="60" cy="138" r="7" fill="#4ade80"/>
+  <circle cx="56" cy="134" r="3" fill="white" opacity="0.7"/>
+  <!-- Leaf halo -->
+  <text x="42" y="124" font-size="11" fill="#4ade80" opacity="0.7" transform="rotate(-30 42 124)">🍃</text>
+  <text x="62" y="116" font-size="11" fill="#4ade80" opacity="0.6">🍃</text>
+  <text x="72" y="126" font-size="11" fill="#4ade80" opacity="0.7" transform="rotate(30 72 126)">🍃</text>
+
+  <!-- Head -->
+  <ellipse cx="155" cy="198" rx="68" ry="65" fill="url(#skin)" filter="url(#sh)"/>
+
+  <!-- Green hair -->
+  <path d="M 90 188 Q 88 135 120 112 Q 155 94 190 112 Q 222 135 220 188" fill="#16a34a"/>
+  <path d="M 90 188 Q 74 208 78 238 Q 83 220 92 208" fill="#16a34a"/>
+  <path d="M 220 188 Q 236 208 232 238 Q 227 220 218 208" fill="#16a34a"/>
+  <!-- Hair highlights -->
+  <path d="M 118 116 Q 140 100 162 98" stroke="#4ade80" stroke-width="2.5" fill="none" opacity="0.5" stroke-linecap="round"/>
+  <path d="M 95 152 Q 88 168 90 185" stroke="#4ade80" stroke-width="2" fill="none" opacity="0.4" stroke-linecap="round"/>
+
+  <!-- Leaf crown -->
+  <text x="112" y="118" font-size="22" fill="#22c55e" transform="rotate(-20 112 118)" filter="url(#gf)">🍃</text>
+  <text x="143" y="105" font-size="20" fill="#4ade80" filter="url(#gf)">🌿</text>
+  <text x="175" y="114" font-size="20" fill="#22c55e" transform="rotate(20 175 114)" filter="url(#gf)">🍃</text>
+  <!-- Flower in hair -->
+  <circle cx="155" cy="102" r="9" fill="#fde047"/>
+  <circle cx="155" cy="102" r="5" fill="#f97316"/>
+  <circle cx="147" cy="100" r="5" fill="#fde047"/>
+  <circle cx="163" cy="100" r="5" fill="#fde047"/>
+  <circle cx="155" cy="93" r="5" fill="#fde047"/>
+
+  <!-- Eyes -->
+  <ellipse cx="127" cy="196" rx="20" ry="22" fill="white"/>
+  <ellipse cx="127" cy="199" rx="14" ry="16" fill="url(#eye)"/>
+  <circle cx="124" cy="196" r="7" fill="#052e10"/>
+  <circle cx="120" cy="192" r="3.5" fill="white"/>
+  <ellipse cx="183" cy="196" rx="20" ry="22" fill="white"/>
+  <ellipse cx="183" cy="199" rx="14" ry="16" fill="url(#eye)"/>
+  <circle cx="180" cy="196" r="7" fill="#052e10"/>
+  <circle cx="176" cy="192" r="3.5" fill="white"/>
+
+  <!-- Eyebrows -->
+  <path d="M 110 182 Q 124 177 138 181" stroke="#5c3a18" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M 172 181 Q 186 177 200 182" stroke="#5c3a18" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Nose -->
+  <ellipse cx="155" cy="215" rx="7" ry="5" fill="#e0b090" opacity="0.6"/>
+
+  <!-- Happy smile -->
+  <path d="M 135 230 Q 155 248 175 230" stroke="#c8907a" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+  <!-- Blush -->
+  <ellipse cx="105" cy="213" rx="17" ry="9" fill="rgba(255,160,120,0.4)"/>
+  <ellipse cx="205" cy="213" rx="17" ry="9" fill="rgba(255,160,120,0.4)"/>
+
+  <!-- Floating petals -->
+  <ellipse cx="250" cy="185" rx="7" ry="4" fill="#f9a8d4" opacity="0.7" transform="rotate(-30 250 185)"/>
+  <ellipse cx="62" cy="200" rx="6" ry="3.5" fill="#fde047" opacity="0.7" transform="rotate(20 62 200)"/>
+  <ellipse cx="240" cy="240" rx="5" ry="3" fill="#f9a8d4" opacity="0.6" transform="rotate(-45 240 240)"/>
+
+  <!-- Bottom label -->
+  <rect x="0" y="360" width="300" height="60" fill="rgba(0,0,0,0.75)"/>
+  <rect x="0" y="358" width="300" height="3" fill="#22c55e"/>
+  <text x="150" y="387" font-family="Georgia, serif" font-size="18" font-weight="bold" fill="white" text-anchor="middle" letter-spacing="1">Sacred Grove</text>
+  <text x="150" y="406" font-family="Arial, sans-serif" font-size="11" fill="#86efac" text-anchor="middle" letter-spacing="2">GAVELIN CARD CHRONICLES</text>
+
+  <text x="14" y="28" font-size="16" fill="#4ade80" opacity="0.8">🌿</text>
+  <text x="270" y="28" font-size="16" fill="#4ade80" opacity="0.8">🌿</text>
+</svg>

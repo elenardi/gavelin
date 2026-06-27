@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 420">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#0d2b0d"/>
+      <stop offset="100%" stop-color="#020802"/>
+    </radialGradient>
+    <radialGradient id="mist" cx="50%" cy="80%" r="60%">
+      <stop offset="0%" stop-color="#22c55e" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#22c55e" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="eyeG" cx="30%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#7dff7d"/>
+      <stop offset="100%" stop-color="#00aa00"/>
+    </radialGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="sh"><feDropShadow dx="0" dy="4" stdDeviation="7" flood-color="#00ff44" flood-opacity="0.3"/></filter>
+  </defs>
+
+  <rect width="300" height="420" fill="url(#bg)"/>
+
+  <!-- Graveyard ground -->
+  <ellipse cx="150" cy="380" rx="160" ry="30" fill="#0a1a0a" opacity="0.8"/>
+
+  <!-- Gravestones -->
+  <rect x="48" y="295" width="28" height="40" rx="14 14 4 4" fill="#1a2a1a"/>
+  <rect x="46" y="330" width="32" height="6" rx="2" fill="#152015"/>
+  <text x="62" y="320" font-size="9" fill="#22c55e" text-anchor="middle" opacity="0.5">RIP</text>
+  <rect x="224" y="290" width="26" height="38" rx="13 13 4 4" fill="#1a2a1a"/>
+  <rect x="222" y="323" width="30" height="6" rx="2" fill="#152015"/>
+  <text x="237" y="314" font-size="9" fill="#22c55e" text-anchor="middle" opacity="0.5">RIP</text>
+
+  <!-- Mist ground -->
+  <ellipse cx="150" cy="360" rx="155" ry="35" fill="url(#mist)"/>
+
+  <!-- Green mist wisps -->
+  <path d="M 20 340 Q 60 325 100 335 Q 140 345 180 330 Q 220 315 270 330" stroke="#22c55e" stroke-width="3" fill="none" opacity="0.2" stroke-linecap="round"/>
+  <path d="M 10 355 Q 55 340 95 350 Q 135 360 175 345 Q 215 330 275 345" stroke="#22c55e" stroke-width="2" fill="none" opacity="0.15" stroke-linecap="round"/>
+
+  <!-- Skeleton body -->
+  <ellipse cx="150" cy="300" rx="44" ry="40" fill="#e8e0d0" filter="url(#sh)"/>
+  <!-- Rib cage -->
+  <path d="M 130 282 Q 150 278 170 282" stroke="#c8c0b0" stroke-width="2" fill="none" opacity="0.7"/>
+  <path d="M 128 292 Q 150 288 172 292" stroke="#c8c0b0" stroke-width="2" fill="none" opacity="0.7"/>
+  <path d="M 130 302 Q 150 298 170 302" stroke="#c8c0b0" stroke-width="2" fill="none" opacity="0.6"/>
+  <path d="M 132 312 Q 150 308 168 312" stroke="#c8c0b0" stroke-width="2" fill="none" opacity="0.5"/>
+  <!-- Sternum -->
+  <rect x="147" y="278" width="6" height="40" rx="3" fill="#c8c0b0" opacity="0.5"/>
+
+  <!-- Skeleton arms (bone-like) -->
+  <path d="M 108 285 Q 75 275 60 295 Q 55 310 65 320" stroke="#e8e0d0" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <path d="M 192 285 Q 225 275 240 295 Q 245 310 235 320" stroke="#e8e0d0" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <!-- Hand bones -->
+  <circle cx="65" cy="320" r="8" fill="#e8e0d0"/>
+  <circle cx="58" cy="326" r="4" fill="#e8e0d0"/>
+  <circle cx="68" cy="330" r="4" fill="#e8e0d0"/>
+  <circle cx="235" cy="320" r="8" fill="#e8e0d0"/>
+  <circle cx="228" cy="326" r="4" fill="#e8e0d0"/>
+  <circle cx="238" cy="330" r="4" fill="#e8e0d0"/>
+
+  <!-- Skull head -->
+  <ellipse cx="150" cy="200" rx="70" ry="68" fill="#ede8dc" filter="url(#sh)"/>
+  <!-- Skull dome shade -->
+  <path d="M 88 185 Q 92 145 150 133 Q 208 145 212 185" fill="#d8d0c0" opacity="0.4"/>
+
+  <!-- Crown -->
+  <path d="M 82 158 L 82 128 L 100 143 L 118 122 L 136 143 L 150 122 L 164 143 L 182 122 L 200 143 L 218 128 L 218 158 Z" fill="#d4a000"/>
+  <ellipse cx="82" cy="158" rx="12" ry="6" fill="#c89000"/>
+  <ellipse cx="218" cy="158" rx="12" ry="6" fill="#c89000"/>
+  <!-- Crown gems -->
+  <circle cx="118" cy="131" r="6" fill="#ef4444"/>
+  <circle cx="150" cy="126" r="7" fill="#22c55e" filter="url(#glow)"/>
+  <circle cx="182" cy="131" r="6" fill="#60a5fa"/>
+  <!-- Crown shine -->
+  <path d="M 95 140 L 200 140" stroke="#f0d060" stroke-width="1.5" fill="none" opacity="0.4"/>
+
+  <!-- Skull eye sockets -->
+  <ellipse cx="118" cy="195" rx="24" ry="26" fill="#0d1a0d"/>
+  <ellipse cx="182" cy="195" rx="24" ry="26" fill="#0d1a0d"/>
+  <!-- Glowing green eyes inside -->
+  <ellipse cx="118" cy="195" rx="16" ry="18" fill="url(#eyeG)" filter="url(#glow)"/>
+  <circle cx="114" cy="192" r="5" fill="white" opacity="0.7"/>
+  <ellipse cx="182" cy="195" rx="16" ry="18" fill="url(#eyeG)" filter="url(#glow)"/>
+  <circle cx="178" cy="192" r="5" fill="white" opacity="0.7"/>
+
+  <!-- Nasal cavity -->
+  <path d="M 144 220 L 150 232 L 156 220 Q 150 215 144 220 Z" fill="#0d1a0d"/>
+
+  <!-- Zygomatic arches -->
+  <path d="M 88 200 Q 82 210 90 218" stroke="#c8c0b0" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M 212 200 Q 218 210 210 218" stroke="#c8c0b0" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+  <!-- Skull mouth / teeth -->
+  <rect x="118" y="235" width="64" height="16" rx="4" fill="#0d1a0d"/>
+  <rect x="122" y="235" width="10" height="14" rx="3" fill="#ede8dc"/>
+  <rect x="136" y="235" width="10" height="14" rx="3" fill="#ede8dc"/>
+  <rect x="150" y="235" width="10" height="14" rx="3" fill="#ede8dc"/>
+  <rect x="164" y="235" width="10" height="14" rx="3" fill="#ede8dc"/>
+
+  <!-- Floating ghosts / wisps -->
+  <ellipse cx="55" cy="200" rx="18" ry="22" fill="#22c55e" opacity="0.2" filter="url(#glow)"/>
+  <circle cx="55" cy="192" r="8" fill="#22c55e" opacity="0.25" filter="url(#glow)"/>
+  <ellipse cx="245" cy="210" rx="16" ry="20" fill="#22c55e" opacity="0.2" filter="url(#glow)"/>
+  <circle cx="245" cy="202" r="7" fill="#22c55e" opacity="0.25" filter="url(#glow)"/>
+
+  <!-- Bottom label -->
+  <rect x="0" y="360" width="300" height="60" fill="rgba(0,0,0,0.8)"/>
+  <rect x="0" y="358" width="300" height="3" fill="#22c55e"/>
+  <text x="150" y="387" font-family="Georgia, serif" font-size="18" font-weight="bold" fill="white" text-anchor="middle" letter-spacing="1">Undead Uprising</text>
+  <text x="150" y="406" font-family="Arial, sans-serif" font-size="11" fill="#86efac" text-anchor="middle" letter-spacing="2">GAVELIN CARD CHRONICLES</text>
+
+  <text x="12" y="28" font-size="16" fill="#22c55e" opacity="0.7" filter="url(#glow)">💀</text>
+  <text x="268" y="28" font-size="16" fill="#22c55e" opacity="0.7" filter="url(#glow)">💀</text>
+</svg>

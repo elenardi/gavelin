@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2a1800"/>
+      <stop offset="100%" stop-color="#0a0500"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0d060"/>
+      <stop offset="50%" stop-color="#d4a000"/>
+      <stop offset="100%" stop-color="#f0d060"/>
+    </linearGradient>
+    <filter id="f"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="200" height="200" fill="url(#bg)"/>
+  <!-- Outer glow -->
+  <rect x="6" y="6" width="188" height="188" rx="18" fill="none" stroke="#f0d060" stroke-width="1" opacity="0.3" filter="url(#f)"/>
+  <!-- Frame border double gold -->
+  <rect x="8" y="8" width="184" height="184" rx="16" fill="none" stroke="url(#gold)" stroke-width="4"/>
+  <rect x="16" y="16" width="168" height="168" rx="10" fill="none" stroke="#f0d060" stroke-width="1" opacity="0.4"/>
+  <!-- Corner ornaments -->
+  <circle cx="20" cy="20" r="7" fill="#d4a000"/>
+  <circle cx="180" cy="20" r="7" fill="#d4a000"/>
+  <circle cx="20" cy="180" r="7" fill="#d4a000"/>
+  <circle cx="180" cy="180" r="7" fill="#d4a000"/>
+  <circle cx="20" cy="20" r="4" fill="#f0d060"/>
+  <circle cx="180" cy="20" r="4" fill="#f0d060"/>
+  <circle cx="20" cy="180" r="4" fill="#f0d060"/>
+  <circle cx="180" cy="180" r="4" fill="#f0d060"/>
+  <!-- Side mid ornaments -->
+  <circle cx="100" cy="10" r="5" fill="#d4a000"/>
+  <circle cx="100" cy="190" r="5" fill="#d4a000"/>
+  <circle cx="10" cy="100" r="5" fill="#d4a000"/>
+  <circle cx="190" cy="100" r="5" fill="#d4a000"/>
+  <!-- Center avatar area -->
+  <circle cx="100" cy="95" r="62" fill="rgba(212,160,0,0.07)" stroke="#d4a000" stroke-width="1" opacity="0.5"/>
+  <text x="100" y="103" font-size="36" text-anchor="middle">👑</text>
+  <text x="100" y="158" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#f0d060" text-anchor="middle">GOLD FRAME</text>
+</svg>

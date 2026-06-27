@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1a0505"/>
+      <stop offset="100%" stop-color="#3d0a0a"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="85%" cy="50%" r="40%">
+      <stop offset="0%" stop-color="#ef4444" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#ef4444" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="f"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+
+  <rect width="600" height="200" fill="url(#bg)"/>
+  <rect width="600" height="200" fill="url(#glow)"/>
+
+  <!-- Lava cracks left -->
+  <path d="M 0 160 Q 30 130 20 90 Q 10 60 35 30" stroke="#ff4400" stroke-width="1.5" fill="none" opacity="0.4"/>
+  <path d="M 0 180 Q 15 155 10 130" stroke="#ff6600" stroke-width="1" fill="none" opacity="0.3"/>
+
+  <!-- Dragon (chibi) on right -->
+  <!-- Wings -->
+  <path d="M 460 90 Q 400 55 375 25 Q 400 50 425 80" fill="#8b1500" opacity="0.9"/>
+  <path d="M 460 90 Q 520 50 545 15 Q 520 45 498 78" fill="#6a1000" opacity="0.8"/>
+  <!-- Body -->
+  <ellipse cx="460" cy="135" rx="50" ry="44" fill="#d42200"/>
+  <ellipse cx="460" cy="135" rx="30" ry="30" fill="#ff6633" opacity="0.5"/>
+  <!-- Tail -->
+  <path d="M 505 145 Q 545 130 560 100" stroke="#cc2200" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <!-- Head -->
+  <ellipse cx="460" cy="88" rx="52" ry="48" fill="#e02500"/>
+  <!-- Horns -->
+  <path d="M 432 55 Q 424 35 432 22 Q 435 38 440 54" fill="#8b1500"/>
+  <path d="M 488 55 Q 496 35 488 22 Q 485 38 480 54" fill="#8b1500"/>
+  <!-- Eyes -->
+  <ellipse cx="442" cy="84" rx="14" ry="15" fill="white"/>
+  <ellipse cx="442" cy="86" rx="10" ry="11" fill="#ffe066"/>
+  <circle cx="440" cy="85" r="5" fill="#1a0a00"/>
+  <circle cx="438" cy="82" r="2.5" fill="white"/>
+  <ellipse cx="478" cy="84" rx="14" ry="15" fill="white"/>
+  <ellipse cx="478" cy="86" rx="10" ry="11" fill="#ffe066"/>
+  <circle cx="476" cy="85" r="5" fill="#1a0a00"/>
+  <circle cx="474" cy="82" r="2.5" fill="white"/>
+  <!-- Smile + fangs -->
+  <path d="M 446 103 Q 460 113 474 103" stroke="#8b1500" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M 450 105 L 448 113 L 454 105" fill="white" opacity="0.9"/>
+  <path d="M 470 105 L 468 113 L 474 105" fill="white" opacity="0.9"/>
+  <!-- Blush -->
+  <ellipse cx="418" cy="97" rx="14" ry="8" fill="rgba(255,100,60,0.35)"/>
+  <ellipse cx="502" cy="97" rx="14" ry="8" fill="rgba(255,100,60,0.35)"/>
+  <!-- Fire breath -->
+  <path d="M 455 115 Q 420 125 405 140 Q 420 132 435 145 Q 445 128 450 148 Q 455 128 460 145 Q 470 130 475 148" stroke="#ff9a00" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.7" filter="url(#f)"/>
+
+  <!-- Gold coins -->
+  <ellipse cx="375" cy="175" rx="10" ry="6" fill="#d4a000" opacity="0.8"/>
+  <ellipse cx="392" cy="182" rx="9" ry="5" fill="#f0b800" opacity="0.7"/>
+  <ellipse cx="408" cy="172" rx="8" ry="5" fill="#d4a000" opacity="0.7"/>
+
+  <!-- Text -->
+  <text x="30" y="62" font-family="Georgia,serif" font-size="30" font-weight="bold" fill="white">Dragon's Lair</text>
+  <text x="30" y="86" font-family="Georgia,serif" font-size="13" fill="#fca5a5">Pack Baru Telah Hadir!</text>
+  <line x1="30" y1="98" x2="370" y2="98" stroke="#ef4444" stroke-width="1" opacity="0.5"/>
+  <text x="30" y="118" font-family="Arial,sans-serif" font-size="12.5" fill="#fecaca">Kumpulkan kartu naga legendaris dan kuasai</text>
+  <text x="30" y="136" font-family="Arial,sans-serif" font-size="12.5" fill="#fecaca">dungeon api yang membara!</text>
+  <text x="30" y="158" font-family="Arial,sans-serif" font-size="12" fill="#fca5a5">Tersedia mulai 15 Februari 2026</text>
+
+  <!-- NEW badge -->
+  <rect x="30" y="168" width="55" height="20" rx="10" fill="#ef4444"/>
+  <text x="57" y="182" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="white" text-anchor="middle">BARU!</text>
+</svg>

@@ -7,11 +7,11 @@ USE gavelin;
 -- PACKS
 -- ============================================================
 INSERT INTO packs (name, description, image_url, theme, rarity_weights, cost_gold, cost_gems, is_featured, release_date) VALUES
-('Dungeon Depths',    'Pack pertama Gavelin. Berisi karakter dan monster dari kedalaman dungeon.',      '/assets/packs/dungeon-depths.png',  'dungeon', '{"common":60,"uncommon":25,"rare":10,"epic":4,"legendary":1}', 0,    0,  TRUE,  '2026-01-01'),
-('Dragon''s Lair',   'Pack bertema naga. Dapatkan kartu naga legendaris!',                              '/assets/packs/dragons-lair.png',    'dragon',  '{"common":55,"uncommon":25,"rare":12,"epic":6,"legendary":2}', 500,  0,  TRUE,  '2026-02-15'),
-('Arcane Academy',   'Pack bertema sihir. Mantra dan wizard misterius siap membantumu!',                '/assets/packs/arcane-academy.png',  'arcane',  '{"common":58,"uncommon":25,"rare":11,"epic":5,"legendary":1}', 500,  0,  TRUE,  '2026-03-10'),
-('Undead Uprising',  'Bangkitkan army of darkness! Pack bertema undead dan necromancer.',               '/assets/packs/undead-uprising.png', 'undead',  '{"common":60,"uncommon":23,"rare":11,"epic":5,"legendary":1}', 500,  0,  FALSE, '2026-04-01'),
-('Sacred Grove',     'Pack bertema alam. Druid, ranger, dan makhluk hutan menanti!',                   '/assets/packs/sacred-grove.png',   'nature',  '{"common":58,"uncommon":26,"rare":10,"epic":5,"legendary":1}', 500,  0,  FALSE, '2026-05-01');
+('Dungeon Depths',    'Pack pertama Gavelin. Berisi karakter dan monster dari kedalaman dungeon.',      '/assets/packs/dungeon-depths.svg',  'dungeon', '{"common":60,"uncommon":25,"rare":10,"epic":4,"legendary":1}', 0,    0,  TRUE,  '2026-01-01'),
+('Dragon''s Lair',   'Pack bertema naga. Dapatkan kartu naga legendaris!',                              '/assets/packs/dragons-lair.svg',    'dragon',  '{"common":55,"uncommon":25,"rare":12,"epic":6,"legendary":2}', 500,  0,  TRUE,  '2026-02-15'),
+('Arcane Academy',   'Pack bertema sihir. Mantra dan wizard misterius siap membantumu!',                '/assets/packs/arcane-academy.svg',  'arcane',  '{"common":58,"uncommon":25,"rare":11,"epic":5,"legendary":1}', 500,  0,  TRUE,  '2026-03-10'),
+('Undead Uprising',  'Bangkitkan army of darkness! Pack bertema undead dan necromancer.',               '/assets/packs/undead-uprising.svg', 'undead',  '{"common":60,"uncommon":23,"rare":11,"epic":5,"legendary":1}', 500,  0,  FALSE, '2026-04-01'),
+('Sacred Grove',     'Pack bertema alam. Druid, ranger, dan makhluk hutan menanti!',                   '/assets/packs/sacred-grove.svg',   'nature',  '{"common":58,"uncommon":26,"rare":10,"epic":5,"legendary":1}', 500,  0,  FALSE, '2026-05-01');
 
 -- ============================================================
 -- CARDS — Pack 1: Dungeon Depths
@@ -70,21 +70,21 @@ INSERT INTO missions (name, description, mission_type, task_type, target_count, 
 -- SHOP ITEMS
 -- ============================================================
 INSERT INTO shop_items (name, description, item_type, image_url, cost_gold, cost_gems, effect_data, is_featured, is_active) VALUES
-('Dragon Frame',        'Border profil berbentuk naga menyala.',        'avatar_frame', '/assets/shop/frame-dragon.png',    0,    50,  '{"frame_id":"dragon_frame"}',   TRUE,  TRUE),
-('Arcane Frame',        'Border profil bertema sihir ungu.',            'avatar_frame', '/assets/shop/frame-arcane.png',    0,    30,  '{"frame_id":"arcane_frame"}',   FALSE, TRUE),
-('Gold Frame',          'Border profil emas berkilau.',                 'avatar_frame', '/assets/shop/frame-gold.png',      1000, 0,   '{"frame_id":"gold_frame"}',     FALSE, TRUE),
-('Dragon Slayer',       'Title keren untuk profil kamu.',              'title',        '/assets/shop/title-slayer.png',    0,    20,  '{"title":"Dragon Slayer"}',     TRUE,  TRUE),
-('Dungeon Lord',        'Title bergaya untuk master dungeon.',         'title',        '/assets/shop/title-lord.png',      2000, 0,   '{"title":"Dungeon Lord"}',      FALSE, TRUE),
-('Dark Card Back',      'Tampilan belakang kartu gelap misterius.',    'card_back',    '/assets/shop/back-dark.png',       0,    40,  '{"back_id":"dark_back"}',       FALSE, TRUE),
-('Dragon Card Back',    'Tampilan belakang kartu dengan motif naga.',  'card_back',    '/assets/shop/back-dragon.png',     1500, 0,   '{"back_id":"dragon_back"}',     TRUE,  TRUE),
-('Gem Bundle (100)',    'Dapatkan 100 Gems!',                          'gems',         '/assets/shop/gems-100.png',        5000, 0,   '{"gems":100}',                  FALSE, TRUE),
-('Gold Bundle (1000)',  'Dapatkan 1000 Gold!',                        'gold',         '/assets/shop/gold-1000.png',       0,    10,  '{"gold":1000}',                 FALSE, TRUE),
-('Dust Bundle (200)',   'Dapatkan 200 Dust untuk upgrade kartu!',     'dust',         '/assets/shop/dust-200.png',        800,  0,   '{"dust":200}',                  FALSE, TRUE);
+('Dragon Frame',        'Border profil berbentuk naga menyala.',        'avatar_frame', '/assets/shop/frame-dragon.svg',    0,    50,  '{"frame_id":"dragon_frame"}',   TRUE,  TRUE),
+('Arcane Frame',        'Border profil bertema sihir ungu.',            'avatar_frame', '/assets/shop/frame-arcane.svg',    0,    30,  '{"frame_id":"arcane_frame"}',   FALSE, TRUE),
+('Gold Frame',          'Border profil emas berkilau.',                 'avatar_frame', '/assets/shop/frame-gold.svg',      1000, 0,   '{"frame_id":"gold_frame"}',     FALSE, TRUE),
+('Dragon Slayer',       'Title keren untuk profil kamu.',              'title',        '/assets/shop/title-slayer.svg',    0,    20,  '{"title":"Dragon Slayer"}',     TRUE,  TRUE),
+('Dungeon Lord',        'Title bergaya untuk master dungeon.',         'title',        '/assets/shop/title-lord.svg',      2000, 0,   '{"title":"Dungeon Lord"}',      FALSE, TRUE),
+('Dark Card Back',      'Tampilan belakang kartu gelap misterius.',    'card_back',    '/assets/shop/back-dark.svg',       0,    40,  '{"back_id":"dark_back"}',       FALSE, TRUE),
+('Dragon Card Back',    'Tampilan belakang kartu dengan motif naga.',  'card_back',    '/assets/shop/back-dragon.svg',     1500, 0,   '{"back_id":"dragon_back"}',     TRUE,  TRUE),
+('Gem Bundle (100)',    'Dapatkan 100 Gems!',                          'gems',         '/assets/shop/gems-100.svg',        5000, 0,   '{"gems":100}',                  FALSE, TRUE),
+('Gold Bundle (1000)',  'Dapatkan 1000 Gold!',                        'gold',         '/assets/shop/gold-1000.svg',       0,    10,  '{"gold":1000}',                 FALSE, TRUE),
+('Dust Bundle (200)',   'Dapatkan 200 Dust untuk upgrade kartu!',     'dust',         '/assets/shop/dust-200.svg',        800,  0,   '{"dust":200}',                  FALSE, TRUE);
 
 -- ============================================================
 -- NEWS
 -- ============================================================
 INSERT INTO news (title, content, image_url, news_type, is_pinned, published_at) VALUES
-('Selamat Datang di Gavelin!',    'Gavelin: Card Chronicles kini resmi diluncurkan! Mainkan game kartu D&D pertama yang bisa dimainkan di browser dan mobile. Dapatkan pack gratis harian dan bangun deck terkuatmu!', '/assets/news/welcome.png',      'update',   TRUE, NOW()),
-('Pack Baru: Dragon''s Lair!',    'Pack kedua Gavelin kini tersedia! Kumpulkan kartu naga legendaris dan kuasai medan pertempuran. Ancient Red Dragon menunggumu!',                                                    '/assets/news/dragons-lair.png', 'new_pack', TRUE, NOW()),
-('Update v1.1 — Battle Revamp',   'Sistem pertarungan diperbarui dengan animasi baru, AI yang lebih cerdas, dan sistem energy yang lebih seimbang. Coba sekarang!',                                                    '/assets/news/update.png',       'update',   FALSE, NOW());
+('Selamat Datang di Gavelin!',    'Gavelin: Card Chronicles kini resmi diluncurkan! Mainkan game kartu D&D pertama yang bisa dimainkan di browser dan mobile. Dapatkan pack gratis harian dan bangun deck terkuatmu!', '/assets/news/welcome-banner.svg',      'update',   TRUE, NOW()),
+('Pack Baru: Dragon''s Lair!',    'Pack kedua Gavelin kini tersedia! Kumpulkan kartu naga legendaris dan kuasai medan pertempuran. Ancient Red Dragon menunggumu!',                                                    '/assets/news/dragons-lair-banner.svg', 'new_pack', TRUE, NOW()),
+('Update v1.1 — Battle Revamp',   'Sistem pertarungan diperbarui dengan animasi baru, AI yang lebih cerdas, dan sistem energy yang lebih seimbang. Coba sekarang!',                                                    '/assets/news/update-banner.svg',       'update',   FALSE, NOW());

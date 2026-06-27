@@ -11,6 +11,7 @@
 
 import { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
+import { generateCardSvg } from '../../utils/cardArtGenerator';
 
 const SIZES = { sm: { w: 90, h: 126 }, md: { w: 130, h: 182 }, lg: { w: 200, h: 280 } };
 
@@ -103,15 +104,13 @@ export default function CardRenderer({ card, size = 'md', onClick, selected, fac
           {/* Card image area */}
           <div style={{
             height: '45%',
-            background: card.image_url
-              ? `url(${card.image_url}) center/cover`
-              : `linear-gradient(135deg, ${rarityColor}33, #1a0a2e)`,
+            background: `url(${card.image_url || generateCardSvg(card)}) center/cover`,
             borderRadius: '8px 8px 0 0',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: dim.w * 0.35,
             position: 'relative',
           }}>
-            {!card.image_url && (TYPE_ICONS[card.card_type] || '🃏')}
+            {false && ''}
 
             {/* Energy cost badge */}
             <div style={{

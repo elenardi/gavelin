@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#3d0a0a"/>
+      <stop offset="100%" stop-color="#0a0202"/>
+    </radialGradient>
+    <filter id="f"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="200" height="200" fill="url(#bg)"/>
+  <!-- Frame border -->
+  <rect x="8" y="8" width="184" height="184" rx="16" fill="none" stroke="#ef4444" stroke-width="4"/>
+  <rect x="14" y="14" width="172" height="172" rx="12" fill="none" stroke="#f97316" stroke-width="1.5" opacity="0.6"/>
+  <!-- Dragon heads at corners -->
+  <text x="8" y="30" font-size="22" filter="url(#f)">🐉</text>
+  <text x="165" y="30" font-size="22" filter="url(#f)" transform="scale(-1,1) translate(-200,0)">🐉</text>
+  <text x="8" y="195" font-size="22" filter="url(#f)">🐉</text>
+  <text x="165" y="195" font-size="22" filter="url(#f)" transform="scale(-1,1) translate(-200,0)">🐉</text>
+  <!-- Fire along edges -->
+  <path d="M 30 8 Q 45 2 60 8 Q 75 2 90 8 Q 105 2 120 8 Q 135 2 150 8 Q 165 2 170 8" stroke="#f97316" stroke-width="2" fill="none" opacity="0.6" filter="url(#f)"/>
+  <path d="M 30 192 Q 45 198 60 192 Q 75 198 90 192 Q 105 198 120 192 Q 135 198 150 192 Q 165 198 170 192" stroke="#f97316" stroke-width="2" fill="none" opacity="0.6" filter="url(#f)"/>
+  <!-- Center avatar placeholder -->
+  <circle cx="100" cy="100" r="65" fill="rgba(239,68,68,0.08)" stroke="#ef4444" stroke-width="1" stroke-dasharray="4 4" opacity="0.6"/>
+  <text x="100" y="108" font-size="36" text-anchor="middle">🔥</text>
+  <text x="100" y="160" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#ef4444" text-anchor="middle">DRAGON FRAME</text>
+</svg>

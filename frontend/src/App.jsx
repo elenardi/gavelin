@@ -9,6 +9,7 @@ import CommunityPage from './pages/CommunityPage';
 import BattlePage from './pages/BattlePage';
 import ShopPage from './pages/ShopPage';
 import ProfilePage from './pages/ProfilePage';
+import PacksPage from './pages/PacksPage';
 import Navigation from './components/Layout/Navigation';
 
 function ProtectedRoute({ children }) {
@@ -44,6 +45,7 @@ export default function App() {
       <Route path="/battle" element={<ProtectedRoute><AppLayout><BattlePage /></AppLayout></ProtectedRoute>} />
       <Route path="/shop" element={<ProtectedRoute><AppLayout><ShopPage /></AppLayout></ProtectedRoute>} />
       <Route path="/profile" element={<ProtectedRoute><AppLayout><ProfilePage /></AppLayout></ProtectedRoute>} />
+      <Route path="/packs"   element={<ProtectedRoute><AppLayout><PacksPage /></AppLayout></ProtectedRoute>} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

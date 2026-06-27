@@ -335,16 +335,16 @@ export default function HomePage() {
                   <FeaturedPackCard key={pack.id} pack={pack} onClick={() => setSelectedPack(pack)} />
                 ))}
                 <div
-                  onClick={() => navigate('/collection')}
+                  onClick={() => navigate('/packs')}
                   style={{
                     minWidth:80, borderRadius:16, cursor:'pointer',
                     display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
-                    gap:6, color:'#6b5a88', fontSize:11, fontWeight:600, flexShrink:0,
-                    border:'1.5px dashed rgba(124,58,237,0.3)',
-                    background:'rgba(124,58,237,0.05)',
+                    gap:6, color:'#c084fc', fontSize:11, fontWeight:700, flexShrink:0,
+                    border:'1.5px dashed rgba(124,58,237,0.4)',
+                    background:'rgba(124,58,237,0.08)',
                   }}
                 >
-                  <span style={{ fontSize:24 }}>＋</span>
+                  <span style={{ fontSize:24 }}>🎴</span>
                   <span>Semua</span>
                 </div>
               </div>

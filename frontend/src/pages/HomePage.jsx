@@ -193,14 +193,19 @@ export default function HomePage() {
   const featuredPacks = packs.filter(p => p.is_featured).slice(0, 3);
   const pendingGifts  = gifts.filter(g => g.status === 'pending').length;
 
+  // Header ~66px + tab bar ~42px = 108px fixed from top
+  const HEADER_H = 66;
+  const TABBAR_H = 42;
+  const TOP_OFFSET = HEADER_H + TABBAR_H;
+
   return (
-    <div className="page" style={{ background: 'linear-gradient(180deg, #120826 0%, #0a0418 100%)', position:'relative' }}>
+    <div className="page" style={{ background: 'linear-gradient(180deg, #120826 0%, #0a0418 100%)', overflow:'hidden' }}>
       <Particles />
 
       {/* Toast */}
       {toast && (
         <div style={{
-          position:'fixed', top:70, left:'50%', transform:'translateX(-50%)',
+          position:'fixed', top: TOP_OFFSET + 8, left:'50%', transform:'translateX(-50%)',
           background:'rgba(26,10,46,0.97)', border:'1px solid rgba(192,132,252,0.5)',
           borderRadius:12, padding:'10px 22px', fontSize:13, fontWeight:600,
           color:'white', zIndex:9999, whiteSpace:'nowrap',
@@ -209,16 +214,16 @@ export default function HomePage() {
         }}>{toast}</div>
       )}
 
-      {/* ── Header ────────────────────────────────────────────── */}
+      {/* ── Header (fixed) ────────────────────────────────────── */}
       <div style={{
-        padding:'14px 16px 10px',
-        background:'rgba(10,4,24,0.85)',
+        position:'fixed', top:0, left:0, right:0, height:HEADER_H,
+        padding:'12px 16px 8px',
+        background:'rgba(10,4,24,0.92)',
         borderBottom:'1px solid rgba(124,58,237,0.15)',
-        position:'sticky', top:0, zIndex:50,
-        backdropFilter:'blur(16px)',
+        zIndex:50, backdropFilter:'blur(16px)',
+        display:'flex', alignItems:'center',
       }}>
-        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
-          {/* Avatar + name */}
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', width:'100%' }}>
           <div style={{ display:'flex', alignItems:'center', gap:10, cursor:'pointer' }}
                onClick={() => navigate('/profile')}>
             <div style={{
@@ -228,36 +233,33 @@ export default function HomePage() {
                 : 'linear-gradient(135deg, #7c3aed, #f59e0b)',
               border:'2px solid #7c3aed',
               display:'flex', alignItems:'center', justifyContent:'center', fontSize:18,
-              boxShadow:'0 0 10px rgba(124,58,237,0.5)',
-              flexShrink:0,
+              boxShadow:'0 0 10px rgba(124,58,237,0.5)', flexShrink:0,
             }}>{!user?.avatar_url && '⚔️'}</div>
             <div>
               <div style={{ fontSize:13, fontWeight:800, color:'white', lineHeight:1.2 }}>{user?.username}</div>
               <div style={{ fontSize:10, color:'#f59e0b', fontWeight:600 }}>{user?.title || 'Trainer'}</div>
             </div>
           </div>
-
-          {/* Currency chips */}
           <div style={{ display:'flex', gap:6 }}>
             <CurrencyChip icon="💰" value={(user?.gold||0).toLocaleString()} color="#f59e0b" />
-            <CurrencyChip icon="💎" value={user?.gems||0}                    color="#60a5fa" />
+            <CurrencyChip icon="💎" value={user?.gems||0} color="#60a5fa" />
           </div>
         </div>
       </div>
 
-      {/* ── Tab bar ───────────────────────────────────────────── */}
+      {/* ── Tab bar (fixed) ───────────────────────────────────── */}
       <div style={{
-        display:'flex', background:'rgba(10,4,24,0.7)',
+        position:'fixed', top:HEADER_H, left:0, right:0, height:TABBAR_H,
+        display:'flex', background:'rgba(10,4,24,0.88)',
         borderBottom:'1px solid rgba(124,58,237,0.15)',
-        position:'sticky', top:66, zIndex:40,
-        backdropFilter:'blur(16px)',
+        zIndex:40, backdropFilter:'blur(16px)',
       }}>
         {TABS.map(t => {
           const badge = t.id === 'gift' ? pendingGifts : t.id === 'news' ? news.length : 0;
           const active = tab === t.id;
           return (
             <button key={t.id} onClick={() => setTab(t.id)} style={{
-              flex:1, padding:'10px 4px', border:'none',
+              flex:1, padding:'0 4px', border:'none',
               background:'transparent',
               color: active ? '#c084fc' : '#6b5a88',
               fontSize:10, fontWeight:700, letterSpacing:'0.03em',
@@ -269,8 +271,7 @@ export default function HomePage() {
               <span>{t.label}</span>
               {badge > 0 && (
                 <span style={{
-                  position:'absolute', top:4, right:'50%',
-                  marginRight:'-24px',
+                  position:'absolute', top:4, right:'50%', marginRight:'-24px',
                   minWidth:16, height:16, borderRadius:8,
                   background:'#ef4444', color:'white',
                   fontSize:9, fontWeight:800,
@@ -281,6 +282,12 @@ export default function HomePage() {
           );
         })}
       </div>
+
+      {/* ── Scrollable content area ───────────────────────────── */}
+      <div style={{
+        position:'absolute', top:TOP_OFFSET, left:0, right:0, bottom:0,
+        overflowY:'auto', overflowX:'hidden',
+      }}>
 
       {/* ═══════════════════════════════════════════════════════════
           HOME TAB
@@ -420,7 +427,7 @@ export default function HomePage() {
           NEWS TAB
       ═══════════════════════════════════════════════════════════ */}
       {tab === 'news' && (
-        <div style={{ padding:'16px', position:'relative', zIndex:1 }}>
+        <div style={{ padding:'16px 16px 80px', position:'relative', zIndex:1 }}>
           {news.length === 0 && <EmptyState icon="📢" text="Belum ada berita." />}
           {news.map(n => (
             <div key={n.id} style={{
@@ -459,7 +466,7 @@ export default function HomePage() {
           GIFT TAB
       ═══════════════════════════════════════════════════════════ */}
       {tab === 'gift' && (
-        <div style={{ padding:'16px', position:'relative', zIndex:1 }}>
+        <div style={{ padding:'16px 16px 80px', position:'relative', zIndex:1 }}>
           <div style={{
             background:'linear-gradient(135deg, rgba(245,158,11,0.1) 0%, rgba(124,58,237,0.1) 100%)',
             border:'1px solid rgba(245,158,11,0.2)', borderRadius:14,
@@ -511,7 +518,7 @@ export default function HomePage() {
           MISSION TAB
       ═══════════════════════════════════════════════════════════ */}
       {tab === 'mission' && (
-        <div style={{ padding:'16px', position:'relative', zIndex:1 }}>
+        <div style={{ padding:'16px 16px 80px', position:'relative', zIndex:1 }}>
           {['daily','weekly'].map(type => {
             const list = missions.filter(m => m.mission_type === type);
             if (!list.length) return null;
@@ -580,6 +587,8 @@ export default function HomePage() {
           })}
         </div>
       )}
+
+      </div>{/* end scrollable content area */}
 
       {/* Pack Opener modal */}
       {selectedPack && (

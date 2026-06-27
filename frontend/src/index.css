@@ -103,6 +103,8 @@ body {
 }
 .page::-webkit-scrollbar { width: 4px; }
 .page::-webkit-scrollbar-thumb { background: rgba(124,58,237,0.4); border-radius: 2px; }
+.page > div::-webkit-scrollbar { width: 4px; }
+.page > div::-webkit-scrollbar-thumb { background: rgba(124,58,237,0.4); border-radius: 2px; }
 
 /* Button styles */
 .btn-primary {

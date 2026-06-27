@@ -1,7 +1,7 @@
 const express = require('express');
 const db      = require('../config/database');
 const { authMiddleware } = require('../middleware/auth');
-const { openPack, resetSlotsIfNeeded } = require('../services/packService');
+const { openPack, regenSlotsIfNeeded } = require('../services/packService');
 
 const router = express.Router();
 
@@ -11,8 +11,8 @@ router.get('/', authMiddleware, async (req, res) => {
     'SELECT * FROM packs WHERE is_active=1 ORDER BY is_featured DESC, release_date DESC'
   );
 
-  // Refresh slot user
-  const freshSlots = await resetSlotsIfNeeded(req.user);
+  // Regen slot jika sudah waktunya
+  await regenSlotsIfNeeded(req.user);
   const [user] = await db.query('SELECT pack_slots FROM users WHERE id=?', [req.user.id]);
 
   res.json({ packs: rows, packSlots: user[0].pack_slots });

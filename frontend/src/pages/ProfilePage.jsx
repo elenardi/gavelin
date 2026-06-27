@@ -1,6 +1,39 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { authApi, battleApi } from '../utils/api';
+
+const MAX_SLOTS  = 2;
+const REGEN_MS   = 12 * 60 * 60 * 1000;
+
+function usePackSlotTimer(user) {
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const slots   = user?.pack_slots ?? 0;
+  const anchor  = user?.last_slot_reset ? new Date(user.last_slot_reset).getTime() : null;
+  const isFull  = slots >= MAX_SLOTS;
+
+  // Waktu berlalu sejak anchor
+  const elapsed    = anchor ? now - anchor : 0;
+  // Progress menuju slot berikutnya (0–100)
+  const progress   = anchor ? Math.min((elapsed % REGEN_MS) / REGEN_MS * 100, 100) : 0;
+  // Sisa detik menuju slot berikutnya
+  const remaining  = anchor ? Math.max(0, REGEN_MS - (elapsed % REGEN_MS)) : 0;
+
+  const fmt = (ms) => {
+    const totalSec = Math.floor(ms / 1000);
+    const h = Math.floor(totalSec / 3600);
+    const m = Math.floor((totalSec % 3600) / 60);
+    const s = totalSec % 60;
+    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  };
+
+  return { slots, isFull, progress, remaining, fmt };
+}
 
 export default function ProfilePage() {
   const { user, logout, refreshUser } = useAuth();
@@ -135,26 +168,8 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* Pack info */}
-      <div style={{ padding: '0 16px 16px' }}>
-        <h3 style={{ fontSize: 13, fontWeight: 700, color: '#c084fc', marginBottom: 12 }}>🎴 Pack Slot Hari Ini</h3>
-        <div className="glass" style={{ borderRadius: 12, padding: '14px 16px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: 13, color: '#8b7aa8' }}>Sisa Slot</span>
-            <span style={{ fontSize: 14, fontWeight: 700, color: user?.pack_slots > 0 ? '#22c55e' : '#ef4444' }}>
-              {user?.pack_slots || 0} / 2
-            </span>
-          </div>
-          <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
-            {[0, 1].map(i => (
-              <div key={i} style={{
-                flex: 1, height: 8, borderRadius: 4,
-                background: i < (user?.pack_slots || 0) ? '#7c3aed' : 'rgba(255,255,255,0.1)',
-              }} />
-            ))}
-          </div>
-        </div>
-      </div>
+      {/* Pack Slot */}
+      <PackSlotPanel user={user} />
 
       {/* Email info */}
       <div style={{ padding: '0 16px 16px' }}>
@@ -167,7 +182,7 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* Logout */}
+      {/* Logout — di bawah PackSlotPanel */}
       <div style={{ padding: '0 16px 40px' }}>
         <button onClick={logout} style={{
           width: '100%', padding: '14px', borderRadius: 12,
@@ -176,6 +191,103 @@ export default function ProfilePage() {
         }}>
           🚪 Keluar
         </button>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Pack Slot Panel ─────────────────────────────────────────── */
+function PackSlotPanel({ user }) {
+  const { slots, isFull, progress, remaining, fmt } = usePackSlotTimer(user);
+
+  return (
+    <div style={{ padding: '0 16px 16px' }}>
+      <h3 style={{ fontSize: 13, fontWeight: 700, color: '#c084fc', marginBottom: 12 }}>
+        🎴 Pack Slot
+      </h3>
+      <div className="glass" style={{ borderRadius: 16, padding: '16px' }}>
+
+        {/* Slot bubbles */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+          {Array.from({ length: MAX_SLOTS }).map((_, i) => {
+            const filled = i < slots;
+            // Slot terakhir yang sedang regen (indeks = slots, yaitu slot berikutnya)
+            const isRegen = !filled && i === slots && !isFull;
+            return (
+              <div key={i} style={{
+                width: 44, height: 44, borderRadius: 12, flexShrink: 0,
+                background: filled
+                  ? 'linear-gradient(135deg, #7c3aed, #a855f7)'
+                  : 'rgba(255,255,255,0.06)',
+                border: `2px solid ${filled ? '#a855f7' : isRegen ? '#f59e0b' : 'rgba(255,255,255,0.1)'}`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: filled ? 22 : 18,
+                boxShadow: filled ? '0 0 12px rgba(124,58,237,0.5)' : 'none',
+                position: 'relative', overflow: 'hidden',
+                transition: 'all 0.3s',
+              }}>
+                {filled ? '🎴' : isRegen ? '⏳' : '○'}
+                {/* Shimmer saat regen */}
+                {isRegen && (
+                  <div style={{
+                    position: 'absolute', inset: 0,
+                    background: 'linear-gradient(90deg, transparent, rgba(245,158,11,0.15), transparent)',
+                    animation: 'shimmer 1.5s infinite',
+                  }} />
+                )}
+              </div>
+            );
+          })}
+
+          <div style={{ flex: 1, textAlign: 'right' }}>
+            <div style={{
+              fontSize: 22, fontWeight: 900,
+              color: slots > 0 ? '#c084fc' : '#ef4444',
+            }}>{slots}/{MAX_SLOTS}</div>
+            <div style={{ fontSize: 10, color: '#8b7aa8' }}>slot tersedia</div>
+          </div>
+        </div>
+
+        {/* Progress bar regen */}
+        {!isFull && (
+          <>
+            <div style={{
+              display: 'flex', justifyContent: 'space-between',
+              fontSize: 10, color: '#8b7aa8', marginBottom: 6,
+            }}>
+              <span>⏱ Slot berikutnya</span>
+              <span style={{ color: '#f59e0b', fontWeight: 700 }}>{fmt(remaining)}</span>
+            </div>
+            <div style={{
+              background: 'rgba(255,255,255,0.06)', borderRadius: 6,
+              height: 10, overflow: 'hidden', position: 'relative',
+            }}>
+              <div style={{
+                width: `${progress}%`, height: '100%', borderRadius: 6,
+                background: 'linear-gradient(90deg, #f59e0b, #fbbf24)',
+                transition: 'width 1s linear', position: 'relative', overflow: 'hidden',
+              }}>
+                <div style={{
+                  position: 'absolute', inset: 0,
+                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
+                  animation: 'shimmer 1.5s infinite',
+                }} />
+              </div>
+            </div>
+            <div style={{ fontSize: 10, color: '#6b5a88', marginTop: 6, textAlign: 'center' }}>
+              Slot regen otomatis setiap 12 jam
+            </div>
+          </>
+        )}
+
+        {isFull && (
+          <div style={{
+            textAlign: 'center', padding: '8px 0',
+            fontSize: 12, color: '#22c55e', fontWeight: 700,
+          }}>
+            ✅ Semua slot penuh — siap buka pack!
+          </div>
+        )}
       </div>
     </div>
   );

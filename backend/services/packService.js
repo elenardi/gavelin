@@ -1,22 +1,34 @@
 const db = require('../config/database');
 
+const MAX_SLOTS   = 2;
+const REGEN_MS    = 12 * 60 * 60 * 1000; // 12 jam dalam milidetik
+
 /**
- * Reset pack_slots user jika sudah melewati tengah malam UTC
+ * Tambah pack_slots user secara bertahap: +1 setiap 12 jam, maks MAX_SLOTS.
+ * last_slot_reset = anchor waktu mulai regen (null jika slot sudah penuh).
  */
-async function resetSlotsIfNeeded(user) {
-  const now = new Date();
-  const todayMidnight = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+async function regenSlotsIfNeeded(user) {
+  if (user.pack_slots >= MAX_SLOTS) return user.pack_slots; // sudah penuh
+  if (!user.last_slot_reset)        return user.pack_slots; // timer belum dimulai
 
-  const lastReset = user.last_slot_reset ? new Date(user.last_slot_reset) : null;
+  const now        = Date.now();
+  const anchor     = new Date(user.last_slot_reset).getTime();
+  const elapsed    = now - anchor;
+  const slotsToAdd = Math.min(Math.floor(elapsed / REGEN_MS), MAX_SLOTS - user.pack_slots);
 
-  if (!lastReset || lastReset < todayMidnight) {
-    await db.query(
-      'UPDATE users SET pack_slots = ?, last_slot_reset = ? WHERE id = ?',
-      [parseInt(process.env.DAILY_PACK_SLOTS) || 2, now, user.id]
-    );
-    return parseInt(process.env.DAILY_PACK_SLOTS) || 2;
-  }
-  return user.pack_slots;
+  if (slotsToAdd <= 0) return user.pack_slots;
+
+  const newSlots   = user.pack_slots + slotsToAdd;
+  // Maju anchor sebanyak slot yang sudah diberikan (bukan reset ke now)
+  const newAnchor  = newSlots >= MAX_SLOTS
+    ? null
+    : new Date(anchor + slotsToAdd * REGEN_MS);
+
+  await db.query(
+    'UPDATE users SET pack_slots = ?, last_slot_reset = ? WHERE id = ?',
+    [newSlots, newAnchor, user.id]
+  );
+  return newSlots;
 }
 
 /**
@@ -71,10 +83,10 @@ async function openPack(userId, packId, paymentMethod = null) {
     const [users] = await conn.query('SELECT * FROM users WHERE id = ? FOR UPDATE', [userId]);
     const user = users[0];
 
-    // Check & reset slots
-    await resetSlotsIfNeeded(user);
+    // Regen slot jika sudah waktunya
+    await regenSlotsIfNeeded(user);
 
-    // Re-fetch setelah reset
+    // Re-fetch setelah regen
     const [freshUsers] = await conn.query('SELECT pack_slots, gold, gems FROM users WHERE id = ?', [userId]);
     const { pack_slots: currentSlots, gold, gems } = freshUsers[0];
 
@@ -136,7 +148,15 @@ async function openPack(userId, packId, paymentMethod = null) {
     } else if (paymentMethod === 'free') {
       // Pack gratis saat slot habis — tidak ada yang dikurangi
     } else {
-      await conn.query('UPDATE users SET pack_slots = pack_slots - 1 WHERE id = ?', [userId]);
+      // Kurangi slot; jika tadinya penuh (MAX_SLOTS), mulai timer regen
+      if (currentSlots >= MAX_SLOTS) {
+        await conn.query(
+          'UPDATE users SET pack_slots = pack_slots - 1, last_slot_reset = ? WHERE id = ?',
+          [new Date(), userId]
+        );
+      } else {
+        await conn.query('UPDATE users SET pack_slots = pack_slots - 1 WHERE id = ?', [userId]);
+      }
     }
 
     // Tambah kartu ke koleksi user
@@ -199,4 +219,4 @@ async function updateMissionProgress(conn, userId, taskType, amount = 1) {
   }
 }
 
-module.exports = { openPack, resetSlotsIfNeeded, updateMissionProgress };
+module.exports = { openPack, regenSlotsIfNeeded, updateMissionProgress, MAX_SLOTS, REGEN_MS };

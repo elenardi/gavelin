@@ -9,9 +9,34 @@ import { packApi } from '../../utils/api';
 import { useAuth } from '../../contexts/AuthContext';
 
 const REVEAL_DELAY = 600;
+const REGEN_MS     = 12 * 60 * 60 * 1000;
+
+function useRegenCountdown(user) {
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const anchor   = user?.last_slot_reset ? new Date(user.last_slot_reset).getTime() : null;
+  const elapsed  = anchor ? now - anchor : 0;
+  const remaining = anchor ? Math.max(0, REGEN_MS - (elapsed % REGEN_MS)) : 0;
+  const progress  = anchor ? Math.min((elapsed % REGEN_MS) / REGEN_MS * 100, 100) : 0;
+
+  const fmt = (ms) => {
+    const s = Math.floor(ms / 1000);
+    const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    const sec = s % 60;
+    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+  };
+
+  return { remaining, progress, fmt };
+}
 
 export default function PackOpener({ pack, onClose, onCardsObtained }) {
   const { user } = useAuth();
+  const { remaining, progress, fmt } = useRegenCountdown(user);
   const canvasRef = useRef(null);
   const [phase, setPhase]         = useState('ready'); // ready | paywall | opening | reveal | done
   const [cards, setCards]         = useState([]);
@@ -159,17 +184,61 @@ export default function PackOpener({ pack, onClose, onCardsObtained }) {
 
       {/* ── PAYWALL — slot habis, pilih cara bayar ─────────── */}
       {phase === 'paywall' && (
-        <div style={{ textAlign: 'center', padding: '24px 20px', maxWidth: 360, width: '100%' }}>
-          <div style={{ fontSize: 44, marginBottom: 12 }}>⏰</div>
-          <h2 style={{ color: 'white', fontSize: 18, marginBottom: 6 }}>Slot Harian Habis</h2>
-          <p style={{ color: '#8b7aa8', fontSize: 13, marginBottom: 24, lineHeight: 1.5 }}>
-            Slot gratis kamu habis hari ini.<br />
-            Kamu masih bisa buka <strong style={{ color: '#c084fc' }}>{pack?.name}</strong> dengan:
-          </p>
+        <div style={{ padding: '28px 20px 24px', maxWidth: 400, width: '100%' }}>
 
-          {error && <ErrorBox style={{ marginBottom: 16 }}>{error}</ErrorBox>}
+          {/* Header */}
+          <div style={{ textAlign: 'center', marginBottom: 20 }}>
+            <div style={{ fontSize: 44, marginBottom: 10 }}>🎴</div>
+            <h2 style={{ color: 'white', fontSize: 19, fontWeight: 900, marginBottom: 6 }}>
+              Slot Habis
+            </h2>
+            <p style={{ color: '#8b7aa8', fontSize: 13, lineHeight: 1.5 }}>
+              Kamu masih bisa buka{' '}
+              <strong style={{ color: '#c084fc' }}>{pack?.name}</strong>{' '}
+              dengan cara di bawah ini.
+            </p>
+          </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 20 }}>
+          {/* Regen timer box */}
+          {remaining > 0 && (
+            <div style={{
+              background: 'rgba(26,10,46,0.8)',
+              border: '1px solid rgba(124,58,237,0.2)',
+              borderRadius: 14, padding: '12px 16px', marginBottom: 18,
+            }}>
+              <div style={{
+                display: 'flex', justifyContent: 'space-between',
+                alignItems: 'center', marginBottom: 8,
+              }}>
+                <span style={{ fontSize: 12, color: '#8b7aa8' }}>⏱ Slot berikutnya dalam</span>
+                <span style={{ fontSize: 15, fontWeight: 900, color: '#f59e0b',
+                  fontVariantNumeric: 'tabular-nums' }}>
+                  {fmt(remaining)}
+                </span>
+              </div>
+              <div style={{ background: 'rgba(255,255,255,0.06)', borderRadius: 6, height: 8, overflow: 'hidden' }}>
+                <div style={{
+                  width: `${progress}%`, height: '100%', borderRadius: 6,
+                  background: 'linear-gradient(90deg, #f59e0b, #fbbf24)',
+                  transition: 'width 1s linear', position: 'relative', overflow: 'hidden',
+                }}>
+                  <div style={{
+                    position: 'absolute', inset: 0,
+                    background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
+                    animation: 'shimmer 1.5s infinite',
+                  }} />
+                </div>
+              </div>
+              <div style={{ fontSize: 10, color: '#6b5a88', marginTop: 6 }}>
+                Slot regen otomatis setiap 12 jam
+              </div>
+            </div>
+          )}
+
+          {error && <ErrorBox style={{ marginBottom: 14 }}>{error}</ErrorBox>}
+
+          {/* Payment options */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 14 }}>
             {goldCost > 0 && (
               <PayOption
                 icon="💰"
@@ -202,8 +271,9 @@ export default function PackOpener({ pack, onClose, onCardsObtained }) {
                 disabled={loading}
                 style={{
                   display: 'flex', alignItems: 'center', gap: 14,
-                  padding: '14px 16px', borderRadius: 16, border: '1px solid rgba(34,197,94,0.4)',
-                  background: 'linear-gradient(135deg, rgba(34,197,94,0.15) 0%, rgba(34,197,94,0.05) 100%)',
+                  padding: '14px 16px', borderRadius: 16,
+                  border: '1px solid rgba(34,197,94,0.4)',
+                  background: 'linear-gradient(135deg, rgba(34,197,94,0.15), rgba(34,197,94,0.05))',
                   boxShadow: '0 4px 20px rgba(34,197,94,0.2)',
                   cursor: loading ? 'not-allowed' : 'pointer',
                   width: '100%', opacity: loading ? 0.6 : 1,
@@ -211,13 +281,9 @@ export default function PackOpener({ pack, onClose, onCardsObtained }) {
               >
                 <span style={{ fontSize: 32 }}>🎁</span>
                 <div style={{ flex: 1, textAlign: 'left' }}>
-                  <div style={{ fontSize: 13, fontWeight: 800, color: 'white', marginBottom: 2 }}>
-                    Buka Pack Gratis
-                  </div>
+                  <div style={{ fontSize: 13, fontWeight: 800, color: 'white', marginBottom: 2 }}>Buka Pack Gratis</div>
                   <div style={{ fontSize: 14, fontWeight: 900, color: '#22c55e' }}>GRATIS</div>
-                  <div style={{ fontSize: 10, color: '#8b7aa8', marginTop: 2 }}>
-                    Pack ini tidak memerlukan biaya tambahan
-                  </div>
+                  <div style={{ fontSize: 10, color: '#8b7aa8', marginTop: 2 }}>Pack ini tidak memerlukan biaya tambahan</div>
                 </div>
                 <div style={{
                   background: '#22c55e', color: '#0a0418',
@@ -228,15 +294,7 @@ export default function PackOpener({ pack, onClose, onCardsObtained }) {
             )}
           </div>
 
-          <div style={{
-            background: 'rgba(255,255,255,0.04)', borderRadius: 10,
-            padding: '8px 12px', marginBottom: 16,
-            fontSize: 11, color: '#6b5a88',
-          }}>
-            Slot gratis direset setiap tengah malam UTC ⏰
-          </div>
-
-          <button onClick={onClose} style={{ ...cancelBtnStyle, width: '100%' }}>
+          <button onClick={onClose} style={{ ...cancelBtnStyle, width: '100%', textAlign: 'center' }}>
             Tutup
           </button>
         </div>

@@ -1,0 +1,17 @@
+{
+  "name": "Gavelin: Card Chronicles",
+  "short_name": "Gavelin",
+  "description": "D&D Card Game — build your deck, conquer the dungeon!",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0d0520",
+  "theme_color": "#7c3aed",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

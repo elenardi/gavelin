@@ -1,0 +1,194 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-bg:       #0d0520;
+  --color-surface:  #1a0a2e;
+  --color-panel:    #221442;
+  --color-purple:   #7c3aed;
+  --color-gold:     #f59e0b;
+  --color-red:      #ef4444;
+  --color-green:    #22c55e;
+  --color-text:     #e2d9f3;
+  --color-muted:    #8b7aa8;
+
+  /* Rarity colors */
+  --rarity-common:    #94a3b8;
+  --rarity-uncommon:  #22c55e;
+  --rarity-rare:      #3b82f6;
+  --rarity-epic:      #a855f7;
+  --rarity-legendary: #f59e0b;
+}
+
+* { -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Glassmorphism panel */
+.glass {
+  background: rgba(34, 20, 66, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  border-radius: 16px;
+}
+
+/* Card glow por rarity */
+.card-common     { box-shadow: 0 0 8px rgba(148,163,184,0.3); }
+.card-uncommon   { box-shadow: 0 0 10px rgba(34,197,94,0.4); }
+.card-rare       { box-shadow: 0 0 12px rgba(59,130,246,0.5); }
+.card-epic       { box-shadow: 0 0 16px rgba(168,85,247,0.6); }
+.card-legendary  { box-shadow: 0 0 20px rgba(245,158,11,0.7), 0 0 40px rgba(245,158,11,0.3); animation: legendary-pulse 2s infinite; }
+
+@keyframes legendary-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(245,158,11,0.7), 0 0 40px rgba(245,158,11,0.3); }
+  50%       { box-shadow: 0 0 30px rgba(245,158,11,0.9), 0 0 60px rgba(245,158,11,0.5); }
+}
+
+/* Shimmer animation for card reveals */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Nav bar */
+.nav-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: rgba(13, 5, 32, 0.95);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(124, 58, 237, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 100;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 10px;
+  color: var(--color-muted);
+  transition: color 0.2s;
+  cursor: pointer;
+  padding: 8px;
+}
+.nav-item.active { color: var(--color-purple); }
+.nav-item svg { width: 24px; height: 24px; }
+
+/* Page container */
+.page {
+  position: absolute;
+  inset: 0;
+  bottom: 64px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.page::-webkit-scrollbar { width: 4px; }
+.page::-webkit-scrollbar-thumb { background: rgba(124,58,237,0.4); border-radius: 2px; }
+
+/* Button styles */
+.btn-primary {
+  background: linear-gradient(135deg, #7c3aed, #5b21b6);
+  color: white;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+}
+.btn-primary:hover  { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(124,58,237,0.4); }
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.btn-gold {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #1a0a2e;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-gold:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(245,158,11,0.4); }
+
+/* Rarity badge */
+.rarity-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.rarity-common    { background: rgba(148,163,184,0.2); color: #94a3b8; }
+.rarity-uncommon  { background: rgba(34,197,94,0.2);  color: #22c55e; }
+.rarity-rare      { background: rgba(59,130,246,0.2); color: #3b82f6; }
+.rarity-epic      { background: rgba(168,85,247,0.2); color: #a855f7; }
+.rarity-legendary { background: rgba(245,158,11,0.2); color: #f59e0b; }
+
+/* Toast notification */
+.toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(34,20,66,0.95);
+  border: 1px solid rgba(124,58,237,0.4);
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 1000;
+  animation: slideDown 0.3s ease;
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* Holographic effect for legendary/epic cards */
+.holographic {
+  position: relative;
+  overflow: hidden;
+}
+.holographic::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+    transparent 0%,
+    rgba(255,255,255,0.05) 25%,
+    transparent 50%,
+    rgba(255,255,255,0.05) 75%,
+    transparent 100%
+  );
+  background-size: 200% 200%;
+  animation: holo 3s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+@keyframes holo {
+  0%   { background-position: 0% 0%; }
+  100% { background-position: 200% 200%; }
+}

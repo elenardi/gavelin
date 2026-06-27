@@ -392,7 +392,7 @@ function PayOption({ icon, label, cost, have, canAfford, onClick, loading, color
       disabled={!canAfford || loading}
       style={{
         display: 'flex', alignItems: 'center', gap: 14,
-        padding: '14px 16px', borderRadius: 16, border: 'none', cursor: canAfford ? 'pointer' : 'not-allowed',
+        padding: '14px 16px', borderRadius: 16, cursor: canAfford ? 'pointer' : 'not-allowed',
         background: canAfford
           ? `linear-gradient(135deg, rgba(${hexToRgbStr(color)},0.15) 0%, rgba(${hexToRgbStr(color)},0.05) 100%)`
           : 'rgba(255,255,255,0.04)',

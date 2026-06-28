@@ -129,27 +129,38 @@ function PileColumn({ deckCount, discard, red, onDiscard }) {
 
 // ── DiscardModal ─────────────────────────────────────────────────
 function DiscardModal({ cards, title, onClose }) {
+  const [selCard, setSelCard] = useState(null);
+
   return (
-    <div onClick={onClose} style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.88)', zIndex:400, display:'flex', alignItems:'center', justifyContent:'center', padding:16 }}>
-      <div onClick={e=>e.stopPropagation()} className="glass" style={{ width:'100%', maxWidth:460, borderRadius:20, maxHeight:'82vh', display:'flex', flexDirection:'column' }}>
-        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'14px 18px 10px', flexShrink:0, borderBottom:'1px solid rgba(124,58,237,0.2)' }}>
-          <div>
-            <div style={{ fontSize:14, fontWeight:700, color:'white' }}>{title}</div>
-            <div style={{ fontSize:11, color:'#8b7aa8', marginTop:1 }}>{cards.length} kartu</div>
+    <>
+      <div onClick={onClose} style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.88)', zIndex:400, display:'flex', alignItems:'center', justifyContent:'center', padding:16 }}>
+        <div onClick={e=>e.stopPropagation()} className="glass" style={{ width:'100%', maxWidth:460, borderRadius:20, maxHeight:'82vh', display:'flex', flexDirection:'column' }}>
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'14px 18px 10px', flexShrink:0, borderBottom:'1px solid rgba(124,58,237,0.2)' }}>
+            <div>
+              <div style={{ fontSize:14, fontWeight:700, color:'white' }}>{title}</div>
+              <div style={{ fontSize:11, color:'#8b7aa8', marginTop:1 }}>{cards.length} kartu — ketuk kartu untuk detail</div>
+            </div>
+            <button onClick={onClose} style={{ background:'rgba(255,255,255,0.1)', border:'none', color:'#8b7aa8', borderRadius:'50%', width:30, height:30, cursor:'pointer', fontSize:14, display:'flex', alignItems:'center', justifyContent:'center' }}>✕</button>
           </div>
-          <button onClick={onClose} style={{ background:'rgba(255,255,255,0.1)', border:'none', color:'#8b7aa8', borderRadius:'50%', width:30, height:30, cursor:'pointer', fontSize:14, display:'flex', alignItems:'center', justifyContent:'center' }}>✕</button>
-        </div>
-        <div style={{ overflowY:'auto', padding:'14px', display:'flex', flexWrap:'wrap', gap:8, justifyContent:'center' }}>
-          {cards.map((c,i)=><div key={i}><CardRenderer card={c} size="sm"/></div>)}
-          {!cards.length&&<div style={{ padding:'40px 0', color:'#8b7aa8', fontSize:12 }}>Belum ada kartu buangan</div>}
+          <div style={{ overflowY:'auto', padding:'14px', display:'flex', flexWrap:'wrap', gap:8, justifyContent:'center' }}>
+            {cards.map((c,i)=>(
+              <div key={i} onClick={()=>setSelCard(c)} style={{ cursor:'pointer', borderRadius:9, transition:'transform .15s, box-shadow .15s' }}
+                onPointerEnter={e=>{e.currentTarget.style.transform='scale(1.07)';e.currentTarget.style.boxShadow='0 0 12px rgba(124,58,237,0.6)';}}
+                onPointerLeave={e=>{e.currentTarget.style.transform='';e.currentTarget.style.boxShadow='';}}>
+                <CardRenderer card={c} size="sm"/>
+              </div>
+            ))}
+            {!cards.length&&<div style={{ padding:'40px 0', color:'#8b7aa8', fontSize:12 }}>Belum ada kartu buangan</div>}
+          </div>
         </div>
       </div>
-    </div>
+      {selCard && <CardDetailModal card={selCard} onClose={()=>setSelCard(null)} zIndex={500}/>}
+    </>
   );
 }
 
 // ── CardDetailModal ──────────────────────────────────────────────
-function CardDetailModal({ card, onClose }) {
+function CardDetailModal({ card, onClose, zIndex = 300 }) {
   if (!card) return null;
   // base_hp/base_attack/base_defense disimpan backend saat apply level bonus.
   // Jika ada → tampilkan sebagai "base + bonus", jika tidak → tampilkan stat langsung.
@@ -161,7 +172,7 @@ function CardDetailModal({ card, onClose }) {
   ] : [];
 
   return (
-    <div onClick={onClose} style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.9)', zIndex:300, display:'flex', alignItems:'center', justifyContent:'center', padding:14 }}>
+    <div onClick={onClose} style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.9)', zIndex, display:'flex', alignItems:'center', justifyContent:'center', padding:14 }}>
       <div onClick={e=>e.stopPropagation()} className="glass" style={{ width:'100%', maxWidth:380, borderRadius:20, maxHeight:'88vh', display:'flex', flexDirection:'column' }}>
         <div style={{ padding:'10px 14px 0', display:'flex', justifyContent:'flex-end', flexShrink:0 }}>
           <button onClick={onClose} style={{ background:'rgba(255,255,255,0.1)', border:'none', color:'#8b7aa8', borderRadius:'50%', width:28, height:28, cursor:'pointer', fontSize:13, display:'flex', alignItems:'center', justifyContent:'center' }}>✕</button>
@@ -287,8 +298,8 @@ function FieldCard({ card, isEnemy, isAttacker, canAttack, attackerActive, onCli
         borderRadius:9, touchAction:'none',
         boxShadow: isAttacker ? '0 0 0 2px #f59e0b,0 0 14px rgba(245,158,11,0.8)' : canAttack ? '0 0 8px rgba(34,197,94,0.4)' : undefined,
         cursor: (isEnemy&&attackerActive)||(!isEnemy) ? 'pointer' : 'default',
-        opacity: !isEnemy&&card.hasAttacked ? 0.55 : 1,
-        filter: !isEnemy&&card.hasAttacked ? 'grayscale(.4)' : undefined,
+        opacity: card.status === 'stealth' ? 0.45 : !isEnemy&&card.hasAttacked ? 0.55 : 1,
+        filter: card.status === 'stealth' ? 'brightness(0.7) saturate(0.4) blur(0.5px)' : !isEnemy&&card.hasAttacked ? 'grayscale(.4)' : undefined,
         transition: 'opacity .3s',
       }}
     >
@@ -298,7 +309,7 @@ function FieldCard({ card, isEnemy, isAttacker, canAttack, attackerActive, onCli
 }
 
 // ── FieldRow ─────────────────────────────────────────────────────
-function FieldRow({ cards, isEnemy, attackerCard, isMyTurn, onPlayer, onEnemy, isDragOver, onDirectAttack, onCardHold, newCardIdx=null }) {
+function FieldRow({ cards, isEnemy, attackerCard, isMyTurn, onPlayer, onEnemy, isDragOver, onDirectAttack, onCardHold, newCardIdx=null, damageHits=[] }) {
   const ref = useRef(null);
   const [availW, setAvailW] = useState(320);
   useEffect(()=>{
@@ -355,6 +366,10 @@ function FieldRow({ cards, isEnemy, attackerCard, isMyTurn, onPlayer, onEnemy, i
                   <div style={{ position:'absolute', top:-8, left:'50%', transform:'translateX(-50%)', background:isEnemy?'linear-gradient(90deg,#b91c1c,#ef4444)':'linear-gradient(90deg,#15803d,#22c55e)', borderRadius:5, padding:'1px 4px', fontSize:8, fontWeight:800, color:'white', whiteSpace:'nowrap', pointerEvents:'none' }}>
                     ❤️{card.currentHp}
                   </div>
+                  {/* Stealth badge */}
+                  {card.status==='stealth'&&(
+                    <div style={{ position:'absolute', top:-8, left:'50%', transform:'translateX(-50%)', borderRadius:4, padding:'1px 5px', fontSize:7, fontWeight:700, whiteSpace:'nowrap', background:'rgba(99,102,241,0.9)', color:'white', pointerEvents:'none' }}>👻 STEALTH</div>
+                  )}
                   {/* Status badge player */}
                   {!isEnemy&&(
                     <div style={{ position:'absolute', bottom:-8, left:'50%', transform:'translateX(-50%)', borderRadius:4, padding:'1px 4px', fontSize:7, fontWeight:700, whiteSpace:'nowrap', background:card.hasAttacked?'rgba(60,60,60,0.85)':canAtk?'rgba(34,197,94,0.85)':'transparent', color:card.hasAttacked?'#9ca3af':'white', pointerEvents:'none' }}>
@@ -370,12 +385,20 @@ function FieldRow({ cards, isEnemy, attackerCard, isMyTurn, onPlayer, onEnemy, i
       {!isEnemy&&isDragOver&&n>0&&(
         <div style={{ position:'absolute', inset:0, border:'2px solid rgba(34,197,94,0.7)', background:'rgba(34,197,94,0.07)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, color:'#22c55e', fontWeight:700, pointerEvents:'none', borderRadius:4 }}>✦ Lepaskan di sini</div>
       )}
+
+      {/* Floating damage numbers */}
+      {damageHits.map(hit => (
+        <span key={hit.id} className="dmg-float"
+          style={{ left:`${hit.x}%`, [isEnemy?'bottom':'top']:'30%', color: isEnemy?'#fca5a5':'#f87171' }}>
+          -{hit.damage}
+        </span>
+      ))}
     </div>
   );
 }
 
 // ── BattleArena ──────────────────────────────────────────────────
-export default function BattleArena({ gameState, socket, battleId, onEnd }) {
+export default function BattleArena({ gameState, lastLog=[], socket, battleId, onEnd }) {
   const canvasRef   = useRef(null);
   const fieldRef    = useRef(null);
   const prevDrawTick   = useRef(0);
@@ -393,7 +416,11 @@ export default function BattleArena({ gameState, socket, battleId, onEnd }) {
   const [newIdx, setNewIdx]           = useState(null);
   const [newAiIdx, setNewAiIdx]       = useState(null);
   const [newAiFieldIdx, setNewAiFieldIdx] = useState(null);
-  const [revealedCard, setRevealedCard] = useState(null); // { name, rarity }
+  const [revealedCard, setRevealedCard] = useState(null);
+  const [p1FieldHits, setP1FieldHits] = useState([]); // damage numbers di zona player
+  const [p2FieldHits, setP2FieldHits] = useState([]); // damage numbers di zona AI
+  const [p1HpFlash,   setP1HpFlash]   = useState(false);
+  const [p2HpFlash,   setP2HpFlash]   = useState(false);
   const prevLogLen = useRef(0);
   const [dragCard, setDrag]       = useState(null);
   const [dragPos, setDragPos]     = useState({x:0,y:0});
@@ -434,11 +461,11 @@ export default function BattleArena({ gameState, socket, battleId, onEnd }) {
     if (gameState.player1?.discard) setP1Dis(gameState.player1.discard);
     if (gameState.player2?.discard) setP2Dis(gameState.player2.discard);
 
-    // Deteksi efek reveal dari Torch (Illuminate)
-    const log = gameState.log ?? [];
-    const newEntries = log.slice(prevLogLen.current);
-    prevLogLen.current = log.length;
-    const revealEntry = newEntries.findLast?.(e => e.action === 'reveal') ?? newEntries.filter(e => e.action === 'reveal').pop();
+    // Reveal (Torch) — tetap dari accumulated log
+    const accLog = gameState.log ?? [];
+    const newAcc = accLog.slice(prevLogLen.current);
+    prevLogLen.current = accLog.length;
+    const revealEntry = newAcc.findLast?.(e => e.action === 'reveal') ?? newAcc.filter(e => e.action === 'reveal').pop();
     if (revealEntry) {
       setRevealedCard(revealEntry.revealed);
       timers.push(setTimeout(() => setRevealedCard(null), 2800));
@@ -462,6 +489,62 @@ export default function BattleArena({ gameState, socket, battleId, onEnd }) {
     setGs(gameState);
     return () => timers.forEach(clearTimeout);
   },[gameState]);
+
+  // Damage animations dari lastLog (per game_update event)
+  const isMounted = useRef(false);
+  useEffect(() => {
+    if (!isMounted.current) { isMounted.current = true; return; } // skip mount
+    if (!lastLog?.length) return;
+    const timers = [];
+
+    const spawnHit = (setter, dmg) => {
+      if (!dmg) return;
+      const id = Date.now() + Math.random();
+      const x  = 20 + Math.random() * 60;
+      setter(p => [...p, { id, damage: dmg, x }]);
+      timers.push(setTimeout(() => setter(p => p.filter(h => h.id !== id)), 1100));
+    };
+
+    const flashHp = (setter) => {
+      setter(true);
+      timers.push(setTimeout(() => setter(false), 600));
+    };
+
+    for (const e of lastLog) {
+      const dmg = e.damage;
+      const byAI = e.player === 'ai';
+      const byP1 = e.player === 'player1';
+
+      switch (e.action) {
+        case 'attack':
+        case 'spell':
+          if (byAI) spawnHit(setP1FieldHits, dmg);
+          if (byP1) spawnHit(setP2FieldHits, dmg);
+          break;
+        case 'direct_attack':
+          if (byAI) { spawnHit(setP1FieldHits, dmg); flashHp(setP1HpFlash); }
+          if (byP1) { spawnHit(setP2FieldHits, dmg); flashHp(setP2HpFlash); }
+          break;
+        case 'direct':
+          if (byAI) flashHp(setP1HpFlash);
+          if (byP1) flashHp(setP2HpFlash);
+          break;
+        case 'special':
+        case 'trap_trigger':
+          // special log entries tidak selalu punya player field —
+          // tentukan target dari konteks: byAI berarti kena player1, byP1 kena AI
+          if (dmg) {
+            if (byAI) spawnHit(setP1FieldHits, dmg);
+            else if (byP1) spawnHit(setP2FieldHits, dmg);
+          }
+          break;
+        default:
+          break;
+      }
+    }
+
+    return () => timers.forEach(clearTimeout);
+  }, [lastLog]);
 
   // Three.js BG
   useEffect(()=>{
@@ -538,7 +621,7 @@ export default function BattleArena({ gameState, socket, battleId, onEnd }) {
   const onDirect=()=>{ if(!atkCard) return; socket?.emit('attack_card',{battleId,attackerId:atkCard.id,targetId:null}); setAtkCard(null); };
   const endTurn =()=>{ setAtkCard(null); setSelCard(null); socket?.emit('end_turn',{battleId}); };
   const surrender=()=>setSurrenderConfirm(true);
-  const doSurrender=()=>{ socket?.emit('surrender',{battleId}); onEnd(); };
+  const doSurrender=()=>{ socket?.emit('surrender',{battleId}); };
 
   if(!gs) return null;
   const {player1,player2}=gs;
@@ -559,7 +642,8 @@ export default function BattleArena({ gameState, socket, battleId, onEnd }) {
       <div style={{ position:'relative', zIndex:1, display:'flex', flexDirection:'column', height:'100%', width:'100%' }}>
 
         {/* ── AI HEADER ──────────────────────────────────────── */}
-        <div style={{ flexShrink:0, height:aiHeaderH, display:'flex', alignItems:'center', gap:8, padding:'0 12px', background:'linear-gradient(180deg,rgba(239,68,68,0.14),transparent)', borderBottom:'1px solid rgba(239,68,68,0.18)' }}>
+        <div style={{ flexShrink:0, height:aiHeaderH, display:'flex', alignItems:'center', gap:8, padding:'0 12px', background:'linear-gradient(180deg,rgba(239,68,68,0.14),transparent)', borderBottom:'1px solid rgba(239,68,68,0.18)', position:'relative', overflow:'hidden' }}>
+          {p2HpFlash && <div className="hp-flash-overlay"/>}
           <div style={{ width:28, height:28, borderRadius:'50%', background:'radial-gradient(circle,#7f1d1d,#0a0118)', border:'1.5px solid #ef4444', boxShadow:'0 0 8px rgba(239,68,68,0.5)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:14, flexShrink:0 }}>🤖</div>
           <div style={{ flex:1, minWidth:0 }}>
             <div style={{ display:'flex', justifyContent:'space-between', marginBottom:3 }}>
@@ -577,7 +661,7 @@ export default function BattleArena({ gameState, socket, battleId, onEnd }) {
         </div>
 
         {/* ── AI FIELD ───────────────────────────────────────── */}
-        <FieldRow cards={player2.field} isEnemy attackerCard={atkCard} isMyTurn={isMyTurn} onEnemy={onEnemyField} onPlayer={()=>{}} isDragOver={false} onDirectAttack={onDirect} onCardHold={setDetail} newCardIdx={newAiFieldIdx}/>
+        <FieldRow cards={player2.field} isEnemy attackerCard={atkCard} isMyTurn={isMyTurn} onEnemy={onEnemyField} onPlayer={()=>{}} isDragOver={false} onDirectAttack={onDirect} onCardHold={setDetail} newCardIdx={newAiFieldIdx} damageHits={p2FieldHits}/>
 
         {/* ── TURN BAR ───────────────────────────────────────── */}
         <div style={{ flexShrink:0, height:turnBarH, display:'flex', alignItems:'center', justifyContent:'center', gap:10, borderTop:'1px solid rgba(239,68,68,0.06)', borderBottom:'1px solid rgba(124,58,237,0.06)' }}>
@@ -589,7 +673,7 @@ export default function BattleArena({ gameState, socket, battleId, onEnd }) {
 
         {/* ── PLAYER FIELD (drop zone) ────────────────────────── */}
         <div ref={fieldRef} style={{ flex:1, display:'flex', flexDirection:'column', minHeight:0 }}>
-          <FieldRow cards={player1.field} isEnemy={false} attackerCard={atkCard} isMyTurn={isMyTurn} onPlayer={onPlayerField} onEnemy={()=>{}} isDragOver={overField} onDirectAttack={()=>{}} onCardHold={setDetail}/>
+          <FieldRow cards={player1.field} isEnemy={false} attackerCard={atkCard} isMyTurn={isMyTurn} onPlayer={onPlayerField} onEnemy={()=>{}} isDragOver={overField} onDirectAttack={()=>{}} onCardHold={setDetail} damageHits={p1FieldHits}/>
         </div>
 
         {/* ── PLAYER HAND ────────────────────────────────────── */}
@@ -599,7 +683,8 @@ export default function BattleArena({ gameState, socket, battleId, onEnd }) {
         </div>
 
         {/* ── BOTTOM BAR ─────────────────────────────────────── */}
-        <div style={{ flexShrink:0, height:bottomBarH, display:'flex', alignItems:'center', gap:6, padding:'0 10px', background:'linear-gradient(0deg,rgba(124,58,237,0.16),transparent)', borderTop:'1px solid rgba(124,58,237,0.18)' }}>
+        <div style={{ flexShrink:0, height:bottomBarH, display:'flex', alignItems:'center', gap:6, padding:'0 10px', background:'linear-gradient(0deg,rgba(124,58,237,0.16),transparent)', borderTop:'1px solid rgba(124,58,237,0.18)', position:'relative', overflow:'hidden' }}>
+          {p1HpFlash && <div className="hp-flash-overlay"/>}
           {/* Surrender */}
           <button onClick={surrender} style={{ padding:'6px 8px', borderRadius:9, flexShrink:0, border:'1px solid rgba(239,68,68,0.3)', background:'rgba(239,68,68,0.07)', color:'#ef4444', cursor:'pointer', fontSize:10, fontWeight:700 }}>🏳️</button>
 

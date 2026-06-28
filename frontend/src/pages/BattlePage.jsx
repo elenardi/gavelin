@@ -99,6 +99,7 @@ export default function BattlePage() {
   // battle runtime
   const [battleState, setBattleState] = useState(null);
   const [battleId,    setBattleId]    = useState(null);
+  const [lastLog,     setLastLog]     = useState([]);
   const [loading,     setLoading]     = useState(false);
 
   // misc
@@ -118,9 +119,9 @@ export default function BattlePage() {
     socketRef.current = socket;
 
     socket.on('battle_started', ({ battleId, gameState }) => {
-      setBattleId(battleId); setBattleState(gameState); setLoading(false);
+      setBattleId(battleId); setBattleState(gameState); setLastLog([]); setLoading(false);
     });
-    socket.on('game_update',  ({ gameState }) => setBattleState({ ...gameState }));
+    socket.on('game_update',  ({ gameState, log }) => { setBattleState({ ...gameState }); if (log?.length) setLastLog([...log]); });
     socket.on('battle_ended', ({ winner, gameState }) => setBattleState(p => ({ ...p, ...gameState, winner })));
     socket.on('error',        ({ message }) => { showToast(message); setLoading(false); });
 
@@ -161,9 +162,10 @@ export default function BattlePage() {
     return (
       <BattleArena
         gameState={battleState}
+        lastLog={lastLog}
         socket={socketRef.current}
         battleId={battleId}
-        onEnd={() => { setBattleState(null); setBattleId(null); resetFlow(); }}
+        onEnd={() => { setBattleState(null); setBattleId(null); }}
       />
     );
   }

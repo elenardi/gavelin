@@ -345,24 +345,22 @@ function discardCard(player, card) {
  * attacker= player yang baru mainkan character (kartu terakhir di field mereka)
  * log     = array log
  */
-function triggerTraps(defender, attacker, log) {
+function triggerTraps(defender, attacker, log, owner) {
   if (!defender.traps || !defender.traps.length) return;
 
   const remaining = [];
   for (const trap of defender.traps) {
     if (trap.special_name === 'Trigger') {
       const dmg = trap.special_damage || 25;
-      // Target: kartu character yang baru dimainkan (terakhir di field)
       if (attacker.field.length > 0) {
         const t = attacker.field[attacker.field.length - 1];
         t.currentHp -= dmg;
         attacker.field = attacker.field.filter(c => c.currentHp > 0);
-        log.push({ action: 'trap_trigger', effect: 'Trigger', card: trap.name, damage: dmg, target: t.name });
+        log.push({ action: 'trap_trigger', effect: 'Trigger', card: trap.name, damage: dmg, target: t.name, player: owner });
       } else {
         attacker.hp -= dmg;
-        log.push({ action: 'trap_trigger', effect: 'Trigger', card: trap.name, damage: dmg });
+        log.push({ action: 'trap_trigger', effect: 'Trigger', card: trap.name, damage: dmg, player: owner });
       }
-      // Trap dikonsumsi setelah aktif — tidak push ke remaining
     } else {
       remaining.push(trap);
     }
@@ -375,9 +373,9 @@ function triggerTraps(defender, attacker, log) {
 // ============================================================
 
 const AI_DIFFICULTY = {
-  easy:   { aggression: 0.3, optimalPlay: 0.4 },
+  easy: { aggression: 0.3, optimalPlay: 0.4 },
   normal: { aggression: 0.6, optimalPlay: 0.6 },
-  hard:   { aggression: 0.8, optimalPlay: 0.9 },
+  hard: { aggression: 0.8, optimalPlay: 0.9 },
 };
 
 function aiChooseCard(hand, field, opponentField, energy, difficulty) {
@@ -390,7 +388,7 @@ function aiChooseCard(hand, field, opponentField, energy, difficulty) {
   }
 
   const characters = playable.filter(c => c.card_type === 'character');
-  const spells     = playable.filter(c => c.card_type === 'spell');
+  const spells = playable.filter(c => c.card_type === 'spell');
 
   if (opponentField.length > 0 && Math.random() < cfg.aggression && spells.length > 0) {
     return spells.sort((a, b) => b.attack - a.attack)[0];
@@ -402,9 +400,9 @@ function aiChooseCard(hand, field, opponentField, energy, difficulty) {
 }
 
 function processAITurn(gameState, difficulty = 'normal') {
-  const ai    = gameState.player2;
+  const ai = gameState.player2;
   const human = gameState.player1;
-  const log   = [];
+  const log = [];
 
   // Bersihkan stun dari giliran sebelumnya (kartu AI yang stunned)
   ai.field.forEach(c => { if (c.status === 'stunned') c.status = null; });
@@ -427,7 +425,7 @@ function processAITurn(gameState, difficulty = 'normal') {
       ai.field.push({ ...card, currentHp: card.hp, status: null });
       log.push({ action: 'play', player: 'ai', card: card.name });
       // Aktifkan trap milik human jika ada
-      triggerTraps(human, ai, log);
+      triggerTraps(human, ai, log, 'player1');
       // Efek on-play character
       applySpecialEffect(card, ai, human, log, isFirst);
     } else if (card.card_type === 'trap') {
@@ -464,25 +462,29 @@ function processAITurn(gameState, difficulty = 'normal') {
     if (energy <= 0) break;
   }
 
-  // Kartu di field AI menyerang (skip jika stunned)
+  // Kartu di field AI menyerang (skip stunned, skip stealth target)
   for (const attacker of ai.field) {
     if (attacker.status === 'stunned') {
       log.push({ action: 'stunned', player: 'ai', attacker: attacker.name });
       attacker.status = null;
       continue;
     }
-    if (human.field.length > 0) {
-      const target = human.field[0];
+    const visibleTargets = human.field.filter(c => c.status !== 'stealth');
+    if (visibleTargets.length > 0) {
+      const target = visibleTargets[0];
       const dmg = Math.max(0, attacker.attack - (target.defense || 0));
       target.currentHp -= dmg;
       log.push({ action: 'attack', player: 'ai', attacker: attacker.name, target: target.name, damage: dmg });
       human.field = human.field.filter(c => c.currentHp > 0);
-    } else {
+    } else if (human.field.length === 0) {
       const dmg = Math.max(0, attacker.attack - (human.defense || 0));
       human.hp -= dmg;
       log.push({ action: 'direct_attack', player: 'ai', attacker: attacker.name, damage: dmg });
     }
+    // jika semua kartu human stealth: skip serangan
   }
+  // Stealth player1 habis setelah AI serang
+  human.field.forEach(c => { if (c.status === 'stealth') c.status = null; });
 
   // Draw kartu baru (AI)
   if (ai.deck.length > 0) {
@@ -513,28 +515,28 @@ function initGameState(deck1Cards, deck2Cards) {
   const d2 = shuffle(deck2Cards);
 
   return {
-    turn:    1,
-    phase:   'player1',
+    turn: 1,
+    phase: 'player1',
     player1: {
-      hp:              100,
-      defense:         0,
-      energy:          3,
-      hand:            d1.splice(0, 4),
-      deck:            d1,
-      field:           [],
-      traps:           [],
-      discard:         [],
+      hp: 100,
+      defense: 0,
+      energy: 3,
+      hand: d1.splice(0, 4),
+      deck: d1,
+      field: [],
+      traps: [],
+      discard: [],
       cardsPlayedThisTurn: 0,
     },
     player2: {
-      hp:              100,
-      defense:         0,
-      energy:          3,
-      hand:            d2.splice(0, 4),
-      deck:            d2,
-      field:           [],
-      traps:           [],
-      discard:         [],
+      hp: 100,
+      defense: 0,
+      energy: 3,
+      hand: d2.splice(0, 4),
+      deck: d2,
+      field: [],
+      traps: [],
+      discard: [],
       cardsPlayedThisTurn: 0,
     },
     log: [],

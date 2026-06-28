@@ -113,7 +113,7 @@ module.exports = function setupBattleSocket(io) {
         player.field.push({ ...card, currentHp: card.hp, status: null });
         log.push({ action: 'play', player: 'player1', card: card.name });
         // Aktifkan trap milik AI jika ada
-        triggerTraps(gs.player2, player, log);
+        triggerTraps(gs.player2, player, log, 'ai');
         // Efek on-play character
         applySpecialEffect(card, player, gs.player2, log, isFirst);
 
@@ -178,12 +178,15 @@ module.exports = function setupBattleSocket(io) {
       if (targetId) {
         const target = gs.player2.field.find(c => c.id === targetId);
         if (!target) return socket.emit('error', { message: 'Target tidak ditemukan.' });
+        if (target.status === 'stealth') return socket.emit('error', { message: `${target.name} sedang dalam stealth!` });
         const dmg = Math.max(0, attacker.attack - (target.defense || 0));
         target.currentHp -= dmg;
         gs.player2.field = gs.player2.field.filter(c => c.currentHp > 0);
         log.push({ action: 'attack', player: 'player1', attacker: attacker.name, target: target.name, damage: dmg });
       } else {
-        // Serang langsung ke HP musuh
+        // Serang langsung ke HP musuh (hanya boleh jika tidak ada kartu non-stealth di field)
+        const visibleTargets = gs.player2.field.filter(c => c.status !== 'stealth');
+        if (visibleTargets.length > 0) return socket.emit('error', { message: 'Harus menyerang kartu musuh terlebih dahulu.' });
         const dmg = Math.max(0, attacker.attack - gs.player2.defense);
         gs.player2.hp -= dmg;
         log.push({ action: 'direct_attack', player: 'player1', attacker: attacker.name, damage: dmg });
@@ -209,22 +212,26 @@ module.exports = function setupBattleSocket(io) {
       const gs = gameStates.get(parseInt(battleId));
       if (!gs || gs.phase !== 'player1') return;
 
-      // Kartu yang belum menyerang manual → auto attack
+      // Kartu yang belum menyerang manual → auto attack (skip stealth targets)
       const attackLog = [];
       for (const attacker of gs.player1.field) {
         if (attacker.hasAttacked) continue;
-        if (gs.player2.field.length > 0) {
-          const target = gs.player2.field[0];
+        const visibleEnemies = gs.player2.field.filter(c => c.status !== 'stealth');
+        if (visibleEnemies.length > 0) {
+          const target = visibleEnemies[0];
           const dmg = Math.max(0, attacker.attack - (target.defense || 0));
           target.currentHp -= dmg;
           attackLog.push({ action: 'attack', player: 'player1', attacker: attacker.name, target: target.name, damage: dmg });
           gs.player2.field = gs.player2.field.filter(c => c.currentHp > 0);
-        } else {
+        } else if (gs.player2.field.length === 0) {
           const dmg = Math.max(0, attacker.attack - gs.player2.defense);
           gs.player2.hp -= dmg;
           attackLog.push({ action: 'direct_attack', player: 'player1', attacker: attacker.name, damage: dmg });
         }
+        // jika semua musuh stealth: skip serangan
       }
+      // Stealth AI habis setelah player1 serang
+      gs.player2.field.forEach(c => { if (c.status === 'stealth') c.status = null; });
       gs.log.push(...attackLog);
 
       // Draw kartu baru (player)

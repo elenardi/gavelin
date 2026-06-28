@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const db  = require('../config/database');
-const { initGameState, processAITurn, checkWinCondition, saveBattleResult } = require('../services/battleService');
+const { initGameState, processAITurn, checkWinCondition, saveBattleResult, applySpecialEffect, triggerTraps, discardCard } = require('../services/battleService');
 
 // Active game states di memory
 const gameStates = new Map(); // battleId -> gameState
@@ -104,24 +104,48 @@ module.exports = function setupBattleSocket(io) {
       player.energy -= card.energy_cost;
       player.hand.splice(cardIdx, 1);
 
+      const isFirst = (player.cardsPlayedThisTurn || 0) === 0;
+      player.cardsPlayedThisTurn = (player.cardsPlayedThisTurn || 0) + 1;
+
       let log = [];
 
       if (card.card_type === 'character') {
         player.field.push({ ...card, currentHp: card.hp, status: null });
         log.push({ action: 'play', player: 'player1', card: card.name });
+        // Aktifkan trap milik AI jika ada
+        triggerTraps(gs.player2, player, log);
+        // Efek on-play character
+        applySpecialEffect(card, player, gs.player2, log, isFirst);
+
+      } else if (card.card_type === 'trap') {
+        player.traps = player.traps || [];
+        player.traps.push({ ...card });
+        discardCard(player, card);
+        log.push({ action: 'trap_set', player: 'player1', card: card.name });
+
+      } else if (card.card_type === 'location') {
+        applySpecialEffect(card, player, gs.player2, log, isFirst);
+        discardCard(player, card);
+        log.push({ action: 'location', player: 'player1', card: card.name });
+
       } else if (card.card_type === 'spell' || card.card_type === 'item') {
-        if (targetId) {
+        const selfEffects = ['Restore', 'Loot', 'Hatch', 'Illuminate', 'Dark Burst'];
+        if (selfEffects.includes(card.special_name)) {
+          applySpecialEffect(card, player, gs.player2, log, isFirst);
+        } else if (targetId) {
           const target = gs.player2.field.find(c => c.id === targetId);
           if (target) {
             const dmg = Math.max(0, card.attack - (target.defense || 0));
             target.currentHp -= dmg;
             gs.player2.field = gs.player2.field.filter(c => c.currentHp > 0);
             log.push({ action: 'spell', player: 'player1', card: card.name, target: target.name, damage: dmg });
+            applySpecialEffect(card, player, gs.player2, log, isFirst);
           }
         } else {
           gs.player2.hp -= card.attack;
           log.push({ action: 'direct', player: 'player1', card: card.name, damage: card.attack });
         }
+        discardCard(player, card);
       }
 
       gs.log.push(...log);
@@ -148,6 +172,7 @@ module.exports = function setupBattleSocket(io) {
       const attacker = gs.player1.field.find(c => c.id === attackerId);
       if (!attacker) return socket.emit('error', { message: 'Kartu penyerang tidak ditemukan.' });
       if (attacker.hasAttacked) return socket.emit('error', { message: 'Kartu ini sudah menyerang giliran ini.' });
+      if (attacker.status === 'stunned') return socket.emit('error', { message: `${attacker.name} sedang stunned!` });
 
       const log = [];
       if (targetId) {
@@ -221,8 +246,12 @@ module.exports = function setupBattleSocket(io) {
         const { gameState: newGs, log: aiLog } = processAITurn(gs, gs.difficulty || 'normal');
         newGs.phase = 'player1';
         newGs.player1.energy = 3 + Math.floor(newGs.turn / 3);
-        // Reset flag serangan manual untuk giliran berikutnya
-        newGs.player1.field.forEach(c => { c.hasAttacked = false; });
+        newGs.player1.cardsPlayedThisTurn = 0;
+        // Reset flag serangan & bersihkan stun player1
+        newGs.player1.field.forEach(c => {
+          c.hasAttacked = false;
+          if (c.status === 'stunned') c.status = null;
+        });
 
         const winner = checkWinCondition(newGs);
         if (winner) {

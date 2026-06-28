@@ -335,6 +335,37 @@ body {
 }
 .card-deal-in-ai { animation: cardDealInAI 0.48s cubic-bezier(0.22,1,0.36,1) forwards; }
 
+/* Animasi reveal kartu lawan dari Torch — spill keluar dari deck */
+@keyframes cardRevealSpill {
+  0%   {
+    transform: translateX(60px) translateY(-30px) rotateY(180deg) scale(0.4);
+    opacity: 0;
+    filter: brightness(2);
+  }
+  30%  {
+    transform: translateX(8px) translateY(4px) rotateY(20deg) scale(1.08);
+    opacity: 1;
+    filter: brightness(1.4);
+  }
+  55%  {
+    transform: translateX(-4px) translateY(0px) rotateY(-5deg) scale(1.04);
+    opacity: 1;
+    filter: brightness(1);
+  }
+  75%  {
+    transform: translateX(0) translateY(0) rotateY(0deg) scale(1);
+    opacity: 1;
+  }
+  88%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(12px) scale(0.92); }
+}
+.card-reveal-spill {
+  position: relative;
+  animation: cardRevealSpill 2.8s cubic-bezier(0.22,1,0.36,1) forwards;
+  transform-style: preserve-3d;
+  perspective: 600px;
+}
+
 /* Animasi kartu AI diletakkan ke field (jatuh dari atas) */
 @keyframes cardPlayToField {
   0%   { transform: translateY(-70px) scale(0.55) rotate(-10deg); opacity: 0; }

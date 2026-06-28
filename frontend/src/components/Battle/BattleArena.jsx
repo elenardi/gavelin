@@ -13,6 +13,21 @@ function fanStep(count, maxW, minVisible = 32) {
   return Math.max(minVisible, Math.min(CW + 12, ideal));
 }
 
+const RARITY_BG = {
+  legendary: 'linear-gradient(135deg,#78350f,#b45309)',
+  epic:      'linear-gradient(135deg,#4c1d95,#7c3aed)',
+  rare:      'linear-gradient(135deg,#1e3a5f,#2563eb)',
+  uncommon:  'linear-gradient(135deg,#14532d,#16a34a)',
+  common:    'linear-gradient(135deg,#1f2937,#374151)',
+};
+const RARITY_BORDER = {
+  legendary: '#f59e0b', epic: '#a855f7', rare: '#3b82f6', uncommon: '#22c55e', common: '#94a3b8',
+};
+const RARITY_GLOW = {
+  legendary: 'rgba(245,158,11,0.7)', epic: 'rgba(168,85,247,0.6)', rare: 'rgba(59,130,246,0.5)',
+  uncommon:  'rgba(34,197,94,0.4)',  common: 'rgba(148,163,184,0.3)',
+};
+
 // ── HpBar ────────────────────────────────────────────────────────
 function HpBar({ current, max = 100, color = '#22c55e' }) {
   const pct = Math.max(0, Math.min(100, (current / max) * 100));
@@ -378,6 +393,8 @@ export default function BattleArena({ gameState, socket, battleId, onEnd }) {
   const [newIdx, setNewIdx]           = useState(null);
   const [newAiIdx, setNewAiIdx]       = useState(null);
   const [newAiFieldIdx, setNewAiFieldIdx] = useState(null);
+  const [revealedCard, setRevealedCard] = useState(null); // { name, rarity }
+  const prevLogLen = useRef(0);
   const [dragCard, setDrag]       = useState(null);
   const [dragPos, setDragPos]     = useState({x:0,y:0});
   const [overField, setOverField] = useState(false);
@@ -390,10 +407,16 @@ export default function BattleArena({ gameState, socket, battleId, onEnd }) {
   useEffect(()=>{
     if(!gameState) return;
     const timers = [];
-    const gone1=prevP1Fld.current.filter(c=>!gameState.player1?.field?.some(f=>f.id===c.id));
-    const gone2=prevP2Fld.current.filter(c=>!gameState.player2?.field?.some(f=>f.id===c.id));
-    if(gone1.length) setP1Dis(p=>[...p,...gone1]);
-    if(gone2.length) setP2Dis(p=>[...p,...gone2]);
+    // Kartu karakter yang mati dari field → tambah ke discard lokal
+    // (spell/item/trap/location sudah dihandle backend via gameState.*.discard)
+    const gone1 = prevP1Fld.current.filter(c => !gameState.player1?.field?.some(f=>f.id===c.id));
+    const gone2 = prevP2Fld.current.filter(c => !gameState.player2?.field?.some(f=>f.id===c.id));
+    if (gone1.length || gone2.length) {
+      const backendP1 = gameState.player1?.discard ?? [];
+      const backendP2 = gameState.player2?.discard ?? [];
+      if (gone1.length) setP1Dis([...backendP1, ...gone1]);
+      if (gone2.length) setP2Dis([...backendP2, ...gone2]);
+    }
 
     // Deteksi kartu baru di field AI
     const prevP2Ids = new Set(prevP2Fld.current.map(c=>c.id));
@@ -404,8 +427,22 @@ export default function BattleArena({ gameState, socket, battleId, onEnd }) {
       timers.push(setTimeout(() => setNewAiFieldIdx(null), 600));
     }
 
-    prevP1Fld.current=gameState.player1?.field??[];
-    prevP2Fld.current=gameState.player2?.field??[];
+    prevP1Fld.current = gameState.player1?.field ?? [];
+    prevP2Fld.current = gameState.player2?.field ?? [];
+
+    // Sync discard pile dari backend (mencakup spell/item/trap/location)
+    if (gameState.player1?.discard) setP1Dis(gameState.player1.discard);
+    if (gameState.player2?.discard) setP2Dis(gameState.player2.discard);
+
+    // Deteksi efek reveal dari Torch (Illuminate)
+    const log = gameState.log ?? [];
+    const newEntries = log.slice(prevLogLen.current);
+    prevLogLen.current = log.length;
+    const revealEntry = newEntries.findLast?.(e => e.action === 'reveal') ?? newEntries.filter(e => e.action === 'reveal').pop();
+    if (revealEntry) {
+      setRevealedCard(revealEntry.revealed);
+      timers.push(setTimeout(() => setRevealedCard(null), 2800));
+    }
     const tick   = gameState.player1?.drawTick ?? 0;
     const aiTick = gameState.player2?.drawTick ?? 0;
 
@@ -610,6 +647,29 @@ export default function BattleArena({ gameState, socket, battleId, onEnd }) {
       {disModal==='p1'&&<DiscardModal cards={p1Dis} title="Kartu Buanganmu" onClose={()=>setDisModal(null)}/>}
       {disModal==='p2'&&<DiscardModal cards={p2Dis} title="Kartu Buangan Musuh" onClose={()=>setDisModal(null)}/>}
       {detailCard&&<CardDetailModal card={detailCard} onClose={()=>setDetail(null)}/>}
+
+      {revealedCard&&(
+        <div style={{ position:'fixed', top:'18%', right:16, zIndex:450, pointerEvents:'none' }}>
+          <div className="card-reveal-spill">
+            {/* Label */}
+            <div style={{ position:'absolute', top:-22, left:'50%', transform:'translateX(-50%)', whiteSpace:'nowrap', fontSize:10, fontWeight:700, color:'#fbbf24', textShadow:'0 0 8px #f59e0b', letterSpacing:.5 }}>
+              🔦 Kartu Terungkap!
+            </div>
+            {/* Card face */}
+            <div style={{
+              width: CW+8, height: CH+8, borderRadius: 10,
+              background: RARITY_BG[revealedCard.rarity] || RARITY_BG.common,
+              border: `2px solid ${RARITY_BORDER[revealedCard.rarity] || '#94a3b8'}`,
+              boxShadow: `0 0 24px ${RARITY_GLOW[revealedCard.rarity] || 'rgba(148,163,184,0.5)'}`,
+              display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:4, padding:6,
+            }}>
+              <div style={{ fontSize:8, fontWeight:800, textTransform:'uppercase', letterSpacing:1, color: RARITY_BORDER[revealedCard.rarity] || '#94a3b8' }}>{revealedCard.rarity}</div>
+              <div style={{ fontSize:11, fontWeight:800, color:'white', textAlign:'center', lineHeight:1.3 }}>{revealedCard.name}</div>
+              <div style={{ fontSize:8, color:'rgba(255,255,255,0.5)' }}>kartu lawan</div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {surrenderConfirm&&(
         <div style={{ position:'fixed', inset:0, zIndex:500, display:'flex', alignItems:'center', justifyContent:'center', padding:16, background:'rgba(0,0,0,0.55)' }}

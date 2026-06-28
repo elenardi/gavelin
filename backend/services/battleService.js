@@ -94,9 +94,10 @@ function processAITurn(gameState, difficulty = 'normal') {
     }
   }
 
-  // Draw kartu baru
+  // Draw kartu baru (AI)
   if (ai.deck.length > 0) {
     ai.hand.push(ai.deck.shift());
+    ai.drawTick = (ai.drawTick || 0) + 1;
   }
 
   return { gameState, log };

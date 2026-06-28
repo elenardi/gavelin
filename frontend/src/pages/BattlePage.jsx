@@ -53,6 +53,13 @@ export default function BattlePage() {
     return () => socket.disconnect();
   }, []);
 
+  // Hide navigation while in battle
+  useEffect(() => {
+    const active = !!(battleState && !battleState.winner);
+    document.body.classList.toggle('in-battle', active);
+    return () => document.body.classList.remove('in-battle');
+  }, [battleState]);
+
   const startAIBattle = () => {
     if (!selectedDeck) return showToast('Pilih deck dulu!');
     setLoading(true);

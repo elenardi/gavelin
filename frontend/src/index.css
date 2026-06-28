@@ -28,6 +28,7 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   overflow: hidden;
+  -webkit-user-select: none;
   user-select: none;
 }
 
@@ -71,6 +72,7 @@ body {
   right: 0;
   height: 64px;
   background: rgba(13, 5, 32, 0.95);
+  -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
   border-top: 1px solid rgba(124, 58, 237, 0.3);
   display: flex;
@@ -315,3 +317,78 @@ body {
   0%,100% { opacity: 0.6; }
   50%      { opacity: 1; }
 }
+
+/* ── Battle Arena ───────────────────────────── */
+/* Animasi kartu masuk ke tangan player (dari kanan-bawah / deck area) */
+@keyframes cardDealIn {
+  0%   { transform: translate(100px, 60px) scale(0.35) rotate(14deg); opacity: 0; }
+  60%  { transform: translate(-4px, -3px) scale(1.06) rotate(-2deg); opacity: 1; }
+  100% { transform: translate(0,0) scale(1) rotate(0deg); opacity: 1; }
+}
+.card-deal-in { animation: cardDealIn 0.48s cubic-bezier(0.22,1,0.36,1) forwards; }
+
+/* Animasi kartu masuk ke tangan AI (dari kanan-atas / deck area AI) */
+@keyframes cardDealInAI {
+  0%   { transform: translate(90px, -55px) scale(0.35) rotate(-14deg); opacity: 0; }
+  60%  { transform: translate(-3px, 3px) scale(1.06) rotate(2deg); opacity: 1; }
+  100% { transform: translate(0,0) scale(1) rotate(0deg); opacity: 1; }
+}
+.card-deal-in-ai { animation: cardDealInAI 0.48s cubic-bezier(0.22,1,0.36,1) forwards; }
+
+/* Animasi kartu AI diletakkan ke field (jatuh dari atas) */
+@keyframes cardPlayToField {
+  0%   { transform: translateY(-70px) scale(0.55) rotate(-10deg); opacity: 0; }
+  55%  { transform: translateY(8px) scale(1.1) rotate(3deg); opacity: 1; }
+  100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+}
+.card-play-to-field { animation: cardPlayToField 0.46s cubic-bezier(0.22,1,0.36,1) forwards; }
+
+@keyframes hpBarFill {
+  from { width: 0%; }
+}
+
+@keyframes turnPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(192,132,252,0.6); }
+  50%     { box-shadow: 0 0 0 8px rgba(192,132,252,0); }
+}
+.turn-pulse { animation: turnPulse 1.5s ease-in-out infinite; }
+
+@keyframes aiThink {
+  0%,100% { opacity: 0.6; transform: scale(1); }
+  50%     { opacity: 1;   transform: scale(1.03); }
+}
+
+@keyframes vsFlare {
+  0%,100% { text-shadow: 0 0 8px #f59e0b, 0 0 20px rgba(245,158,11,0.27); }
+  50%     { text-shadow: 0 0 20px #f59e0b, 0 0 40px rgba(245,158,11,0.67), 0 0 60px rgba(239,68,68,0.4); }
+}
+
+@keyframes deckShine {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes playableGlow {
+  0%,100% { box-shadow: 0 0 8px #22c55e, 0 0 16px rgba(34,197,94,0.4); }
+  50%     { box-shadow: 0 0 16px #22c55e, 0 0 32px rgba(34,197,94,0.67), 0 0 48px rgba(34,197,94,0.27); }
+}
+.card-playable-glow {
+  animation: playableGlow 1.4s ease-in-out infinite;
+  border-radius: 10px;
+}
+@keyframes targetGlow {
+  0%,100% { box-shadow: 0 0 8px #ef4444, 0 0 16px rgba(239,68,68,0.4); }
+  50%     { box-shadow: 0 0 16px #ef4444, 0 0 32px rgba(239,68,68,0.67), 0 0 48px rgba(239,68,68,0.27); }
+}
+.card-target-glow {
+  animation: targetGlow 1s ease-in-out infinite;
+  border-radius: 10px;
+}
+
+@keyframes fieldDropGlow {
+  0%,100% { box-shadow: inset 0 0 20px rgba(34,197,94,0.3), 0 0 20px rgba(34,197,94,0.2); }
+  50%     { box-shadow: inset 0 0 40px rgba(34,197,94,0.5), 0 0 40px rgba(34,197,94,0.4); }
+}
+
+/* Hide nav during battle */
+body.in-battle .nav-bar { display: none !important; }

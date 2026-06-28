@@ -20,6 +20,7 @@ function getLevelBonus(card) {
 }
 
 const SIZES = {
+  xs:  { w: 68,  h: 96  },
   sm:  { w: 100, h: 140 },
   md:  { w: 130, h: 182 },
   lg:  { w: 200, h: 280 },

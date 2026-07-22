@@ -37,7 +37,7 @@ export default function AuthPage() {
   return (
     <div style={{
       position: 'fixed', inset: 0,
-      background: 'radial-gradient(ellipse at 30% 40%, #2d1058 0%, #0d0520 60%)',
+      background: 'radial-gradient(ellipse at 30% 40%, #3a2510 0%, #150e07 60%)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       padding: '20px',
       overflow: 'auto',
@@ -55,10 +55,10 @@ export default function AuthPage() {
           <div style={{ fontSize: 48, marginBottom: 8 }}>🎲</div>
           <h1 style={{
             fontSize: 28, fontWeight: 900,
-            background: 'linear-gradient(135deg, #c084fc, #f59e0b)',
+            background: 'linear-gradient(135deg, #f0c869, #f59e0b)',
             WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
           }}>GAVELIN</h1>
-          <p style={{ color: '#8b7aa8', fontSize: 12, letterSpacing: '0.3em' }}>CARD CHRONICLES</p>
+          <p style={{ color: '#a89a7c', fontSize: 12, letterSpacing: '0.3em' }}>CARD CHRONICLES</p>
         </div>
 
         {/* Card */}
@@ -72,8 +72,8 @@ export default function AuthPage() {
               <button key={m} onClick={() => { setMode(m); setError(''); }}
                 style={{
                   flex: 1, padding: '8px 0', borderRadius: 8, border: 'none',
-                  background: mode === m ? 'rgba(124,58,237,0.8)' : 'transparent',
-                  color: mode === m ? 'white' : '#8b7aa8',
+                  background: mode === m ? 'rgba(169,118,47,0.8)' : 'transparent',
+                  color: mode === m ? 'white' : '#a89a7c',
                   fontWeight: 600, fontSize: 14, cursor: 'pointer',
                   transition: 'all 0.2s',
                 }}>
@@ -105,7 +105,7 @@ export default function AuthPage() {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
             <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.1)' }} />
-            <span style={{ color: '#8b7aa8', fontSize: 12 }}>atau</span>
+            <span style={{ color: '#a89a7c', fontSize: 12 }}>atau</span>
             <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.1)' }} />
           </div>
 
@@ -113,7 +113,7 @@ export default function AuthPage() {
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             {mode === 'register' && (
               <div>
-                <label style={{ fontSize: 12, color: '#8b7aa8', display: 'block', marginBottom: 6 }}>Username</label>
+                <label style={{ fontSize: 12, color: '#a89a7c', display: 'block', marginBottom: 6 }}>Username</label>
                 <input
                   type="text" placeholder="adventurer_123" required minLength={3}
                   value={form.username}
@@ -123,7 +123,7 @@ export default function AuthPage() {
               </div>
             )}
             <div>
-              <label style={{ fontSize: 12, color: '#8b7aa8', display: 'block', marginBottom: 6 }}>Email</label>
+              <label style={{ fontSize: 12, color: '#a89a7c', display: 'block', marginBottom: 6 }}>Email</label>
               <input
                 type="email" placeholder="hero@gavelin.com" required
                 value={form.email}
@@ -132,7 +132,7 @@ export default function AuthPage() {
               />
             </div>
             <div>
-              <label style={{ fontSize: 12, color: '#8b7aa8', display: 'block', marginBottom: 6 }}>Password</label>
+              <label style={{ fontSize: 12, color: '#a89a7c', display: 'block', marginBottom: 6 }}>Password</label>
               <input
                 type="password" placeholder="••••••••" required minLength={6}
                 value={form.password}
@@ -157,7 +157,7 @@ export default function AuthPage() {
           </form>
         </div>
 
-        <p style={{ textAlign: 'center', color: '#8b7aa8', fontSize: 11, marginTop: 16 }}>
+        <p style={{ textAlign: 'center', color: '#a89a7c', fontSize: 11, marginTop: 16 }}>
           Dengan masuk, kamu menyetujui syarat & ketentuan Gavelin.
         </p>
       </div>
@@ -167,7 +167,7 @@ export default function AuthPage() {
 
 const inputStyle = {
   width: '100%', padding: '12px 14px', borderRadius: 10,
-  background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(124,58,237,0.3)',
+  background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(169,118,47,0.3)',
   color: 'white', fontSize: 14, outline: 'none',
   transition: 'border-color 0.2s',
 };

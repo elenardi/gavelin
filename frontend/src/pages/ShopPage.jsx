@@ -49,8 +49,8 @@ export default function ShopPage() {
       {toast && <div className="toast">{toast}</div>}
 
       {/* Header */}
-      <div style={{ padding: '16px 20px 12px', background: 'rgba(13,5,32,0.8)',
-        borderBottom: '1px solid rgba(124,58,237,0.2)', position: 'sticky', top: 0, zIndex: 10 }}>
+      <div style={{ padding: '16px 20px 12px', background: 'rgba(21,14,7,0.8)',
+        borderBottom: '1px solid rgba(169,118,47,0.2)', position: 'sticky', top: 0, zIndex: 10 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <h2 style={{ fontSize: 18, fontWeight: 700, color: 'white' }}>🛒 Shop</h2>
           <div style={{ display: 'flex', gap: 10 }}>
@@ -81,7 +81,7 @@ export default function ShopPage() {
       )}
 
       {/* Filter tabs */}
-      <div style={{ display: 'flex', gap: 8, padding: '12px 16px', overflowX: 'auto', borderBottom: '1px solid rgba(124,58,237,0.2)' }}>
+      <div style={{ display: 'flex', gap: 8, padding: '12px 16px', overflowX: 'auto', borderBottom: '1px solid rgba(169,118,47,0.2)' }}>
         <button onClick={() => setFilter('')}
           style={filterBtnStyle(filter === '')}>Semua</button>
         {types.map(t => (
@@ -107,7 +107,7 @@ export default function ShopPage() {
           <div onClick={e => e.stopPropagation()} className="glass"
             style={{ width: '100%', maxWidth: 500, borderRadius: '20px 20px 0 0', padding: '24px 24px 32px' }}>
             <h3 style={{ color: 'white', marginBottom: 8, fontSize: 17 }}>Konfirmasi Pembelian</h3>
-            <p style={{ color: '#8b7aa8', fontSize: 13, marginBottom: 16 }}>
+            <p style={{ color: '#a89a7c', fontSize: 13, marginBottom: 16 }}>
               Beli <strong style={{ color: 'white' }}>{buyConfirm.name}</strong>?
             </p>
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginBottom: 20 }}>
@@ -130,7 +130,7 @@ export default function ShopPage() {
               </button>
               <button onClick={() => setBuyConfirm(null)} style={{
                 flex: 1, padding: '12px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)',
-                background: 'transparent', color: '#8b7aa8', cursor: 'pointer',
+                background: 'transparent', color: '#a89a7c', cursor: 'pointer',
               }}>
                 Batal
               </button>
@@ -149,13 +149,13 @@ function ShopCard({ item, onBuy, user, featured }) {
   return (
     <div className="glass" style={{
       borderRadius: 12, overflow: 'hidden',
-      border: `1px solid ${featured ? 'rgba(245,158,11,0.4)' : 'rgba(124,58,237,0.2)'}`,
+      border: `1px solid ${featured ? 'rgba(245,158,11,0.4)' : 'rgba(169,118,47,0.2)'}`,
       minWidth: featured ? 140 : undefined,
     }}>
       {/* Image / Icon */}
       <div style={{
         height: 90,
-        background: item.image_url ? `url(${item.image_url}) center/cover` : 'linear-gradient(135deg, #3b1f72, #1a0a2e)',
+        background: item.image_url ? `url(${item.image_url}) center/cover` : 'linear-gradient(135deg, #4a3218, #2b1d10)',
         display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36,
         position: 'relative',
       }}>
@@ -164,7 +164,7 @@ function ShopCard({ item, onBuy, user, featured }) {
           item.item_type === 'card_back' ? '🃏' : '✨')}
         {item.is_featured && (
           <div style={{ position: 'absolute', top: 4, right: 4, background: '#f59e0b',
-            borderRadius: 4, fontSize: 9, padding: '1px 5px', color: '#1a0a2e', fontWeight: 700 }}>HOT</div>
+            borderRadius: 4, fontSize: 9, padding: '1px 5px', color: '#2b1d10', fontWeight: 700 }}>HOT</div>
         )}
       </div>
 
@@ -173,7 +173,7 @@ function ShopCard({ item, onBuy, user, featured }) {
           overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {item.name}
         </div>
-        <div style={{ fontSize: 9, color: '#8b7aa8', marginBottom: 8,
+        <div style={{ fontSize: 9, color: '#a89a7c', marginBottom: 8,
           overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {item.description}
         </div>
@@ -206,7 +206,7 @@ function ShopCard({ item, onBuy, user, featured }) {
 
 const filterBtnStyle = (active) => ({
   padding: '6px 14px', borderRadius: 20, border: 'none', flexShrink: 0,
-  background: active ? 'rgba(124,58,237,0.7)' : 'rgba(0,0,0,0.3)',
-  color: active ? 'white' : '#8b7aa8',
+  background: active ? 'rgba(169,118,47,0.7)' : 'rgba(0,0,0,0.3)',
+  color: active ? 'white' : '#a89a7c',
   fontSize: 11, fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s',
 });

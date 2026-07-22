@@ -94,7 +94,7 @@ export default function SplashScreen() {
   return (
     <div style={{
       position: 'fixed', inset: 0,
-      background: 'radial-gradient(ellipse at center, #1a0a2e 0%, #0d0520 70%)',
+      background: 'radial-gradient(ellipse at center, #2b1d10 0%, #150e07 70%)',
       display: 'flex', flexDirection: 'column',
       alignItems: 'center', justifyContent: 'center',
       overflow: 'hidden',
@@ -107,11 +107,11 @@ export default function SplashScreen() {
         <div style={{
           width: 100, height: 100,
           margin: '0 auto 20px',
-          background: 'linear-gradient(135deg, #7c3aed, #f59e0b)',
+          background: 'linear-gradient(135deg, #a9762f, #f59e0b)',
           borderRadius: '50%',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: 48,
-          boxShadow: '0 0 40px rgba(124,58,237,0.6)',
+          boxShadow: '0 0 40px rgba(169,118,47,0.6)',
           animation: 'pulse 2s infinite',
         }}>
           🎲
@@ -120,7 +120,7 @@ export default function SplashScreen() {
         <h1 style={{
           fontSize: 'clamp(28px, 8vw, 48px)',
           fontWeight: 900,
-          background: 'linear-gradient(135deg, #c084fc, #f59e0b)',
+          background: 'linear-gradient(135deg, #f0c869, #f59e0b)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           letterSpacing: '-0.02em',
@@ -129,7 +129,7 @@ export default function SplashScreen() {
           GAVELIN
         </h1>
 
-        <p style={{ color: '#8b7aa8', fontSize: 14, letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: 40 }}>
+        <p style={{ color: '#a89a7c', fontSize: 14, letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: 40 }}>
           Card Chronicles
         </p>
 
@@ -139,7 +139,7 @@ export default function SplashScreen() {
             <div key={i} style={{
               width: 8, height: 8,
               borderRadius: '50%',
-              background: '#7c3aed',
+              background: '#a9762f',
               animation: `bounce 1s ${delay}s infinite`,
             }} />
           ))}
@@ -152,7 +152,7 @@ export default function SplashScreen() {
           30% { transform: translateY(-10px); opacity: 1; }
         }
         @keyframes pulse {
-          0%, 100% { box-shadow: 0 0 40px rgba(124,58,237,0.6); }
+          0%, 100% { box-shadow: 0 0 40px rgba(169,118,47,0.6); }
           50% { box-shadow: 0 0 60px rgba(245,158,11,0.6); }
         }
       `}</style>

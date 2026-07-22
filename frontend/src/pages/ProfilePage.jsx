@@ -73,16 +73,16 @@ export default function ProfilePage() {
       {/* Header */}
       <div style={{
         padding: '24px 20px 20px',
-        background: 'linear-gradient(180deg, rgba(124,58,237,0.3) 0%, transparent 100%)',
+        background: 'linear-gradient(180deg, rgba(169,118,47,0.3) 0%, transparent 100%)',
         textAlign: 'center',
-        borderBottom: '1px solid rgba(124,58,237,0.2)',
+        borderBottom: '1px solid rgba(169,118,47,0.2)',
       }}>
         {/* Avatar */}
         <div style={{
           width: 80, height: 80, borderRadius: '50%', margin: '0 auto 12px',
-          background: user?.avatar_url ? `url(${user.avatar_url}) center/cover` : 'linear-gradient(135deg, #7c3aed, #f59e0b)',
-          border: '3px solid #7c3aed',
-          boxShadow: '0 0 20px rgba(124,58,237,0.5)',
+          background: user?.avatar_url ? `url(${user.avatar_url}) center/cover` : 'linear-gradient(135deg, #a9762f, #f59e0b)',
+          border: '3px solid #a9762f',
+          boxShadow: '0 0 20px rgba(169,118,47,0.5)',
           display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32,
         }}>
           {!user?.avatar_url && '⚔️'}
@@ -94,32 +94,32 @@ export default function ProfilePage() {
               value={username}
               onChange={e => setUsername(e.target.value)}
               style={{ padding: '8px 12px', borderRadius: 8, background: 'rgba(0,0,0,0.4)',
-                border: '1px solid #7c3aed', color: 'white', fontSize: 14, textAlign: 'center' }}
+                border: '1px solid #a9762f', color: 'white', fontSize: 14, textAlign: 'center' }}
             />
             <button className="btn-primary" style={{ padding: '8px 16px', fontSize: 13 }} onClick={handleSave}>💾</button>
             <button onClick={() => setEditing(false)}
               style={{ padding: '8px 12px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.2)',
-                background: 'transparent', color: '#8b7aa8', cursor: 'pointer', fontSize: 13 }}>✗</button>
+                background: 'transparent', color: '#a89a7c', cursor: 'pointer', fontSize: 13 }}>✗</button>
           </div>
         ) : (
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'center', marginBottom: 4 }}>
             <h2 style={{ fontSize: 22, fontWeight: 900, color: 'white' }}>{user?.username}</h2>
             <button onClick={() => setEditing(true)}
-              style={{ background: 'none', border: 'none', color: '#8b7aa8', cursor: 'pointer', fontSize: 14 }}>✏️</button>
+              style={{ background: 'none', border: 'none', color: '#a89a7c', cursor: 'pointer', fontSize: 14 }}>✏️</button>
           </div>
         )}
 
         <div style={{ color: '#f59e0b', fontSize: 12, marginBottom: 4 }}>{user?.title}</div>
-        <div style={{ color: '#8b7aa8', fontSize: 11 }}>Level {user?.level}</div>
+        <div style={{ color: '#a89a7c', fontSize: 11 }}>Level {user?.level}</div>
 
         {/* XP Bar */}
         <div style={{ margin: '12px auto 0', maxWidth: 200 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: '#8b7aa8', marginBottom: 4 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: '#a89a7c', marginBottom: 4 }}>
             <span>{user?.xp || 0} XP</span>
             <span>{xpForNextLevel} XP</span>
           </div>
           <div style={{ background: 'rgba(255,255,255,0.1)', borderRadius: 4, height: 6, overflow: 'hidden' }}>
-            <div style={{ width: `${xpProgress}%`, height: '100%', background: 'linear-gradient(90deg, #7c3aed, #f59e0b)', borderRadius: 4 }} />
+            <div style={{ width: `${xpProgress}%`, height: '100%', background: 'linear-gradient(90deg, #a9762f, #f59e0b)', borderRadius: 4 }} />
           </div>
         </div>
       </div>
@@ -129,23 +129,23 @@ export default function ProfilePage() {
         {[
           { icon: '💰', val: (user?.gold || 0).toLocaleString(), label: 'Gold', color: '#f59e0b' },
           { icon: '💎', val: user?.gems || 0, label: 'Gems', color: '#60a5fa' },
-          { icon: '✨', val: user?.card_dust || 0, label: 'Dust', color: '#c084fc' },
+          { icon: '✨', val: user?.card_dust || 0, label: 'Dust', color: '#f0c869' },
         ].map(c => (
           <div key={c.label} style={{
             flex: 1, padding: '14px 8px', textAlign: 'center',
             background: 'rgba(0,0,0,0.3)',
-            borderBottom: '1px solid rgba(124,58,237,0.2)',
+            borderBottom: '1px solid rgba(169,118,47,0.2)',
           }}>
             <div style={{ fontSize: 20, marginBottom: 2 }}>{c.icon}</div>
             <div style={{ fontSize: 14, fontWeight: 700, color: c.color }}>{c.val}</div>
-            <div style={{ fontSize: 10, color: '#8b7aa8' }}>{c.label}</div>
+            <div style={{ fontSize: 10, color: '#a89a7c' }}>{c.label}</div>
           </div>
         ))}
       </div>
 
       {/* Battle Stats */}
       <div style={{ padding: '16px' }}>
-        <h3 style={{ fontSize: 13, fontWeight: 700, color: '#c084fc', marginBottom: 12 }}>📊 Statistik Battle</h3>
+        <h3 style={{ fontSize: 13, fontWeight: 700, color: '#f0c869', marginBottom: 12 }}>📊 Statistik Battle</h3>
         <div className="glass" style={{ borderRadius: 12, overflow: 'hidden' }}>
           {[
             ['Total Battle', stats?.total_battles || 0, '⚔️'],
@@ -156,11 +156,11 @@ export default function ProfilePage() {
             <div key={label} style={{
               display: 'flex', justifyContent: 'space-between', alignItems: 'center',
               padding: '14px 16px',
-              borderBottom: i < 3 ? '1px solid rgba(124,58,237,0.1)' : 'none',
+              borderBottom: i < 3 ? '1px solid rgba(169,118,47,0.1)' : 'none',
             }}>
               <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
                 <span style={{ fontSize: 16 }}>{icon}</span>
-                <span style={{ fontSize: 13, color: '#8b7aa8' }}>{label}</span>
+                <span style={{ fontSize: 13, color: '#a89a7c' }}>{label}</span>
               </div>
               <span style={{ fontSize: 14, fontWeight: 700, color: 'white' }}>{val}</span>
             </div>
@@ -175,7 +175,7 @@ export default function ProfilePage() {
       <div style={{ padding: '0 16px 16px' }}>
         <div className="glass" style={{ borderRadius: 12, padding: '14px 16px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-            <span style={{ fontSize: 12, color: '#8b7aa8' }}>Email</span>
+            <span style={{ fontSize: 12, color: '#a89a7c' }}>Email</span>
             {user?.google_id && <span style={{ fontSize: 10, color: '#4285F4', background: 'rgba(66,133,244,0.1)', padding: '2px 8px', borderRadius: 4 }}>Google</span>}
           </div>
           <div style={{ fontSize: 13, color: 'white' }}>{user?.email}</div>
@@ -202,7 +202,7 @@ function PackSlotPanel({ user }) {
 
   return (
     <div style={{ padding: '0 16px 16px' }}>
-      <h3 style={{ fontSize: 13, fontWeight: 700, color: '#c084fc', marginBottom: 12 }}>
+      <h3 style={{ fontSize: 13, fontWeight: 700, color: '#f0c869', marginBottom: 12 }}>
         🎴 Pack Slot
       </h3>
       <div className="glass" style={{ borderRadius: 16, padding: '16px' }}>
@@ -217,12 +217,12 @@ function PackSlotPanel({ user }) {
               <div key={i} style={{
                 width: 44, height: 44, borderRadius: 12, flexShrink: 0,
                 background: filled
-                  ? 'linear-gradient(135deg, #7c3aed, #a855f7)'
+                  ? 'linear-gradient(135deg, #a9762f, #a855f7)'
                   : 'rgba(255,255,255,0.06)',
                 border: `2px solid ${filled ? '#a855f7' : isRegen ? '#f59e0b' : 'rgba(255,255,255,0.1)'}`,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: filled ? 22 : 18,
-                boxShadow: filled ? '0 0 12px rgba(124,58,237,0.5)' : 'none',
+                boxShadow: filled ? '0 0 12px rgba(169,118,47,0.5)' : 'none',
                 position: 'relative', overflow: 'hidden',
                 transition: 'all 0.3s',
               }}>
@@ -242,9 +242,9 @@ function PackSlotPanel({ user }) {
           <div style={{ flex: 1, textAlign: 'right' }}>
             <div style={{
               fontSize: 22, fontWeight: 900,
-              color: slots > 0 ? '#c084fc' : '#ef4444',
+              color: slots > 0 ? '#f0c869' : '#ef4444',
             }}>{slots}/{MAX_SLOTS}</div>
-            <div style={{ fontSize: 10, color: '#8b7aa8' }}>slot tersedia</div>
+            <div style={{ fontSize: 10, color: '#a89a7c' }}>slot tersedia</div>
           </div>
         </div>
 
@@ -253,7 +253,7 @@ function PackSlotPanel({ user }) {
           <>
             <div style={{
               display: 'flex', justifyContent: 'space-between',
-              fontSize: 10, color: '#8b7aa8', marginBottom: 6,
+              fontSize: 10, color: '#a89a7c', marginBottom: 6,
             }}>
               <span>⏱ Slot berikutnya</span>
               <span style={{ color: '#f59e0b', fontWeight: 700 }}>{fmt(remaining)}</span>
@@ -274,7 +274,7 @@ function PackSlotPanel({ user }) {
                 }} />
               </div>
             </div>
-            <div style={{ fontSize: 10, color: '#6b5a88', marginTop: 6, textAlign: 'center' }}>
+            <div style={{ fontSize: 10, color: '#8a7a5c', marginTop: 6, textAlign: 'center' }}>
               Slot regen otomatis setiap 12 jam
             </div>
           </>

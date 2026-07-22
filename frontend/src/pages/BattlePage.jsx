@@ -10,10 +10,10 @@ function Toast({ msg }) {
   return (
     <div style={{
       position: 'fixed', top: 20, left: '50%', transform: 'translateX(-50%)',
-      background: 'rgba(34,20,66,0.97)', border: '1px solid rgba(124,58,237,0.45)',
+      background: 'rgba(59,42,22,0.97)', border: '1px solid rgba(169,118,47,0.45)',
       borderRadius: 12, padding: '10px 22px', fontSize: 13, fontWeight: 600,
-      color: '#e2d9f3', zIndex: 2000, whiteSpace: 'nowrap',
-      boxShadow: '0 4px 24px rgba(124,58,237,0.25)',
+      color: '#ecdfc4', zIndex: 2000, whiteSpace: 'nowrap',
+      boxShadow: '0 4px 24px rgba(169,118,47,0.25)',
       animation: 'slideDown .3s ease',
     }}>{msg}</div>
   );
@@ -25,8 +25,8 @@ const BATTLE_TYPES = [
     icon: '🤖',
     label: 'vs AI',
     desc: 'Latihan melawan kecerdasan buatan',
-    color: '#7c3aed',
-    glow: 'rgba(124,58,237,0.35)',
+    color: '#a9762f',
+    glow: 'rgba(169,118,47,0.35)',
   },
   {
     id: 'pvp',
@@ -63,18 +63,18 @@ function StepBar({ step }) {
               <div style={{
                 width: 28, height: 28, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: 11, fontWeight: 800,
-                background: done ? '#7c3aed' : active ? 'linear-gradient(135deg,#4c1d95,#7c3aed)' : 'rgba(255,255,255,0.07)',
+                background: done ? '#a9762f' : active ? 'linear-gradient(135deg,#5c3d12,#a9762f)' : 'rgba(255,255,255,0.07)',
                 color: done || active ? 'white' : '#4b5563',
-                border: active ? '2px solid #c084fc' : done ? '2px solid #7c3aed' : '2px solid rgba(255,255,255,0.1)',
-                boxShadow: active ? '0 0 12px rgba(192,132,252,0.6)' : 'none',
+                border: active ? '2px solid #f0c869' : done ? '2px solid #a9762f' : '2px solid rgba(255,255,255,0.1)',
+                boxShadow: active ? '0 0 12px rgba(240,200,105,0.6)' : 'none',
                 transition: 'all .3s',
               }}>
                 {done ? '✓' : i + 1}
               </div>
-              <span style={{ fontSize: 9, color: active ? '#c084fc' : done ? '#7c3aed' : '#4b5563', fontWeight: 700, letterSpacing: .5 }}>{s}</span>
+              <span style={{ fontSize: 9, color: active ? '#f0c869' : done ? '#a9762f' : '#4b5563', fontWeight: 700, letterSpacing: .5 }}>{s}</span>
             </div>
             {i < steps.length - 1 && (
-              <div style={{ width: 48, height: 2, margin: '0 4px', marginBottom: 16, background: done ? '#7c3aed' : 'rgba(255,255,255,0.08)', transition: 'background .3s' }}/>
+              <div style={{ width: 48, height: 2, margin: '0 4px', marginBottom: 16, background: done ? '#a9762f' : 'rgba(255,255,255,0.08)', transition: 'background .3s' }}/>
             )}
           </div>
         );
@@ -181,7 +181,7 @@ export default function BattlePage() {
           <h2 style={{ fontSize:26, fontWeight:900, color:won?'#f59e0b':'#ef4444', marginBottom:6 }}>
             {won?'KEMENANGAN!':'KEKALAHAN'}
           </h2>
-          <p style={{ color:'#8b7aa8', fontSize:13, marginBottom:28 }}>
+          <p style={{ color:'#a89a7c', fontSize:13, marginBottom:28 }}>
             {won?'Luar biasa! Musuhmu berhasil dikalahkan!':'Lebih baik lain kali, petualang!'}
           </p>
           <div style={{ display:'flex', gap:12, justifyContent:'center' }}>
@@ -189,7 +189,7 @@ export default function BattlePage() {
               ⚔️ Ulangi
             </button>
             <button onClick={() => { setBattleState(null); setBattleId(null); resetFlow(); }}
-              style={{ padding:'12px 20px', borderRadius:12, border:'1px solid rgba(124,58,237,0.4)', background:'transparent', color:'#c084fc', cursor:'pointer', fontSize:13 }}>
+              style={{ padding:'12px 20px', borderRadius:12, border:'1px solid rgba(169,118,47,0.4)', background:'transparent', color:'#f0c869', cursor:'pointer', fontSize:13 }}>
               Menu
             </button>
           </div>
@@ -216,12 +216,12 @@ export default function BattlePage() {
       <Toast msg={toast}/>
 
       {/* ── Tab bar ─────────────────────────────────────── */}
-      <div style={{ display:'flex', background:'rgba(13,5,32,0.95)', borderBottom:'1px solid rgba(124,58,237,0.18)', position:'sticky', top:0, zIndex:10 }}>
+      <div style={{ display:'flex', background:'rgba(21,14,7,0.95)', borderBottom:'1px solid rgba(169,118,47,0.18)', position:'sticky', top:0, zIndex:10 }}>
         {TABS.map(t => (
           <button key={t.id} onClick={() => handleTab(t.id)}
             style={{ flex:1, padding:'14px 0', border:'none', background:'transparent',
-              color: tab===t.id ? '#c084fc' : '#6b5f8a', fontWeight:700, fontSize:12,
-              borderBottom:`2px solid ${tab===t.id?'#7c3aed':'transparent'}`,
+              color: tab===t.id ? '#f0c869' : '#8a7a5c', fontWeight:700, fontSize:12,
+              borderBottom:`2px solid ${tab===t.id?'#a9762f':'transparent'}`,
               cursor:'pointer', transition:'all .2s' }}>
             {t.label}
           </button>
@@ -236,14 +236,14 @@ export default function BattlePage() {
           {/* STEP 0 — pilih jenis battle */}
           {step === 0 && (
             <div style={{ marginTop:8 }}>
-              <p style={{ color:'#8b7aa8', fontSize:12, textAlign:'center', marginBottom:20 }}>Pilih mode pertarunganmu</p>
+              <p style={{ color:'#a89a7c', fontSize:12, textAlign:'center', marginBottom:20 }}>Pilih mode pertarunganmu</p>
               <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
                 {BATTLE_TYPES.map(bt => (
                   <button key={bt.id}
                     onClick={() => { setBattleType(bt.id); setPvpMode(null); setStep(1); }}
                     style={{
                       width:'100%', padding:'20px', borderRadius:18, border:`1.5px solid ${bt.color}44`,
-                      background:`linear-gradient(135deg, ${bt.color}11, rgba(13,5,32,0.6))`,
+                      background:`linear-gradient(135deg, ${bt.color}11, rgba(21,14,7,0.6))`,
                       cursor:'pointer', textAlign:'left', transition:'all .2s',
                       boxShadow:`0 4px 24px ${bt.glow}`,
                     }}
@@ -254,7 +254,7 @@ export default function BattlePage() {
                       <div style={{ fontSize:38, lineHeight:1 }}>{bt.icon}</div>
                       <div>
                         <div style={{ fontSize:18, fontWeight:800, color:'white', marginBottom:4 }}>{bt.label}</div>
-                        <div style={{ fontSize:12, color:'#8b7aa8' }}>{bt.desc}</div>
+                        <div style={{ fontSize:12, color:'#a89a7c' }}>{bt.desc}</div>
                       </div>
                       <div style={{ marginLeft:'auto', color:`${bt.color}`, fontSize:20 }}>›</div>
                     </div>
@@ -269,16 +269,16 @@ export default function BattlePage() {
             <div style={{ marginTop:8 }}>
               <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:16 }}>
                 <button onClick={() => setStep(0)}
-                  style={{ background:'rgba(255,255,255,0.06)', border:'1px solid rgba(255,255,255,0.1)', color:'#8b7aa8', borderRadius:8, padding:'6px 12px', cursor:'pointer', fontSize:12 }}>
+                  style={{ background:'rgba(255,255,255,0.06)', border:'1px solid rgba(255,255,255,0.1)', color:'#a89a7c', borderRadius:8, padding:'6px 12px', cursor:'pointer', fontSize:12 }}>
                   ← Kembali
                 </button>
-                <span style={{ fontSize:13, color:'#c084fc', fontWeight:700 }}>Pilih Deck</span>
+                <span style={{ fontSize:13, color:'#f0c869', fontWeight:700 }}>Pilih Deck</span>
               </div>
 
               {decks.length === 0 ? (
                 <div className="glass" style={{ padding:24, textAlign:'center', borderRadius:16 }}>
                   <div style={{ fontSize:32, marginBottom:8 }}>🃏</div>
-                  <p style={{ color:'#8b7aa8', fontSize:13 }}>Belum ada deck. Buat deck di halaman Koleksi dulu!</p>
+                  <p style={{ color:'#a89a7c', fontSize:13 }}>Belum ada deck. Buat deck di halaman Koleksi dulu!</p>
                 </div>
               ) : (
                 <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
@@ -288,15 +288,15 @@ export default function BattlePage() {
                       <button key={deck.id}
                         onClick={() => setSelDeck(deck)}
                         style={{
-                          width:'100%', padding:'14px 16px', borderRadius:14, border:`2px solid ${selected?'#f59e0b':'rgba(124,58,237,0.2)'}`,
-                          background: selected?'rgba(245,158,11,0.08)':'rgba(34,20,66,0.5)',
+                          width:'100%', padding:'14px 16px', borderRadius:14, border:`2px solid ${selected?'#f59e0b':'rgba(169,118,47,0.2)'}`,
+                          background: selected?'rgba(245,158,11,0.08)':'rgba(59,42,22,0.5)',
                           cursor:'pointer', textAlign:'left', transition:'all .2s',
                           display:'flex', alignItems:'center', gap:14,
                         }}>
-                        <div style={{ width:42, height:42, borderRadius:10, background:`${selected?'rgba(245,158,11,0.2)':'rgba(124,58,237,0.15)'}`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, flexShrink:0 }}>📋</div>
+                        <div style={{ width:42, height:42, borderRadius:10, background:`${selected?'rgba(245,158,11,0.2)':'rgba(169,118,47,0.15)'}`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, flexShrink:0 }}>📋</div>
                         <div style={{ flex:1 }}>
                           <div style={{ fontSize:14, fontWeight:700, color:'white' }}>{deck.name}</div>
-                          <div style={{ fontSize:11, color:'#8b7aa8', marginTop:2 }}>{deck.cards?.length || 0} kartu</div>
+                          <div style={{ fontSize:11, color:'#a89a7c', marginTop:2 }}>{deck.cards?.length || 0} kartu</div>
                         </div>
                         {selected && <div style={{ color:'#f59e0b', fontSize:18 }}>✓</div>}
                       </button>
@@ -319,10 +319,10 @@ export default function BattlePage() {
             <div style={{ marginTop:8 }}>
               <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:16 }}>
                 <button onClick={() => setStep(1)}
-                  style={{ background:'rgba(255,255,255,0.06)', border:'1px solid rgba(255,255,255,0.1)', color:'#8b7aa8', borderRadius:8, padding:'6px 12px', cursor:'pointer', fontSize:12 }}>
+                  style={{ background:'rgba(255,255,255,0.06)', border:'1px solid rgba(255,255,255,0.1)', color:'#a89a7c', borderRadius:8, padding:'6px 12px', cursor:'pointer', fontSize:12 }}>
                   ← Kembali
                 </button>
-                <span style={{ fontSize:13, color:'#c084fc', fontWeight:700 }}>
+                <span style={{ fontSize:13, color:'#f0c869', fontWeight:700 }}>
                   {battleType==='ai'?'Konfigurasi AI':'Pilih Mode'}
                 </span>
               </div>
@@ -331,11 +331,11 @@ export default function BattlePage() {
               <div className="glass" style={{ padding:'12px 16px', borderRadius:12, marginBottom:16, display:'flex', alignItems:'center', gap:12, border:'1px solid rgba(245,158,11,0.25)' }}>
                 <div style={{ fontSize:22 }}>📋</div>
                 <div>
-                  <div style={{ fontSize:12, color:'#8b7aa8' }}>Deck dipilih</div>
+                  <div style={{ fontSize:12, color:'#a89a7c' }}>Deck dipilih</div>
                   <div style={{ fontSize:14, fontWeight:700, color:'white' }}>{selDeck?.name}</div>
                 </div>
                 <button onClick={() => setStep(1)}
-                  style={{ marginLeft:'auto', fontSize:11, color:'#7c3aed', background:'none', border:'none', cursor:'pointer', textDecoration:'underline' }}>
+                  style={{ marginLeft:'auto', fontSize:11, color:'#a9762f', background:'none', border:'none', cursor:'pointer', textDecoration:'underline' }}>
                   Ganti
                 </button>
               </div>
@@ -343,7 +343,7 @@ export default function BattlePage() {
               {/* AI: pilih difficulty */}
               {battleType === 'ai' && (
                 <>
-                  <p style={{ fontSize:12, color:'#8b7aa8', marginBottom:10 }}>Tingkat kesulitan AI</p>
+                  <p style={{ fontSize:12, color:'#a89a7c', marginBottom:10 }}>Tingkat kesulitan AI</p>
                   <div style={{ display:'flex', flexDirection:'column', gap:8, marginBottom:20 }}>
                     {DIFFICULTIES.map(d => {
                       const sel = difficulty === d.id;
@@ -358,7 +358,7 @@ export default function BattlePage() {
                           <div style={{ width:10, height:10, borderRadius:'50%', background:d.color, flexShrink:0, boxShadow:sel?`0 0 8px ${d.color}`:undefined }}/>
                           <div style={{ textAlign:'left' }}>
                             <div style={{ fontSize:13, fontWeight:700, color: sel?d.color:'white' }}>{d.label}</div>
-                            <div style={{ fontSize:11, color:'#6b5f8a' }}>{d.desc}</div>
+                            <div style={{ fontSize:11, color:'#8a7a5c' }}>{d.desc}</div>
                           </div>
                           {sel && <div style={{ marginLeft:'auto', color:d.color, fontSize:16 }}>✓</div>}
                         </button>
@@ -375,7 +375,7 @@ export default function BattlePage() {
               {/* PvP: pilih unranked/ranked */}
               {battleType === 'pvp' && (
                 <>
-                  <p style={{ fontSize:12, color:'#8b7aa8', marginBottom:10 }}>Pilih mode matchmaking</p>
+                  <p style={{ fontSize:12, color:'#a89a7c', marginBottom:10 }}>Pilih mode matchmaking</p>
                   <div style={{ display:'flex', flexDirection:'column', gap:8, marginBottom:20 }}>
                     {PVP_MODES.map(m => {
                       const sel = pvpMode === m.id;
@@ -390,7 +390,7 @@ export default function BattlePage() {
                           <div style={{ fontSize:28 }}>{m.icon}</div>
                           <div style={{ textAlign:'left' }}>
                             <div style={{ fontSize:14, fontWeight:700, color: sel?m.color:'white' }}>{m.label}</div>
-                            <div style={{ fontSize:11, color:'#6b5f8a', marginTop:2 }}>{m.desc}</div>
+                            <div style={{ fontSize:11, color:'#8a7a5c', marginTop:2 }}>{m.desc}</div>
                           </div>
                           {sel && <div style={{ marginLeft:'auto', color:m.color, fontSize:18 }}>✓</div>}
                         </button>
@@ -412,7 +412,7 @@ export default function BattlePage() {
       {tab === 'history' && (
         <div style={{ padding:16 }}>
           {history.length === 0 ? (
-            <div style={{ textAlign:'center', color:'#8b7aa8', padding:'60px 0' }}>
+            <div style={{ textAlign:'center', color:'#a89a7c', padding:'60px 0' }}>
               <div style={{ fontSize:40 }}>📜</div>
               <p style={{ marginTop:8, fontSize:13 }}>Belum ada riwayat battle.</p>
             </div>
@@ -421,18 +421,18 @@ export default function BattlePage() {
             return (
               <div key={b.id} className="glass" style={{
                 padding:'14px 16px', marginBottom:10, borderRadius:14,
-                borderLeft:`3px solid ${won?'#22c55e':b.winner_id?'#ef4444':'#8b7aa8'}`,
+                borderLeft:`3px solid ${won?'#22c55e':b.winner_id?'#ef4444':'#a89a7c'}`,
               }}>
                 <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
                   <div>
-                    <span style={{ fontSize:11, fontWeight:800, color:won?'#22c55e':b.winner_id?'#ef4444':'#8b7aa8' }}>
+                    <span style={{ fontSize:11, fontWeight:800, color:won?'#22c55e':b.winner_id?'#ef4444':'#a89a7c' }}>
                       {won?'🏆 MENANG':b.winner_id?'💀 KALAH':'🤝 SERI'}
                     </span>
                     <div style={{ fontSize:13, color:'white', marginTop:3 }}>
                       vs {b.is_ai ? `AI (${b.ai_difficulty})` : (b.player2_name||'Unknown')}
                     </div>
                   </div>
-                  <div style={{ textAlign:'right', fontSize:11, color:'#8b7aa8' }}>
+                  <div style={{ textAlign:'right', fontSize:11, color:'#a89a7c' }}>
                     <div>{b.turns} turn</div>
                     <div>{new Date(b.ended_at).toLocaleDateString('id-ID')}</div>
                   </div>
@@ -450,24 +450,24 @@ export default function BattlePage() {
             <div key={p.id} className="glass"
               style={{ padding:'12px 16px', marginBottom:8, borderRadius:14,
                 display:'flex', alignItems:'center', gap:12,
-                background: p.id===user?.id?'rgba(124,58,237,0.15)':undefined,
-                border: p.id===user?.id?'1px solid rgba(124,58,237,0.4)':'1px solid rgba(124,58,237,0.15)',
+                background: p.id===user?.id?'rgba(169,118,47,0.15)':undefined,
+                border: p.id===user?.id?'1px solid rgba(169,118,47,0.4)':'1px solid rgba(169,118,47,0.15)',
               }}>
               <div style={{
                 width:32, height:32, borderRadius:'50%', flexShrink:0,
                 background: i===0?'#f59e0b':i===1?'#94a3b8':i===2?'#b45309':'rgba(255,255,255,0.08)',
                 display:'flex', alignItems:'center', justifyContent:'center',
-                fontSize:13, fontWeight:800, color: i<3?'#1a0a2e':'#8b7aa8',
+                fontSize:13, fontWeight:800, color: i<3?'#2b1d10':'#a89a7c',
               }}>
                 {i<3?['🥇','🥈','🥉'][i]:i+1}
               </div>
               <div style={{ flex:1 }}>
                 <div style={{ fontSize:13, fontWeight:700, color:'white' }}>{p.username}</div>
-                <div style={{ fontSize:10, color:'#8b7aa8' }}>{p.title}</div>
+                <div style={{ fontSize:10, color:'#a89a7c' }}>{p.title}</div>
               </div>
               <div style={{ textAlign:'right' }}>
                 <div style={{ fontSize:13, fontWeight:700, color:'#22c55e' }}>{p.wins}W</div>
-                <div style={{ fontSize:10, color:'#8b7aa8' }}>{p.win_rate}% win</div>
+                <div style={{ fontSize:10, color:'#a89a7c' }}>{p.win_rate}% win</div>
               </div>
             </div>
           ))}

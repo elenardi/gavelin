@@ -1,11 +1,11 @@
 {
   "name": "gavelin-backend",
   "version": "1.0.0",
-  "description": "Gavelin: Card Chronicles — Backend API",
+  "description": "Gavelin: Card Chronicles \u2014 Backend API",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
+    "start": "node api.js && node server.js",
+    "dev": "node api.js && nodemon server.js",
     "db:setup": "node scripts/setupDb.js"
   },
   "dependencies": {

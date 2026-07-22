@@ -77,7 +77,7 @@ export default function CommunityPage() {
       {toast && <div className="toast">{toast}</div>}
 
       {/* Tabs */}
-      <div style={{ display: 'flex', background: 'rgba(13,5,32,0.9)', borderBottom: '1px solid rgba(124,58,237,0.2)',
+      <div style={{ display: 'flex', background: 'rgba(21,14,7,0.9)', borderBottom: '1px solid rgba(169,118,47,0.2)',
         position: 'sticky', top: 0, zIndex: 10 }}>
         {[
           { id: 'friends', label: `👥 Teman (${accepted.length})` },
@@ -87,9 +87,9 @@ export default function CommunityPage() {
           <button key={t.id} onClick={() => setTab(t.id)}
             style={{
               flex: 1, padding: '13px 4px', border: 'none', background: 'transparent',
-              color: tab === t.id ? '#c084fc' : '#8b7aa8',
+              color: tab === t.id ? '#f0c869' : '#a89a7c',
               fontWeight: 700, fontSize: 11,
-              borderBottom: `2px solid ${tab === t.id ? '#7c3aed' : 'transparent'}`,
+              borderBottom: `2px solid ${tab === t.id ? '#a9762f' : 'transparent'}`,
               cursor: 'pointer', whiteSpace: 'nowrap',
             }}>
             {t.label}
@@ -101,7 +101,7 @@ export default function CommunityPage() {
       {tab === 'friends' && (
         <div style={{ padding: '16px' }}>
           {accepted.length === 0 ? (
-            <div style={{ textAlign: 'center', color: '#8b7aa8', padding: '60px 0' }}>
+            <div style={{ textAlign: 'center', color: '#a89a7c', padding: '60px 0' }}>
               <div style={{ fontSize: 48, marginBottom: 12 }}>👥</div>
               <p>Belum ada teman.</p>
               <p style={{ fontSize: 12, marginTop: 4 }}>Cari pengguna dan kirim permintaan pertemanan!</p>
@@ -112,8 +112,8 @@ export default function CommunityPage() {
                 display: 'flex', alignItems: 'center', gap: 12 }}>
               <div style={{
                 width: 44, height: 44, borderRadius: '50%',
-                background: f.avatar_url ? `url(${f.avatar_url}) center/cover` : 'linear-gradient(135deg, #7c3aed, #f59e0b)',
-                border: '2px solid #7c3aed', flexShrink: 0,
+                background: f.avatar_url ? `url(${f.avatar_url}) center/cover` : 'linear-gradient(135deg, #a9762f, #f59e0b)',
+                border: '2px solid #a9762f', flexShrink: 0,
                 display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16,
               }}>
                 {!f.avatar_url && '⚔️'}
@@ -121,7 +121,7 @@ export default function CommunityPage() {
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: 'white' }}>{f.username}</div>
                 <div style={{ fontSize: 10, color: '#f59e0b' }}>{f.title}</div>
-                <div style={{ fontSize: 10, color: '#8b7aa8' }}>Lv. {f.level}</div>
+                <div style={{ fontSize: 10, color: '#a89a7c' }}>Lv. {f.level}</div>
               </div>
               <button
                 className="btn-primary"
@@ -145,7 +145,7 @@ export default function CommunityPage() {
               onChange={e => setSearchQ(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSearch()}
               style={{ flex: 1, padding: '10px 14px', borderRadius: 10,
-                background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(124,58,237,0.3)',
+                background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(169,118,47,0.3)',
                 color: 'white', fontSize: 13 }}
             />
             <button className="btn-primary" style={{ padding: '10px 16px', fontSize: 13 }}
@@ -158,15 +158,15 @@ export default function CommunityPage() {
                 display: 'flex', alignItems: 'center', gap: 12 }}>
               <div style={{
                 width: 40, height: 40, borderRadius: '50%',
-                background: u.avatar_url ? `url(${u.avatar_url}) center/cover` : 'linear-gradient(135deg, #7c3aed, #3b82f6)',
-                border: '2px solid rgba(124,58,237,0.4)', flexShrink: 0,
+                background: u.avatar_url ? `url(${u.avatar_url}) center/cover` : 'linear-gradient(135deg, #a9762f, #3b82f6)',
+                border: '2px solid rgba(169,118,47,0.4)', flexShrink: 0,
               }} />
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: 'white' }}>{u.username}</div>
-                <div style={{ fontSize: 10, color: '#8b7aa8' }}>{u.title} • Lv.{u.level}</div>
+                <div style={{ fontSize: 10, color: '#a89a7c' }}>{u.title} • Lv.{u.level}</div>
               </div>
               {u.id === user?.id ? (
-                <span style={{ fontSize: 11, color: '#8b7aa8' }}>Kamu</span>
+                <span style={{ fontSize: 11, color: '#a89a7c' }}>Kamu</span>
               ) : u.friend_status === 'accepted' ? (
                 <span style={{ fontSize: 11, color: '#22c55e' }}>✓ Teman</span>
               ) : u.friend_status === 'pending' ? (
@@ -186,7 +186,7 @@ export default function CommunityPage() {
       {tab === 'pending' && (
         <div style={{ padding: '16px' }}>
           {pending.length === 0 ? (
-            <div style={{ textAlign: 'center', color: '#8b7aa8', padding: '60px 0' }}>
+            <div style={{ textAlign: 'center', color: '#a89a7c', padding: '60px 0' }}>
               <div style={{ fontSize: 40 }}>📩</div>
               <p style={{ marginTop: 8 }}>Tidak ada permintaan pertemanan.</p>
             </div>
@@ -196,12 +196,12 @@ export default function CommunityPage() {
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10 }}>
                 <div style={{
                   width: 40, height: 40, borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #7c3aed, #f59e0b)',
+                  background: 'linear-gradient(135deg, #a9762f, #f59e0b)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16,
                 }}>⚔️</div>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: 13, fontWeight: 700, color: 'white' }}>{f.username}</div>
-                  <div style={{ fontSize: 10, color: '#8b7aa8' }}>
+                  <div style={{ fontSize: 10, color: '#a89a7c' }}>
                     {f.direction === 'received' ? '📩 Ingin berteman denganmu' : '📤 Terkirim'}
                   </div>
                 </div>
@@ -230,11 +230,11 @@ export default function CommunityPage() {
       {tab === 'gift_flow' && giftModal && (
         <div style={{ padding: '16px' }}>
           <button onClick={() => { setTab('friends'); setGiftModal(null); }}
-            style={{ background: 'none', border: 'none', color: '#8b7aa8', fontSize: 14, cursor: 'pointer', marginBottom: 16 }}>
+            style={{ background: 'none', border: 'none', color: '#a89a7c', fontSize: 14, cursor: 'pointer', marginBottom: 16 }}>
             ← Kembali
           </button>
           <h3 style={{ color: 'white', marginBottom: 16, fontSize: 16 }}>🎁 Kirim Kartu ke Teman</h3>
-          <p style={{ color: '#8b7aa8', fontSize: 12, marginBottom: 12 }}>
+          <p style={{ color: '#a89a7c', fontSize: 12, marginBottom: 12 }}>
             Pilih kartu duplikat yang ingin dikirim:
           </p>
           {myCards.length === 0 && (
@@ -245,8 +245,8 @@ export default function CommunityPage() {
               <div key={card.id} style={{ position: 'relative' }}>
                 <div style={{
                   width: 90, height: 126, borderRadius: 8,
-                  border: `2px solid ${selectedCard?.id === card.id ? '#f59e0b' : 'rgba(124,58,237,0.3)'}`,
-                  background: 'linear-gradient(135deg, #1a0a2e, #0d0520)',
+                  border: `2px solid ${selectedCard?.id === card.id ? '#f59e0b' : 'rgba(169,118,47,0.3)'}`,
+                  background: 'linear-gradient(135deg, #2b1d10, #150e07)',
                   cursor: 'pointer', overflow: 'hidden',
                   display: 'flex', flexDirection: 'column',
                 }} onClick={() => setSelectedCard(card)}>
@@ -255,7 +255,7 @@ export default function CommunityPage() {
                     overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{card.name}</div>
                 </div>
                 <div style={{ position: 'absolute', top: 2, right: 2, background: '#f59e0b', borderRadius: 4,
-                  fontSize: 9, padding: '1px 4px', color: '#1a0a2e', fontWeight: 700 }}>
+                  fontSize: 9, padding: '1px 4px', color: '#2b1d10', fontWeight: 700 }}>
                   x{card.quantity - 1}
                 </div>
               </div>
@@ -266,7 +266,7 @@ export default function CommunityPage() {
             value={giftMsg}
             onChange={e => setGiftMsg(e.target.value)}
             style={{ width: '100%', padding: '10px 14px', borderRadius: 10,
-              background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(124,58,237,0.3)',
+              background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(169,118,47,0.3)',
               color: 'white', fontSize: 13, marginBottom: 16 }}
           />
           <button className="btn-primary" style={{ width: '100%' }}

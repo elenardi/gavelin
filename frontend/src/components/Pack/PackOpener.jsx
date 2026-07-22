@@ -169,7 +169,7 @@ export default function PackOpener({ pack, onClose, onCardsObtained }) {
         <div style={{ textAlign: 'center', padding: 24 }}>
           <PackArt pack={pack} />
           <h2 style={{ color: 'white', marginBottom: 8, fontSize: 20 }}>Buka Pack</h2>
-          <p style={{ color: '#8b7aa8', marginBottom: 24, fontSize: 14 }}>{pack?.description}</p>
+          <p style={{ color: '#a89a7c', marginBottom: 24, fontSize: 14 }}>{pack?.description}</p>
 
           {error && <ErrorBox>{error}</ErrorBox>}
 
@@ -192,9 +192,9 @@ export default function PackOpener({ pack, onClose, onCardsObtained }) {
             <h2 style={{ color: 'white', fontSize: 19, fontWeight: 900, marginBottom: 6 }}>
               Slot Habis
             </h2>
-            <p style={{ color: '#8b7aa8', fontSize: 13, lineHeight: 1.5 }}>
+            <p style={{ color: '#a89a7c', fontSize: 13, lineHeight: 1.5 }}>
               Kamu masih bisa buka{' '}
-              <strong style={{ color: '#c084fc' }}>{pack?.name}</strong>{' '}
+              <strong style={{ color: '#f0c869' }}>{pack?.name}</strong>{' '}
               dengan cara di bawah ini.
             </p>
           </div>
@@ -202,15 +202,15 @@ export default function PackOpener({ pack, onClose, onCardsObtained }) {
           {/* Regen timer box */}
           {remaining > 0 && (
             <div style={{
-              background: 'rgba(26,10,46,0.8)',
-              border: '1px solid rgba(124,58,237,0.2)',
+              background: 'rgba(43,29,16,0.8)',
+              border: '1px solid rgba(169,118,47,0.2)',
               borderRadius: 14, padding: '12px 16px', marginBottom: 18,
             }}>
               <div style={{
                 display: 'flex', justifyContent: 'space-between',
                 alignItems: 'center', marginBottom: 8,
               }}>
-                <span style={{ fontSize: 12, color: '#8b7aa8' }}>⏱ Slot berikutnya dalam</span>
+                <span style={{ fontSize: 12, color: '#a89a7c' }}>⏱ Slot berikutnya dalam</span>
                 <span style={{ fontSize: 15, fontWeight: 900, color: '#f59e0b',
                   fontVariantNumeric: 'tabular-nums' }}>
                   {fmt(remaining)}
@@ -229,7 +229,7 @@ export default function PackOpener({ pack, onClose, onCardsObtained }) {
                   }} />
                 </div>
               </div>
-              <div style={{ fontSize: 10, color: '#6b5a88', marginTop: 6 }}>
+              <div style={{ fontSize: 10, color: '#8a7a5c', marginTop: 6 }}>
                 Slot regen otomatis setiap 12 jam
               </div>
             </div>
@@ -283,10 +283,10 @@ export default function PackOpener({ pack, onClose, onCardsObtained }) {
                 <div style={{ flex: 1, textAlign: 'left' }}>
                   <div style={{ fontSize: 13, fontWeight: 800, color: 'white', marginBottom: 2 }}>Buka Pack Gratis</div>
                   <div style={{ fontSize: 14, fontWeight: 900, color: '#22c55e' }}>GRATIS</div>
-                  <div style={{ fontSize: 10, color: '#8b7aa8', marginTop: 2 }}>Pack ini tidak memerlukan biaya tambahan</div>
+                  <div style={{ fontSize: 10, color: '#a89a7c', marginTop: 2 }}>Pack ini tidak memerlukan biaya tambahan</div>
                 </div>
                 <div style={{
-                  background: '#22c55e', color: '#0a0418',
+                  background: '#22c55e', color: '#1c130a',
                   fontWeight: 800, fontSize: 11,
                   padding: '6px 14px', borderRadius: 20, flexShrink: 0,
                 }}>Buka</div>
@@ -311,7 +311,7 @@ export default function PackOpener({ pack, onClose, onCardsObtained }) {
       {/* ── REVEAL ─────────────────────────────────────────── */}
       {phase === 'reveal' && currentCard && (
         <div style={{ textAlign: 'center' }}>
-          <p style={{ color: '#8b7aa8', fontSize: 12, marginBottom: 12 }}>
+          <p style={{ color: '#a89a7c', fontSize: 12, marginBottom: 12 }}>
             {revealed} / {cards.length}
           </p>
           <div style={{ animation: 'cardReveal 0.4s ease' }}>
@@ -323,7 +323,7 @@ export default function PackOpener({ pack, onClose, onCardsObtained }) {
               {currentCard.rarity}
             </span>
           </div>
-          <p style={{ color: '#8b7aa8', fontSize: 11, marginTop: 8 }}>Tap untuk lanjutkan</p>
+          <p style={{ color: '#a89a7c', fontSize: 11, marginTop: 8 }}>Tap untuk lanjutkan</p>
         </div>
       )}
 
@@ -373,14 +373,14 @@ function PackArt({ pack }) {
       width: 160, height: 220, margin: '0 auto 24px',
       background: pack?.image_url
         ? `url(${pack.image_url}) center/cover`
-        : 'linear-gradient(135deg, #3b1f72, #1a0a2e)',
-      borderRadius: 12, border: '2px solid #7c3aed',
+        : 'linear-gradient(135deg, #4a3218, #2b1d10)',
+      borderRadius: 12, border: '2px solid #a9762f',
       display: 'flex', flexDirection: 'column',
       alignItems: 'center', justifyContent: 'center',
-      fontSize: 60, boxShadow: '0 0 40px rgba(124,58,237,0.5)',
+      fontSize: 60, boxShadow: '0 0 40px rgba(169,118,47,0.5)',
       animation: 'float 2s ease-in-out infinite',
     }}>
-      {!pack?.image_url && <>🎴<div style={{ fontSize: 14, fontWeight: 700, color: '#c084fc', marginTop: 8 }}>{pack?.name}</div></>}
+      {!pack?.image_url && <>🎴<div style={{ fontSize: 14, fontWeight: 700, color: '#f0c869', marginTop: 8 }}>{pack?.name}</div></>}
     </div>
   );
 }
@@ -404,15 +404,15 @@ function PayOption({ icon, label, cost, have, canAfford, onClick, loading, color
     >
       <span style={{ fontSize: 32, flexShrink: 0 }}>{icon}</span>
       <div style={{ flex: 1, textAlign: 'left' }}>
-        <div style={{ fontSize: 13, fontWeight: 800, color: canAfford ? 'white' : '#6b5a88', marginBottom: 2 }}>
+        <div style={{ fontSize: 13, fontWeight: 800, color: canAfford ? 'white' : '#8a7a5c', marginBottom: 2 }}>
           {label}
         </div>
-        <div style={{ fontSize: 14, fontWeight: 900, color: canAfford ? color : '#6b5a88' }}>{cost}</div>
-        <div style={{ fontSize: 10, color: canAfford ? '#8b7aa8' : '#ef4444', marginTop: 2 }}>{have}</div>
+        <div style={{ fontSize: 14, fontWeight: 900, color: canAfford ? color : '#8a7a5c' }}>{cost}</div>
+        <div style={{ fontSize: 10, color: canAfford ? '#a89a7c' : '#ef4444', marginTop: 2 }}>{have}</div>
       </div>
       {canAfford && (
         <div style={{
-          background: color, color: '#0a0418',
+          background: color, color: '#1c130a',
           fontWeight: 800, fontSize: 11,
           padding: '6px 14px', borderRadius: 20, flexShrink: 0,
         }}>
@@ -439,12 +439,12 @@ function ErrorBox({ children, style }) {
 const cancelBtnStyle = {
   padding: '12px 24px', borderRadius: 12,
   border: '1px solid rgba(255,255,255,0.15)',
-  background: 'transparent', color: '#8b7aa8',
+  background: 'transparent', color: '#a89a7c',
   cursor: 'pointer', fontSize: 14,
 };
 
 function hexToRgbStr(hex) {
   const m = String(hex).match(/^#?([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i);
-  if (!m) return '124,58,237';
+  if (!m) return '169,118,47';
   return `${parseInt(m[1],16)},${parseInt(m[2],16)},${parseInt(m[3],16)}`;
 }

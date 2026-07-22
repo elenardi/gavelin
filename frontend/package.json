@@ -1,12 +1,12 @@
 {
   "name": "gavelin-frontend",
   "version": "1.0.0",
-  "description": "Gavelin: Card Chronicles — Frontend",
+  "description": "Gavelin: Card Chronicles \u2014 Frontend",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "node api.js && vite",
+    "build": "node api.js && vite build",
     "preview": "vite preview"
   },
   "dependencies": {

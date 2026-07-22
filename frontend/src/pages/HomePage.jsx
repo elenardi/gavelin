@@ -4,6 +4,15 @@ import { useAuth } from '../contexts/AuthContext';
 import { packApi, newsApi, communityApi, missionApi } from '../utils/api';
 import PackOpener from '../components/Pack/PackOpener';
 
+/* ─── Desktop sidebar menu (menu yang sudah ada, cuma beda tampilan) ──── */
+const DESKTOP_NAV = [
+  { path: '/home',       label: 'Home',      icon: '🏠' },
+  { path: '/collection', label: 'Koleksi',   icon: '🃏' },
+  { path: '/battle',     label: 'Battle',    icon: '⚔️' },
+  { path: '/community',  label: 'Komunitas', icon: '👥' },
+  { path: '/shop',       label: 'Shop',      icon: '🛒' },
+];
+
 /* ─── Particle background ─────────────────────────────────────── */
 function Particles() {
   const particles = Array.from({ length: 18 }, (_, i) => ({
@@ -12,7 +21,7 @@ function Particles() {
     delay: `${Math.random() * 6}s`,
     duration: `${5 + Math.random() * 6}s`,
     size: Math.random() > 0.6 ? 6 : 3,
-    color: ['#c084fc','#f59e0b','#60a5fa','#fff'][Math.floor(Math.random()*4)],
+    color: ['#f0c869','#f59e0b','#60a5fa','#fff'][Math.floor(Math.random()*4)],
   }));
   return (
     <div style={{ position:'fixed', inset:0, pointerEvents:'none', zIndex:0, overflow:'hidden' }}>
@@ -37,7 +46,7 @@ function PackTimer({ slots }) {
         <svg viewBox="0 0 36 36" style={{ transform:'rotate(-90deg)', width:28, height:28 }}>
           <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="4" />
           <circle cx="18" cy="18" r="15" fill="none"
-            stroke={slots > 0 ? '#7c3aed' : '#ef4444'}
+            stroke={slots > 0 ? '#a9762f' : '#ef4444'}
             strokeWidth="4" strokeDasharray="94.2"
             strokeDashoffset={94.2 - (pct / 100) * 94.2}
             strokeLinecap="round" style={{ transition:'stroke-dashoffset 0.5s' }} />
@@ -45,12 +54,12 @@ function PackTimer({ slots }) {
         <span style={{
           position:'absolute', inset:0, display:'flex',
           alignItems:'center', justifyContent:'center',
-          fontSize:9, fontWeight:800, color: slots > 0 ? '#c084fc' : '#ef4444',
+          fontSize:9, fontWeight:800, color: slots > 0 ? '#f0c869' : '#ef4444',
         }}>{slots}</span>
       </div>
       <div>
         <div style={{ fontSize:12, fontWeight:700, color:'white' }}>{slots}/2 Slot Pack</div>
-        <div style={{ fontSize:10, color:'#8b7aa8' }}>
+        <div style={{ fontSize:10, color:'#a89a7c' }}>
           {slots === 0 ? 'Reset besok pukul 00:00 UTC' : 'Tersedia hari ini'}
         </div>
       </div>
@@ -82,15 +91,15 @@ function FeaturedPackCard({ pack, onClick }) {
       onMouseMove={onMove}
       style={{
         minWidth: 140, borderRadius: 16, overflow: 'hidden', cursor: 'pointer',
-        border: '1px solid rgba(192,132,252,0.35)',
+        border: '1px solid rgba(240,200,105,0.35)',
         boxShadow: hover
-          ? '0 12px 40px rgba(124,58,237,0.5), 0 0 0 1px rgba(192,132,252,0.5)'
+          ? '0 12px 40px rgba(169,118,47,0.5), 0 0 0 1px rgba(240,200,105,0.5)'
           : '0 4px 16px rgba(0,0,0,0.4)',
         transform: hover
           ? `perspective(600px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(1.05)`
           : 'perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)',
         transition: hover ? 'box-shadow 0.2s' : 'all 0.4s ease',
-        background: 'rgba(26,10,46,0.9)',
+        background: 'rgba(43,29,16,0.9)',
         flexShrink: 0,
         position: 'relative',
       }}
@@ -100,7 +109,7 @@ function FeaturedPackCard({ pack, onClick }) {
         height: 140,
         background: pack.image_url
           ? `url(${pack.image_url}) center/cover`
-          : 'linear-gradient(145deg, #3b1f72 0%, #1a0a2e 60%, #0d0520 100%)',
+          : 'linear-gradient(145deg, #4a3218 0%, #2b1d10 60%, #150e07 100%)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         fontSize: 52, position: 'relative', overflow: 'hidden',
       }}>
@@ -108,7 +117,7 @@ function FeaturedPackCard({ pack, onClick }) {
         {/* Holographic sheen */}
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 40%, rgba(192,132,252,0.08) 60%, transparent 100%)',
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 40%, rgba(240,200,105,0.08) 60%, transparent 100%)',
           pointerEvents: 'none',
         }} />
       </div>
@@ -133,7 +142,7 @@ function FeaturedPackCard({ pack, onClick }) {
       <div style={{
         position: 'absolute', bottom: 0, left: 0, right: 0,
         padding: '6px 0', textAlign: 'center',
-        background: 'linear-gradient(0deg, rgba(124,58,237,0.8) 0%, transparent 100%)',
+        background: 'linear-gradient(0deg, rgba(169,118,47,0.8) 0%, transparent 100%)',
         fontSize: 9, color: 'rgba(255,255,255,0.8)', fontWeight: 600,
         opacity: hover ? 1 : 0, transition: 'opacity 0.2s',
       }}>
@@ -160,6 +169,7 @@ export default function HomePage() {
   const [news, setNews]         = useState([]);
   const [gifts, setGifts]       = useState([]);
   const [missions, setMissions] = useState([]);
+  const [friends, setFriends]   = useState([]);
   const [selectedPack, setSelectedPack] = useState(null);
   const [tab, setTab]           = useState('home');
   const [toast, setToast]       = useState('');
@@ -169,6 +179,7 @@ export default function HomePage() {
     newsApi.getAll().then(r => setNews(r.data.news));
     communityApi.getGifts().then(r => setGifts(r.data.gifts));
     missionApi.getAll().then(r => setMissions(r.data.missions));
+    communityApi.getFriends().then(r => setFriends(r.data.friends)).catch(() => {});
   }, []);
 
   const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(''), 3000); };
@@ -199,27 +210,27 @@ export default function HomePage() {
   const TOP_OFFSET = HEADER_H + TABBAR_H;
 
   return (
-    <div className="page" style={{ background: 'linear-gradient(180deg, #120826 0%, #0a0418 100%)', overflow:'hidden' }}>
+    <div className="page home-shell" style={{ background: 'linear-gradient(180deg, #241a0d 0%, #1c130a 100%)', overflow:'hidden' }}>
       <Particles />
 
       {/* Toast */}
       {toast && (
-        <div style={{
+        <div className="toast-home" style={{
           position:'fixed', top: TOP_OFFSET + 8, left:'50%', transform:'translateX(-50%)',
-          background:'rgba(26,10,46,0.97)', border:'1px solid rgba(192,132,252,0.5)',
+          background:'rgba(43,29,16,0.97)', border:'1px solid rgba(240,200,105,0.5)',
           borderRadius:12, padding:'10px 22px', fontSize:13, fontWeight:600,
           color:'white', zIndex:9999, whiteSpace:'nowrap',
-          boxShadow:'0 4px 24px rgba(124,58,237,0.4)',
+          boxShadow:'0 4px 24px rgba(169,118,47,0.4)',
           animation:'slideDown 0.3s ease',
         }}>{toast}</div>
       )}
 
-      {/* ── Header (fixed) ────────────────────────────────────── */}
-      <div style={{
+      {/* ── Header (fixed, mobile only) ───────────────────────── */}
+      <div className="mobile-header" style={{
         position:'fixed', top:0, left:0, right:0, height:HEADER_H,
         padding:'12px 16px 8px',
-        background:'rgba(10,4,24,0.92)',
-        borderBottom:'1px solid rgba(124,58,237,0.15)',
+        background:'rgba(28,19,10,0.92)',
+        borderBottom:'1px solid rgba(169,118,47,0.15)',
         zIndex:50, backdropFilter:'blur(16px)',
         display:'flex', alignItems:'center',
       }}>
@@ -230,10 +241,10 @@ export default function HomePage() {
               width:42, height:42, borderRadius:'50%',
               background: user?.avatar_url
                 ? `url(${user.avatar_url}) center/cover`
-                : 'linear-gradient(135deg, #7c3aed, #f59e0b)',
-              border:'2px solid #7c3aed',
+                : 'linear-gradient(135deg, #a9762f, #f59e0b)',
+              border:'2px solid #a9762f',
               display:'flex', alignItems:'center', justifyContent:'center', fontSize:18,
-              boxShadow:'0 0 10px rgba(124,58,237,0.5)', flexShrink:0,
+              boxShadow:'0 0 10px rgba(169,118,47,0.5)', flexShrink:0,
             }}>{!user?.avatar_url && '⚔️'}</div>
             <div>
               <div style={{ fontSize:13, fontWeight:800, color:'white', lineHeight:1.2 }}>{user?.username}</div>
@@ -247,11 +258,11 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* ── Tab bar (fixed) ───────────────────────────────────── */}
-      <div style={{
+      {/* ── Tab bar (fixed, mobile only) ──────────────────────── */}
+      <div className="mobile-tabbar" style={{
         position:'fixed', top:HEADER_H, left:0, right:0, height:TABBAR_H,
-        display:'flex', background:'rgba(10,4,24,0.88)',
-        borderBottom:'1px solid rgba(124,58,237,0.15)',
+        display:'flex', background:'rgba(28,19,10,0.88)',
+        borderBottom:'1px solid rgba(169,118,47,0.15)',
         zIndex:40, backdropFilter:'blur(16px)',
       }}>
         {TABS.map(t => {
@@ -261,9 +272,9 @@ export default function HomePage() {
             <button key={t.id} onClick={() => setTab(t.id)} style={{
               flex:1, padding:'0 4px', border:'none',
               background:'transparent',
-              color: active ? '#c084fc' : '#6b5a88',
+              color: active ? '#f0c869' : '#8a7a5c',
               fontSize:10, fontWeight:700, letterSpacing:'0.03em',
-              borderBottom:`2px solid ${active ? '#7c3aed' : 'transparent'}`,
+              borderBottom:`2px solid ${active ? '#a9762f' : 'transparent'}`,
               cursor:'pointer', transition:'all 0.2s',
               display:'flex', alignItems:'center', justifyContent:'center', gap:4, position:'relative',
             }}>
@@ -284,7 +295,7 @@ export default function HomePage() {
       </div>
 
       {/* ── Scrollable content area ───────────────────────────── */}
-      <div style={{
+      <div className="content-area" style={{
         position:'absolute', top:TOP_OFFSET, left:0, right:0, bottom:0,
         overflowY:'auto', overflowX:'hidden',
       }}>
@@ -293,20 +304,21 @@ export default function HomePage() {
           HOME TAB
       ═══════════════════════════════════════════════════════════ */}
       {tab === 'home' && (
-        <div style={{ position:'relative', zIndex:1 }}>
+        <>
+        <div className="home-mobile-view" style={{ position:'relative', zIndex:1 }}>
 
           {/* Hero banner */}
           <div style={{
             margin:'0 0 0',
             padding:'24px 20px 20px',
-            background:'linear-gradient(160deg, #1e0840 0%, #120826 50%, #0a0418 100%)',
-            borderBottom:'1px solid rgba(124,58,237,0.15)',
+            background:'linear-gradient(160deg, #1e0840 0%, #241a0d 50%, #1c130a 100%)',
+            borderBottom:'1px solid rgba(169,118,47,0.15)',
             position:'relative', overflow:'hidden',
           }}>
             {/* Background glow orbs */}
             <div style={{
               position:'absolute', top:-40, right:-40, width:160, height:160,
-              borderRadius:'50%', background:'radial-gradient(circle, rgba(124,58,237,0.25) 0%, transparent 70%)',
+              borderRadius:'50%', background:'radial-gradient(circle, rgba(169,118,47,0.25) 0%, transparent 70%)',
               pointerEvents:'none',
             }} />
             <div style={{
@@ -317,12 +329,12 @@ export default function HomePage() {
 
             <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:20 }}>
               <div>
-                <div style={{ fontSize:11, color:'#8b7aa8', fontWeight:600, marginBottom:4, letterSpacing:'0.1em', textTransform:'uppercase' }}>
+                <div style={{ fontSize:11, color:'#a89a7c', fontWeight:600, marginBottom:4, letterSpacing:'0.1em', textTransform:'uppercase' }}>
                   Pack Terbaru
                 </div>
-                <div style={{ fontSize:18, fontWeight:900, color:'white', lineHeight:1.1 }}>
+                <div className="font-title" style={{ fontSize:18, fontWeight:900, color:'white', lineHeight:1.1 }}>
                   Gavelin<br />
-                  <span style={{ color:'#c084fc' }}>Card Chronicles</span>
+                  <span style={{ color:'#f0c869' }}>Card Chronicles</span>
                 </div>
               </div>
               <PackTimer slots={packSlots} />
@@ -339,9 +351,9 @@ export default function HomePage() {
                   style={{
                     minWidth:80, borderRadius:16, cursor:'pointer',
                     display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
-                    gap:6, color:'#c084fc', fontSize:11, fontWeight:700, flexShrink:0,
-                    border:'1.5px dashed rgba(124,58,237,0.4)',
-                    background:'rgba(124,58,237,0.08)',
+                    gap:6, color:'#f0c869', fontSize:11, fontWeight:700, flexShrink:0,
+                    border:'1.5px dashed rgba(169,118,47,0.4)',
+                    background:'rgba(169,118,47,0.08)',
                   }}
                 >
                   <span style={{ fontSize:24 }}>🎴</span>
@@ -350,8 +362,8 @@ export default function HomePage() {
               </div>
             ) : (
               <div style={{
-                padding:'32px 0', textAlign:'center', color:'#6b5a88',
-                border:'1px dashed rgba(124,58,237,0.2)', borderRadius:16,
+                padding:'32px 0', textAlign:'center', color:'#8a7a5c',
+                border:'1px dashed rgba(169,118,47,0.2)', borderRadius:16,
               }}>
                 <div style={{ fontSize:32, marginBottom:8 }}>🎴</div>
                 <div style={{ fontSize:13 }}>Belum ada pack tersedia</div>
@@ -376,7 +388,7 @@ export default function HomePage() {
           {/* Daily streak / bonus strip */}
           <div style={{ padding:'0 16px 20px' }}>
             <div style={{
-              background:'linear-gradient(135deg, rgba(245,158,11,0.12) 0%, rgba(124,58,237,0.12) 100%)',
+              background:'linear-gradient(135deg, rgba(245,158,11,0.12) 0%, rgba(169,118,47,0.12) 100%)',
               border:'1px solid rgba(245,158,11,0.25)',
               borderRadius:16, padding:'14px 16px',
               display:'flex', alignItems:'center', gap:14,
@@ -384,13 +396,13 @@ export default function HomePage() {
               <div style={{ fontSize:36 }}>🎁</div>
               <div style={{ flex:1 }}>
                 <div style={{ fontSize:13, fontWeight:800, color:'white', marginBottom:2 }}>Hadiah Harian</div>
-                <div style={{ fontSize:11, color:'#8b7aa8' }}>Klaim gift dari temanmu setiap hari</div>
+                <div style={{ fontSize:11, color:'#a89a7c' }}>Klaim gift dari temanmu setiap hari</div>
               </div>
               <button
                 onClick={() => setTab('gift')}
                 style={{
                   background:'linear-gradient(135deg, #f59e0b, #d97706)',
-                  color:'#1a0a2e', fontWeight:800, fontSize:11,
+                  color:'#2b1d10', fontWeight:800, fontSize:11,
                   padding:'8px 14px', borderRadius:20, border:'none',
                   cursor:'pointer', whiteSpace:'nowrap',
                   boxShadow:'0 2px 12px rgba(245,158,11,0.35)',
@@ -411,9 +423,9 @@ export default function HomePage() {
               onClick={() => setTab('mission')}
               style={{
                 width:'100%', marginTop:8, padding:'10px',
-                background:'rgba(124,58,237,0.08)',
-                border:'1px solid rgba(124,58,237,0.2)',
-                borderRadius:12, color:'#8b7aa8', fontSize:11, fontWeight:600,
+                background:'rgba(169,118,47,0.08)',
+                border:'1px solid rgba(169,118,47,0.2)',
+                borderRadius:12, color:'#a89a7c', fontSize:11, fontWeight:600,
                 cursor:'pointer',
               }}
             >
@@ -421,18 +433,274 @@ export default function HomePage() {
             </button>
           </div>
         </div>
+        {/* end .home-mobile-view */}
+
+        {/* ═══════════════════════════════════════════════════════
+            DESKTOP HUB (layout lebar: sidebar + hero + panel kanan)
+            Menu & judul sama seperti versi mobile, cuma disusun ala gambar referensi.
+        ═══════════════════════════════════════════════════════ */}
+        <div className="home-desktop-view" style={{ position:'relative', zIndex:1, padding:'20px 32px 40px' }}>
+
+          {/* ── Header ala gambar referensi: nav tabs kiri, judul tengah, ikon kanan ── */}
+          <div style={{
+            display:'flex', alignItems:'center', justifyContent:'space-between',
+            padding:'14px 4px 22px', marginBottom:22,
+            borderBottom:'1px solid rgba(191,158,102,0.25)', position:'relative',
+          }}>
+            {/* Nav tabs (menu yang sudah ada: Home/News/Gift/Mission) */}
+            <div style={{ display:'flex', gap:30, flex:1 }}>
+              {TABS.map(t => {
+                const active = tab === t.id;
+                const badge = t.id === 'gift' ? pendingGifts : t.id === 'news' ? news.length : 0;
+                return (
+                  <div
+                    key={t.id}
+                    className="font-title"
+                    onClick={() => setTab(t.id)}
+                    style={{
+                      cursor:'pointer', fontSize:14, fontWeight:700, letterSpacing:'0.03em',
+                      color: active ? '#f5c451' : '#a89a7c',
+                      borderBottom:`2px solid ${active ? '#f5c451' : 'transparent'}`,
+                      paddingBottom:8, position:'relative', transition:'color 0.2s',
+                    }}
+                  >
+                    {t.label}
+                    {badge > 0 && (
+                      <span style={{
+                        position:'absolute', top:-6, right:-14, minWidth:15, height:15, borderRadius:8,
+                        background:'#ef4444', color:'white', fontSize:9, fontWeight:800,
+                        display:'flex', alignItems:'center', justifyContent:'center', padding:'0 3px',
+                      }}>{badge}</span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Judul game, gaya banner lengkung ala gambar */}
+            <div style={{
+              position:'absolute', left:'50%', top:'50%', transform:'translate(-50%,-50%)',
+              textAlign:'center', pointerEvents:'none', whiteSpace:'nowrap',
+            }}>
+              <div className="font-title" style={{
+                fontSize:22, fontWeight:900, letterSpacing:'0.08em', textTransform:'uppercase',
+                background:'linear-gradient(180deg, #fde68a 0%, #f5c451 45%, #b8842c 100%)',
+                WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text',
+                textShadow:'0 2px 10px rgba(0,0,0,0.5)', lineHeight:1.1,
+              }}>
+                🎲 Gavelin
+              </div>
+              <div className="font-title" style={{ fontSize:11, fontWeight:700, letterSpacing:'0.28em', color:'#e8dcc3', textTransform:'uppercase', marginTop:2 }}>
+                Card Chronicles
+              </div>
+            </div>
+
+            {/* Ikon kanan: notifikasi / hadiah / pengaturan */}
+            <div style={{ display:'flex', gap:10, flex:1, justifyContent:'flex-end' }}>
+              <HeaderIconButton icon="🔔" badge={news.length} onClick={() => setTab('news')} />
+              <HeaderIconButton icon="✉️" badge={pendingGifts} onClick={() => setTab('gift')} />
+              <HeaderIconButton icon="⚙️" onClick={() => navigate('/profile')} />
+            </div>
+          </div>
+
+          <div style={{ display:'flex', gap:24, alignItems:'flex-start' }}>
+
+            {/* Sidebar menu (menu yang sudah ada: Home/Koleksi/Battle/Komunitas/Shop) */}
+            <div style={{ width:196, flexShrink:0, display:'flex', flexDirection:'column', gap:10 }}>
+              {/* Profil singkat + currency (dipindah dari header mobile) */}
+              <div
+                onClick={() => navigate('/profile')}
+                style={{
+                  display:'flex', alignItems:'center', gap:10, padding:'10px 12px',
+                  background:'rgba(43,29,16,0.65)', border:'1px solid rgba(169,118,47,0.15)',
+                  borderRadius:14, cursor:'pointer',
+                }}
+              >
+                <div style={{
+                  width:38, height:38, borderRadius:'50%', flexShrink:0,
+                  background: user?.avatar_url ? `url(${user.avatar_url}) center/cover` : 'linear-gradient(135deg, #a9762f, #f59e0b)',
+                  border:'2px solid #a9762f', display:'flex', alignItems:'center', justifyContent:'center', fontSize:15,
+                }}>{!user?.avatar_url && '⚔️'}</div>
+                <div style={{ minWidth:0 }}>
+                  <div style={{ fontSize:12, fontWeight:800, color:'white', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+                    {user?.username}
+                  </div>
+                  <div style={{ fontSize:10, color:'#f59e0b', fontWeight:600 }}>{user?.title || 'Trainer'}</div>
+                </div>
+              </div>
+              <div style={{ display:'flex', gap:6 }}>
+                <CurrencyChip icon="💰" value={(user?.gold||0).toLocaleString()} color="#f59e0b" />
+                <CurrencyChip icon="💎" value={user?.gems||0} color="#60a5fa" />
+              </div>
+
+              {DESKTOP_NAV.map(item => {
+                const active = item.path === '/home';
+                return (
+                  <div
+                    key={item.path}
+                    onClick={() => !active && navigate(item.path)}
+                    style={{
+                      display:'flex', alignItems:'center', gap:12, padding:'14px 16px',
+                      borderRadius:14, cursor: active ? 'default' : 'pointer',
+                      background: active
+                        ? 'linear-gradient(135deg, rgba(245,158,11,0.2), rgba(169,118,47,0.2))'
+                        : 'rgba(43,29,16,0.65)',
+                      border: `1px solid ${active ? 'rgba(245,158,11,0.45)' : 'rgba(169,118,47,0.15)'}`,
+                      color: active ? '#f59e0b' : '#e8dcc3',
+                      fontWeight:700, fontSize:14, transition:'all 0.2s',
+                    }}
+                  >
+                    <span style={{ fontSize:20 }}>{item.icon}</span>
+                    <span className="font-title">{item.label}</span>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Center: hero banner + Play Now + footer strip */}
+            <div style={{ flex:1, minWidth:0 }}>
+              <div style={{
+                position:'relative', borderRadius:24, overflow:'hidden', minHeight:420,
+                background:'radial-gradient(ellipse at 50% 25%, rgba(169,118,47,0.3) 0%, transparent 60%), linear-gradient(180deg, #1c0f38 0%, #241a0d 55%, #1c130a 100%)',
+                border:'1px solid rgba(169,118,47,0.2)',
+                display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
+                padding:'40px 24px 32px', textAlign:'center',
+              }}>
+                {/* faux "rak buku" texture ala perpustakaan */}
+                <div style={{
+                  position:'absolute', inset:0, opacity:0.05, pointerEvents:'none',
+                  backgroundImage:'repeating-linear-gradient(90deg, #f5e6c8 0 2px, transparent 2px 42px)',
+                }} />
+                <div style={{
+                  position:'absolute', top:-60, left:'50%', transform:'translateX(-50%)',
+                  width:320, height:320, borderRadius:'50%',
+                  background:'radial-gradient(circle, rgba(240,200,105,0.35) 0%, transparent 70%)',
+                  pointerEvents:'none',
+                }} />
+
+                {/* Hero art placeholder */}
+                <div style={{
+                  width:180, height:180, borderRadius:'50%', position:'relative', marginBottom:20,
+                  background:'linear-gradient(160deg, #a9762f 0%, #4a3218 60%, #2b1d10 100%)',
+                  border:'4px solid rgba(245,158,11,0.5)',
+                  boxShadow:'0 0 40px rgba(169,118,47,0.5), 0 0 80px rgba(245,158,11,0.15)',
+                  display:'flex', alignItems:'center', justifyContent:'center', fontSize:84,
+                }}>
+                  🧙‍♀️
+                </div>
+
+                <div style={{ fontSize:11, letterSpacing:'0.15em', color:'#a89a7c', fontWeight:700, textTransform:'uppercase', marginBottom:6 }}>
+                  Selamat Datang Kembali
+                </div>
+                <div style={{ fontSize:24, fontWeight:900, color:'white', marginBottom:22 }}>
+                  {user?.username || 'Trainer'}
+                </div>
+
+                <button className="font-title" onClick={() => navigate('/battle')} style={{
+                  background:'linear-gradient(135deg, #f59e0b, #d97706)', color:'#2b1d10',
+                  fontWeight:900, fontSize:16, letterSpacing:'0.05em', padding:'16px 52px',
+                  borderRadius:30, border:'2px solid rgba(255,255,255,0.25)', cursor:'pointer',
+                  boxShadow:'0 8px 30px rgba(245,158,11,0.45)', textTransform:'uppercase',
+                }}>
+                  ⚔️ Play Now
+                </button>
+              </div>
+
+              {/* Footer strip: Patch Notes + Buka Pack */}
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16, marginTop:20 }}>
+                <DesktopFooterCard
+                  icon="📋"
+                  title="Patch Notes"
+                  text={news[0] ? news[0].title : 'Belum ada catatan patch terbaru.'}
+                  onClick={() => setTab('news')}
+                />
+                <DesktopFooterCard
+                  icon="🎴"
+                  title={(featuredPacks[0] || packs[0])?.name || 'Buka Pack'}
+                  text={
+                    (featuredPacks[0] || packs[0])?.description
+                      || (packSlots > 0 ? `${packSlots} slot pack tersedia hari ini — buka sekarang!` : 'Buka pack untuk dapatkan kartu baru.')
+                  }
+                  onClick={() => navigate('/packs')}
+                  accent
+                />
+              </div>
+            </div>
+
+            {/* Panel kanan: Online Friends + Daily Quests */}
+            <div style={{ width:264, flexShrink:0, display:'flex', flexDirection:'column', gap:16 }}>
+              <div className="glass" style={{ padding:16 }}>
+                <SectionLabel>👥 Online Friends</SectionLabel>
+                {friends.filter(f => f.status === 'accepted').length === 0 ? (
+                  <div style={{ fontSize:11, color:'#8a7a5c', textAlign:'center', padding:'14px 0' }}>
+                    Belum ada teman.
+                  </div>
+                ) : friends.filter(f => f.status === 'accepted').slice(0, 5).map(f => (
+                  <div key={f.friendship_id} style={{ display:'flex', alignItems:'center', gap:10, padding:'7px 0' }}>
+                    <div style={{ position:'relative', width:32, height:32, flexShrink:0 }}>
+                      <div style={{
+                        width:32, height:32, borderRadius:'50%',
+                        background: f.avatar_url ? `url(${f.avatar_url}) center/cover` : 'linear-gradient(135deg,#a9762f,#f59e0b)',
+                        display:'flex', alignItems:'center', justifyContent:'center', fontSize:14,
+                      }}>{!f.avatar_url && '⚔️'}</div>
+                      <span style={{
+                        position:'absolute', bottom:0, right:0, width:9, height:9, borderRadius:'50%',
+                        background:'#22c55e', border:'2px solid #2b1d10',
+                      }} />
+                    </div>
+                    <div style={{ minWidth:0 }}>
+                      <div style={{ fontSize:12, fontWeight:700, color:'white', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+                        {f.username}
+                      </div>
+                      <div style={{ fontSize:10, color:'#a89a7c' }}>{f.title || 'Player'}</div>
+                    </div>
+                  </div>
+                ))}
+                <button onClick={() => navigate('/community')} style={{
+                  width:'100%', marginTop:8, padding:'8px',
+                  background:'rgba(169,118,47,0.08)', border:'1px solid rgba(169,118,47,0.2)',
+                  borderRadius:10, color:'#a89a7c', fontSize:11, fontWeight:600, cursor:'pointer',
+                }}>
+                  Lihat Komunitas →
+                </button>
+              </div>
+
+              <div className="glass" style={{ padding:16 }}>
+                <SectionLabel>📜 Daily Quests</SectionLabel>
+                {missions.filter(m => m.mission_type === 'daily').length === 0 ? (
+                  <div style={{ fontSize:11, color:'#8a7a5c', textAlign:'center', padding:'14px 0' }}>
+                    Belum ada misi hari ini.
+                  </div>
+                ) : missions.filter(m => m.mission_type === 'daily').slice(0, 3).map(m => (
+                  <MiniMission key={m.id} m={m} onClaim={handleClaimMission} />
+                ))}
+                <button
+                  onClick={() => setTab('mission')}
+                  style={{
+                    width:'100%', marginTop:4, padding:'8px',
+                    background:'rgba(169,118,47,0.08)', border:'1px solid rgba(169,118,47,0.2)',
+                    borderRadius:10, color:'#a89a7c', fontSize:11, fontWeight:600, cursor:'pointer',
+                  }}
+                >
+                  Lihat semua misi →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        </>
       )}
 
       {/* ═══════════════════════════════════════════════════════════
           NEWS TAB
       ═══════════════════════════════════════════════════════════ */}
       {tab === 'news' && (
-        <div style={{ padding:'16px 16px 80px', position:'relative', zIndex:1 }}>
+        <div className="content-panel" style={{ padding:'16px 16px 80px', position:'relative', zIndex:1 }}>
           {news.length === 0 && <EmptyState icon="📢" text="Belum ada berita." />}
           {news.map(n => (
             <div key={n.id} style={{
-              background:'rgba(26,10,46,0.8)', borderRadius:16, overflow:'hidden',
-              marginBottom:14, border:'1px solid rgba(124,58,237,0.15)',
+              background:'rgba(43,29,16,0.8)', borderRadius:16, overflow:'hidden',
+              marginBottom:14, border:'1px solid rgba(169,118,47,0.15)',
               boxShadow:'0 4px 20px rgba(0,0,0,0.3)',
             }}>
               {n.image_url && (
@@ -441,21 +709,21 @@ export default function HomePage() {
                 }}>
                   <div style={{
                     position:'absolute', inset:0,
-                    background:'linear-gradient(0deg, rgba(26,10,46,0.8) 0%, transparent 60%)',
+                    background:'linear-gradient(0deg, rgba(43,29,16,0.8) 0%, transparent 60%)',
                   }} />
                 </div>
               )}
               <div style={{ padding:'14px 16px' }}>
                 <div style={{ display:'flex', gap:8, alignItems:'center', marginBottom:8 }}>
                   <span style={{
-                    fontSize:9, background:'rgba(124,58,237,0.2)', color:'#c084fc',
+                    fontSize:9, background:'rgba(169,118,47,0.2)', color:'#f0c869',
                     padding:'3px 8px', borderRadius:20, textTransform:'uppercase',
-                    fontWeight:700, letterSpacing:'0.07em', border:'1px solid rgba(124,58,237,0.25)',
+                    fontWeight:700, letterSpacing:'0.07em', border:'1px solid rgba(169,118,47,0.25)',
                   }}>{n.news_type}</span>
                   {n.is_pinned && <span style={{ fontSize:10, color:'#f59e0b' }}>📌 Pinned</span>}
                 </div>
                 <div style={{ fontSize:15, fontWeight:800, color:'white', marginBottom:6, lineHeight:1.3 }}>{n.title}</div>
-                <div style={{ fontSize:12, color:'#8b7aa8', lineHeight:1.6 }}>{n.content}</div>
+                <div style={{ fontSize:12, color:'#a89a7c', lineHeight:1.6 }}>{n.content}</div>
               </div>
             </div>
           ))}
@@ -466,12 +734,12 @@ export default function HomePage() {
           GIFT TAB
       ═══════════════════════════════════════════════════════════ */}
       {tab === 'gift' && (
-        <div style={{ padding:'16px 16px 80px', position:'relative', zIndex:1 }}>
+        <div className="content-panel" style={{ padding:'16px 16px 80px', position:'relative', zIndex:1 }}>
           <div style={{
-            background:'linear-gradient(135deg, rgba(245,158,11,0.1) 0%, rgba(124,58,237,0.1) 100%)',
+            background:'linear-gradient(135deg, rgba(245,158,11,0.1) 0%, rgba(169,118,47,0.1) 100%)',
             border:'1px solid rgba(245,158,11,0.2)', borderRadius:14,
             padding:'10px 14px', marginBottom:16,
-            fontSize:12, color:'#8b7aa8', lineHeight:1.5,
+            fontSize:12, color:'#a89a7c', lineHeight:1.5,
           }}>
             🎁 Hadiah kartu dari teman — klaim sebelum kadaluarsa!
           </div>
@@ -479,20 +747,20 @@ export default function HomePage() {
           {gifts.length === 0 && <EmptyState icon="🎁" text="Belum ada hadiah dari teman." />}
           {gifts.map(g => (
             <div key={g.id} style={{
-              background:'rgba(26,10,46,0.8)', borderRadius:16, padding:'14px 16px',
-              marginBottom:10, border:'1px solid rgba(124,58,237,0.15)',
+              background:'rgba(43,29,16,0.8)', borderRadius:16, padding:'14px 16px',
+              marginBottom:10, border:'1px solid rgba(169,118,47,0.15)',
               display:'flex', gap:14, alignItems:'center',
               boxShadow:'0 4px 16px rgba(0,0,0,0.3)',
             }}>
               <div style={{
                 width:52, height:52, borderRadius:12, flexShrink:0,
-                background:'linear-gradient(135deg, #3b1f72, #1a0a2e)',
+                background:'linear-gradient(135deg, #4a3218, #2b1d10)',
                 display:'flex', alignItems:'center', justifyContent:'center', fontSize:26,
-                border:'1px solid rgba(124,58,237,0.25)',
+                border:'1px solid rgba(169,118,47,0.25)',
               }}>🎴</div>
               <div style={{ flex:1, minWidth:0 }}>
                 <div style={{ fontSize:13, fontWeight:800, color:'white', marginBottom:2 }}>{g.card_name}</div>
-                <div style={{ fontSize:11, color:'#8b7aa8', marginBottom:4 }}>dari {g.sender_name}</div>
+                <div style={{ fontSize:11, color:'#a89a7c', marginBottom:4 }}>dari {g.sender_name}</div>
                 <span className={`rarity-badge rarity-${g.rarity}`}>{g.rarity}</span>
               </div>
               {g.status === 'pending' ? (
@@ -500,7 +768,7 @@ export default function HomePage() {
                   onClick={() => handleClaimGift(g.id)}
                   style={{
                     background:'linear-gradient(135deg, #f59e0b, #d97706)',
-                    color:'#1a0a2e', fontWeight:800, fontSize:11,
+                    color:'#2b1d10', fontWeight:800, fontSize:11,
                     padding:'9px 16px', borderRadius:20, border:'none',
                     cursor:'pointer', whiteSpace:'nowrap', flexShrink:0,
                     boxShadow:'0 2px 12px rgba(245,158,11,0.35)',
@@ -518,7 +786,7 @@ export default function HomePage() {
           MISSION TAB
       ═══════════════════════════════════════════════════════════ */}
       {tab === 'mission' && (
-        <div style={{ padding:'16px 16px 80px', position:'relative', zIndex:1 }}>
+        <div className="content-panel" style={{ padding:'16px 16px 80px', position:'relative', zIndex:1 }}>
           {['daily','weekly'].map(type => {
             const list = missions.filter(m => m.mission_type === type);
             if (!list.length) return null;
@@ -527,9 +795,9 @@ export default function HomePage() {
                 <SectionLabel>{type === 'daily' ? '📅 Daily Mission' : '📆 Weekly Mission'}</SectionLabel>
                 {list.map(m => (
                   <div key={m.id} style={{
-                    background:'rgba(26,10,46,0.8)', borderRadius:16,
+                    background:'rgba(43,29,16,0.8)', borderRadius:16,
                     padding:'14px 16px', marginBottom:10,
-                    border:`1px solid ${m.claimed ? 'rgba(34,197,94,0.15)' : 'rgba(124,58,237,0.15)'}`,
+                    border:`1px solid ${m.claimed ? 'rgba(34,197,94,0.15)' : 'rgba(169,118,47,0.15)'}`,
                     opacity: m.claimed ? 0.6 : 1,
                     boxShadow:'0 4px 16px rgba(0,0,0,0.3)',
                     transition:'opacity 0.3s',
@@ -537,14 +805,14 @@ export default function HomePage() {
                     <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:10 }}>
                       <div style={{ flex:1 }}>
                         <div style={{ fontSize:13, fontWeight:800, color:'white', marginBottom:3 }}>{m.name}</div>
-                        <div style={{ fontSize:11, color:'#8b7aa8', lineHeight:1.4 }}>{m.description}</div>
+                        <div style={{ fontSize:11, color:'#a89a7c', lineHeight:1.4 }}>{m.description}</div>
                       </div>
                       {m.is_completed && !m.claimed && (
                         <button
                           onClick={() => handleClaimMission(m.id)}
                           style={{
                             background:'linear-gradient(135deg, #f59e0b, #d97706)',
-                            color:'#1a0a2e', fontWeight:800, fontSize:11,
+                            color:'#2b1d10', fontWeight:800, fontSize:11,
                             padding:'7px 14px', borderRadius:20, border:'none',
                             cursor:'pointer', marginLeft:10, flexShrink:0,
                             boxShadow:'0 2px 12px rgba(245,158,11,0.35)',
@@ -560,7 +828,7 @@ export default function HomePage() {
                         height:'100%', borderRadius:6,
                         background: m.is_completed
                           ? 'linear-gradient(90deg, #22c55e, #16a34a)'
-                          : 'linear-gradient(90deg, #7c3aed, #a855f7)',
+                          : 'linear-gradient(90deg, #a9762f, #a855f7)',
                         transition:'width 0.6s ease', position:'relative', overflow:'hidden',
                       }}>
                         <div style={{
@@ -572,11 +840,11 @@ export default function HomePage() {
                     </div>
 
                     <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-                      <span style={{ fontSize:10, color:'#8b7aa8' }}>{m.progress}/{m.target_count}</span>
+                      <span style={{ fontSize:10, color:'#a89a7c' }}>{m.progress}/{m.target_count}</span>
                       <div style={{ display:'flex', gap:8, fontSize:11 }}>
                         {m.reward_gold > 0 && <span style={{ color:'#f59e0b', fontWeight:700 }}>💰{m.reward_gold}</span>}
                         {m.reward_gems > 0 && <span style={{ color:'#60a5fa', fontWeight:700 }}>💎{m.reward_gems}</span>}
-                        {m.reward_dust > 0 && <span style={{ color:'#c084fc', fontWeight:700 }}>✨{m.reward_dust}</span>}
+                        {m.reward_dust > 0 && <span style={{ color:'#f0c869', fontWeight:700 }}>✨{m.reward_dust}</span>}
                         {m.reward_xp > 0  && <span style={{ color:'#22c55e', fontWeight:700 }}>⭐{m.reward_xp}XP</span>}
                       </div>
                     </div>
@@ -631,8 +899,8 @@ function CurrencyChip({ icon, value, color }) {
 
 function SectionLabel({ children }) {
   return (
-    <div style={{
-      fontSize:13, fontWeight:800, color:'#c084fc',
+    <div className="font-title" style={{
+      fontSize:13, fontWeight:800, color:'#f0c869',
       marginBottom:12, display:'flex', alignItems:'center', gap:6,
     }}>{children}</div>
   );
@@ -647,14 +915,14 @@ function QuickActionCard({ icon, label, color, glow, onClick }) {
       onMouseLeave={() => setHover(false)}
       style={{
         padding:'18px 8px 14px', textAlign:'center', cursor:'pointer',
-        borderRadius:16, border:`1px solid ${hover ? color : 'rgba(124,58,237,0.15)'}`,
-        background: hover ? `rgba(${hexToRgb(color)},0.12)` : 'rgba(26,10,46,0.6)',
+        borderRadius:16, border:`1px solid ${hover ? color : 'rgba(169,118,47,0.15)'}`,
+        background: hover ? `rgba(${hexToRgb(color)},0.12)` : 'rgba(43,29,16,0.6)',
         boxShadow: hover ? `0 4px 20px ${glow}` : 'none',
         transition:'all 0.2s',
       }}
     >
       <div style={{ fontSize:30, marginBottom:6 }}>{icon}</div>
-      <div style={{ fontSize:11, color: hover ? color : '#8b7aa8', fontWeight:700, transition:'color 0.2s' }}>{label}</div>
+      <div style={{ fontSize:11, color: hover ? color : '#a89a7c', fontWeight:700, transition:'color 0.2s' }}>{label}</div>
     </div>
   );
 }
@@ -663,8 +931,8 @@ function MiniMission({ m, onClaim }) {
   const pct = Math.min(100, (m.progress / m.target_count) * 100);
   return (
     <div style={{
-      background:'rgba(26,10,46,0.7)', borderRadius:14, padding:'12px 14px',
-      marginBottom:8, border:'1px solid rgba(124,58,237,0.12)',
+      background:'rgba(43,29,16,0.7)', borderRadius:14, padding:'12px 14px',
+      marginBottom:8, border:'1px solid rgba(169,118,47,0.12)',
       display:'flex', gap:12, alignItems:'center',
     }}>
       <div style={{ flex:1 }}>
@@ -672,15 +940,15 @@ function MiniMission({ m, onClaim }) {
         <div style={{ background:'rgba(255,255,255,0.05)', borderRadius:4, height:5, overflow:'hidden' }}>
           <div style={{
             width:`${pct}%`, height:'100%', borderRadius:4,
-            background: m.is_completed ? '#22c55e' : '#7c3aed',
+            background: m.is_completed ? '#22c55e' : '#a9762f',
           }} />
         </div>
-        <div style={{ fontSize:10, color:'#8b7aa8', marginTop:3 }}>{m.progress}/{m.target_count}</div>
+        <div style={{ fontSize:10, color:'#a89a7c', marginTop:3 }}>{m.progress}/{m.target_count}</div>
       </div>
       {m.is_completed && !m.claimed && (
         <button onClick={() => onClaim(m.id)} style={{
           background:'linear-gradient(135deg, #f59e0b, #d97706)',
-          color:'#1a0a2e', fontWeight:800, fontSize:10,
+          color:'#2b1d10', fontWeight:800, fontSize:10,
           padding:'6px 12px', borderRadius:16, border:'none', cursor:'pointer', flexShrink:0,
         }}>Klaim</button>
       )}
@@ -691,7 +959,7 @@ function MiniMission({ m, onClaim }) {
 
 function EmptyState({ icon, text }) {
   return (
-    <div style={{ textAlign:'center', color:'#6b5a88', padding:'48px 0' }}>
+    <div style={{ textAlign:'center', color:'#8a7a5c', padding:'48px 0' }}>
       <div style={{ fontSize:44, marginBottom:10 }}>{icon}</div>
       <div style={{ fontSize:13 }}>{text}</div>
     </div>
@@ -700,6 +968,61 @@ function EmptyState({ icon, text }) {
 
 function hexToRgb(hex) {
   const m = hex.match(/^#?([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i);
-  if (!m) return '124,58,237';
+  if (!m) return '169,118,47';
   return `${parseInt(m[1],16)},${parseInt(m[2],16)},${parseInt(m[3],16)}`;
+}
+
+/* ─── Desktop hub: kartu Patch Notes / Event di bagian bawah hero ──── */
+function DesktopFooterCard({ icon, title, text, onClick, accent }) {
+  return (
+    <div
+      onClick={onClick}
+      style={{
+        cursor:'pointer', borderRadius:16, padding:'16px 18px',
+        background: accent
+          ? 'linear-gradient(135deg, rgba(96,165,250,0.15), rgba(169,118,47,0.15))'
+          : 'rgba(43,29,16,0.7)',
+        border: `1px solid ${accent ? 'rgba(96,165,250,0.3)' : 'rgba(169,118,47,0.15)'}`,
+        display:'flex', gap:12, alignItems:'flex-start',
+        transition:'transform 0.2s',
+      }}
+    >
+      <div style={{ fontSize:26, flexShrink:0 }}>{icon}</div>
+      <div style={{ minWidth:0 }}>
+        <div className="font-title" style={{ fontSize:13, fontWeight:800, color:'white', marginBottom:3 }}>{title}</div>
+        <div style={{
+          fontSize:11, color:'#a89a7c', lineHeight:1.4,
+          overflow:'hidden', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical',
+        }}>{text}</div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Desktop header: tombol ikon (notifikasi/hadiah/pengaturan) ──── */
+function HeaderIconButton({ icon, badge, onClick }) {
+  const [hover, setHover] = useState(false);
+  return (
+    <div
+      onClick={onClick}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      style={{
+        position:'relative', width:38, height:38, borderRadius:'50%', cursor:'pointer',
+        display:'flex', alignItems:'center', justifyContent:'center', fontSize:16,
+        background: hover ? 'rgba(169,118,47,0.25)' : 'rgba(43,29,16,0.7)',
+        border:'1px solid rgba(169,118,47,0.25)', transition:'background 0.2s',
+      }}
+    >
+      {icon}
+      {badge > 0 && (
+        <span style={{
+          position:'absolute', top:-4, right:-4, minWidth:16, height:16, borderRadius:8,
+          background:'#ef4444', color:'white', fontSize:9, fontWeight:800,
+          display:'flex', alignItems:'center', justifyContent:'center', padding:'0 4px',
+          border:'2px solid #1c130a',
+        }}>{badge}</span>
+      )}
+    </div>
+  );
 }

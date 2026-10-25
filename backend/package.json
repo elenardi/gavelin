@@ -4,8 +4,8 @@
   "description": "Gavelin: Card Chronicles \u2014 Backend API",
   "main": "server.js",
   "scripts": {
-    "start": "node api.js && node server.js",
-    "dev": "node api.js && nodemon server.js",
+    "start": "node init && node server.js",
+    "dev": "node init && nodemon server.js",
     "db:setup": "node scripts/setupDb.js"
   },
   "dependencies": {
